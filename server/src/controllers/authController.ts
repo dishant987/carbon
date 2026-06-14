@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, CookieOptions } from 'express';
 import { prisma } from '../services/footprint';
 import { hashPassword, comparePassword } from '../utils/password';
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../utils/jwt';
@@ -7,10 +7,10 @@ import { ValidationError, UnauthorizedError, ConflictError } from '../utils/erro
 import type { ApiResponse, AuthTokens, SafeUser, JwtPayload } from '../types';
 
 /** Cookie configuration for HTTP-only refresh token */
-const REFRESH_COOKIE_OPTIONS = {
+const REFRESH_COOKIE_OPTIONS: CookieOptions = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
-  sameSite: (process.env.NODE_ENV === 'production' ? 'none' : 'lax') as const,
+  sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
   path: '/api/auth',
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
 };
@@ -192,7 +192,7 @@ export const logout = async (req: Request, res: Response, next: NextFunction): P
       path: '/api/auth',
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: (process.env.NODE_ENV === 'production' ? 'none' : 'lax') as const,
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     });
 
     const response: ApiResponse<null> = { success: true };
