@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { verifyAccessToken } from '../utils/jwt';
 import { UnauthorizedError } from '../utils/errors';
+import { ForbiddenError } from '../utils/errors';
 
 /**
  * Middleware that authenticates requests via JWT Bearer token.
@@ -61,6 +62,18 @@ export const optionalAuth = (req: Request, _res: Response, next: NextFunction): 
     req.user = payload;
   } catch {
     // Silently ignore invalid tokens for optional auth
+  }
+
+  next();
+};
+
+/** Protects cookie-authenticated routes from cross-site requests. */
+export const requireTrustedOrigin = (req: Request, _res: Response, next: NextFunction): void => {
+  const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+  const origin = req.get('origin');
+
+  if (origin && origin !== clientUrl) {
+    throw new ForbiddenError('Request origin is not allowed');
   }
 
   next();

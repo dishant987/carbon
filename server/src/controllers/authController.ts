@@ -5,6 +5,7 @@ import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '.
 import { registerSchema, loginSchema } from '../utils/validation';
 import { ValidationError, UnauthorizedError, ConflictError } from '../utils/errors';
 import type { ApiResponse, AuthTokens, SafeUser, JwtPayload } from '../types';
+import { createHash } from 'crypto';
 
 /** Cookie configuration for HTTP-only refresh token */
 const REFRESH_COOKIE_OPTIONS: CookieOptions = {
@@ -14,6 +15,10 @@ const REFRESH_COOKIE_OPTIONS: CookieOptions = {
   path: '/api/auth',
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
 };
+
+function hashRefreshToken(token: string): string {
+  return createHash('sha256').update(token).digest('hex');
+}
 
 /**
  * Strips sensitive fields from a user object before sending to client.
@@ -61,12 +66,12 @@ export const register = async (req: Request, res: Response, next: NextFunction):
 
     await prisma.user.update({
       where: { id: user.id },
-      data: { refreshToken },
+      data: { refreshToken: hashRefreshToken(refreshToken) },
     });
 
     res.cookie('refreshToken', refreshToken, REFRESH_COOKIE_OPTIONS);
 
-    const tokens: AuthTokens = { accessToken, refreshToken };
+    const tokens: AuthTokens = { accessToken };
 
     const response: ApiResponse<{ user: SafeUser; tokens: AuthTokens }> = {
       success: true,
@@ -109,12 +114,12 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
 
     await prisma.user.update({
       where: { id: user.id },
-      data: { refreshToken },
+      data: { refreshToken: hashRefreshToken(refreshToken) },
     });
 
     res.cookie('refreshToken', refreshToken, REFRESH_COOKIE_OPTIONS);
 
-    const tokens: AuthTokens = { accessToken, refreshToken };
+    const tokens: AuthTokens = { accessToken };
 
     const response: ApiResponse<{ user: SafeUser; tokens: AuthTokens }> = {
       success: true,
@@ -141,7 +146,7 @@ export const refresh = async (req: Request, res: Response, next: NextFunction): 
     const payload = verifyRefreshToken(token);
 
     const user = await prisma.user.findUnique({ where: { id: payload.userId } });
-    if (!user || user.refreshToken !== token) {
+    if (!user || user.refreshToken !== hashRefreshToken(token)) {
       throw new UnauthorizedError('Refresh token has been revoked');
     }
 
@@ -152,12 +157,12 @@ export const refresh = async (req: Request, res: Response, next: NextFunction): 
 
     await prisma.user.update({
       where: { id: user.id },
-      data: { refreshToken: newRefreshToken },
+      data: { refreshToken: hashRefreshToken(newRefreshToken) },
     });
 
     res.cookie('refreshToken', newRefreshToken, REFRESH_COOKIE_OPTIONS);
 
-    const tokens: AuthTokens = { accessToken: newAccessToken, refreshToken: newRefreshToken };
+    const tokens: AuthTokens = { accessToken: newAccessToken };
 
     const response: ApiResponse<{ tokens: AuthTokens }> = {
       success: true,
@@ -179,7 +184,7 @@ export const logout = async (req: Request, res: Response, next: NextFunction): P
     const token = req.cookies?.refreshToken;
 
     if (token) {
-      const user = await prisma.user.findFirst({ where: { refreshToken: token } });
+      const user = await prisma.user.findFirst({ where: { refreshToken: hashRefreshToken(token) } });
       if (user) {
         await prisma.user.update({
           where: { id: user.id },

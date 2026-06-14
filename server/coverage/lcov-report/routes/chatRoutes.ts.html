@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for routes/tipsRoutes.ts</title>
+    <title>Code coverage report for routes/chatRoutes.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">routes</a> tipsRoutes.ts</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">routes</a> chatRoutes.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -92,17 +92,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Router } from 'express';
-import { getTips, getGeminiStatus } from '../controllers/tipsController';
+import { sendMessage, getChatHistory } from '../controllers/chatController';
 import { authenticate } from '../middleware/auth';
 import { aiLimiter } from '../middleware/rateLimiter';
 &nbsp;
 const router: Router = Router();
 &nbsp;
-// All tips routes require authentication
+// All chat routes require authentication
 router.use(authenticate);
 &nbsp;
-router.get('/status', aiLimiter, getGeminiStatus);
-router.get('/', aiLimiter, getTips);
+router.post('/message', aiLimiter, sendMessage);
+router.get('/history', getChatHistory);
 &nbsp;
 export default router;
 &nbsp;</pre></td></tr></table></pre>

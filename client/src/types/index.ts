@@ -98,7 +98,6 @@ export interface LoginInput {
 /** Auth tokens returned after login/register */
 export interface AuthTokens {
   accessToken: string;
-  refreshToken: string;
 }
 
 /** Chat message interface */

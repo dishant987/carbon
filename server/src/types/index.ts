@@ -57,7 +57,6 @@ export interface JwtPayload {
 /** Auth tokens returned after login/register */
 export interface AuthTokens {
   accessToken: string;
-  refreshToken: string;
 }
 
 /** Safe user object sent to clients (no passwordHash or refreshToken) */

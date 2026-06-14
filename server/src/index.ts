@@ -17,6 +17,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
 
+app.disable('x-powered-by');
+
 // Security HTTP headers
 app.use(helmet());
 
@@ -55,6 +57,10 @@ app.use('/api', routes);
 // Health check (no auth required)
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+app.use((_req, res) => {
+  res.status(404).json({ success: false, error: 'Route not found' });
 });
 
 // Global error handler (must be last)

@@ -80,7 +80,7 @@ export const createActivity = async (req: Request, res: Response, next: NextFunc
 
 /**
  * GET /api/activities
- * Retrieves the authenticated user's activities with cursor-based pagination.
+ * Retrieves the authenticated user's activities with page-based pagination.
  * Supports optional date range filtering.
  *
  * Query params:
@@ -96,8 +96,9 @@ interface ActivityWhereInput {
 
 export const getActivities = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { start, end, cursor } = req.query;
+    const { start, end } = req.query;
 
+    const page = Math.max(1, parseInt(req.query.page as string, 10) || 1);
     const limit = Math.min(50, Math.max(1, parseInt(req.query.limit as string, 10) || 20));
 
     const where: ActivityWhereInput = { userId: req.user!.userId };
@@ -106,29 +107,31 @@ export const getActivities = async (req: Request, res: Response, next: NextFunct
       where.date = { gte: new Date(start), lte: new Date(end) };
     }
 
-    const activities = await prisma.activity.findMany({
-      where,
-      select: LIST_SELECT,
-      orderBy: { createdAt: 'desc' },
-      take: limit + 1,
-      ...(typeof cursor === 'string' ? { cursor: { id: cursor }, skip: 1 } : {}),
-    });
+    const [items, total] = await Promise.all([
+      prisma.activity.findMany({
+        where,
+        select: LIST_SELECT,
+        orderBy: { createdAt: 'desc' },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      prisma.activity.count({ where }),
+    ]);
 
-    const hasMore = activities.length > limit;
-    const items = hasMore ? activities.slice(0, limit) : activities;
-    const nextCursor = hasMore ? items[items.length - 1].id : null;
+    const totalPages = Math.max(1, Math.ceil(total / limit));
 
     const response: ApiResponse<{
       items: typeof items;
-      pagination: { limit: number; nextCursor: string | null; hasMore: boolean };
+      pagination: { page: number; limit: number; total: number; totalPages: number };
     }> = {
       success: true,
       data: {
         items,
         pagination: {
+          page,
           limit,
-          nextCursor,
-          hasMore,
+          total,
+          totalPages,
         },
       },
     };
@@ -161,6 +164,7 @@ export const deleteActivity = async (req: Request, res: Response, next: NextFunc
     }
 
     await prisma.activity.delete({ where: { id: id as string } });
+    await invalidateDashboardCache(req.user!.userId);
 
     const response: ApiResponse<null> = { success: true };
     res.json(response);
