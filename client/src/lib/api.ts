@@ -13,7 +13,8 @@ import type {
   Message,
 } from '../types';
 
-export const BASE_URL = import.meta.env.VITE_API_URL || '/api';
+const rawApiUrl = import.meta.env.VITE_API_URL || '/api';
+export const BASE_URL = rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl}/api`;
 
 let accessToken: string | null = null;
 let onUnauthorizedCallback: (() => void) | null = null;
