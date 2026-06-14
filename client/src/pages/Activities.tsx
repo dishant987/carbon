@@ -5,7 +5,7 @@ import { ActivityList } from '../components/ActivityList';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Button } from '../components/ui/button';
-import { ChevronLeft, ChevronRight, Leaf } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { ActivityFormSchemaType } from '../lib/validations';
 
 import { TableSkeleton } from '../components/SkeletonLoaders';

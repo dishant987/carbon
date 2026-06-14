@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, Link, useLocation } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import {
   Leaf,
   BarChart3,
@@ -13,7 +13,6 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  Compass,
   MessageSquare,
 } from 'lucide-react';
 import { cn } from '../lib/utils';
@@ -34,8 +33,6 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   const { user, isAuthenticated, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
-  const location = useLocation();
-
   // Sidebar collapsible state for desktop
   const [isCollapsed, setIsCollapsed] = useState(false);
   // Mobile drawer state

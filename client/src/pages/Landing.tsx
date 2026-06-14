@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Leaf,
@@ -8,10 +8,8 @@ import {
   Zap,
   Car,
   Utensils,
-  Trash2,
   ChevronRight,
   CheckCircle,
-  HelpCircle,
   ChevronDown,
   ChevronUp,
   Globe,
@@ -19,7 +17,6 @@ import {
   Shield,
   Activity,
   Calendar,
-  Flame,
   Check,
   Smile,
   Compass,
