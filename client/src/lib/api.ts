@@ -13,7 +13,7 @@ import type {
   DashboardSummary,
 } from '../types';
 
-export type { DashboardSummary } from '../types';
+export type { DashboardSummary, Activity } from '../types';
 
 const rawApiUrl = import.meta.env.VITE_API_URL || '/api';
 export const BASE_URL = rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl}/api`;
