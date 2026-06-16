@@ -23,7 +23,7 @@ const unitOptions: Record<string, string[]> = {
   transport: ['km', 'miles'],
   food: ['kg', 'lbs', 'servings', 'meals'],
   energy: ['kWh', 'therms', 'MJ'],
-  shopping: ['items', 'kg', 'USD'],
+  shopping: ['items', 'kg', 'INR'],
 };
 
 export function ActivityForm({ onSubmit }: ActivityFormProps) {

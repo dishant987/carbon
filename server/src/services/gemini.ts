@@ -186,3 +186,171 @@ export async function checkGeminiStatus(): Promise<{
     };
   }
 }
+
+export interface SustainabilityReport {
+  grade: string;
+  score: number;
+  analysis: string;
+  actionPlan: Array<{
+    week: number;
+    challengeName: string;
+    description: string;
+    expectedSavingKg: number;
+  }>;
+}
+
+export async function generateSustainabilityReport(
+  activities: Array<{ type: string; category: string; footprint: number; amount: number; unit: string }>,
+  weeklyGoal: number
+): Promise<SustainabilityReport> {
+  try {
+    const client = getClient();
+    const model = client.getGenerativeModel({ model: 'gemini-2.5-flash' });
+
+    const activitySummary = activities
+      .map((a) => `- ${a.type}/${a.category}: ${a.amount} ${a.unit} (${a.footprint.toFixed(2)} kg CO2)`)
+      .join('\n');
+
+    const prompt = [
+      'You are a carbon emissions auditor. Create a Sustainability Report Card based on the user\'s activity log over the past 30 days.',
+      `User's weekly target limit: ${weeklyGoal} kg CO2.`,
+      '',
+      'Activities log:',
+      activitySummary || 'No activities logged in the last 30 days.',
+      '',
+      'Generate a JSON response containing:',
+      '1. "grade": A letter grade (A+, A, A-, B+, B, B-, C+, C, C-, D, F) evaluating their environmental impact (lower total emissions relative to the goal is better).',
+      '2. "score": An eco-score out of 100 (high score = excellent performance, low emissions; low score = high footprint).',
+      '3. "analysis": A detailed, friendly, and actionable paragraph explaining the primary drivers of their emissions and what they did well.',
+      '4. "actionPlan": An array of exactly 4 weekly challenges to help them reduce emissions next month.',
+      'Each challenge must have: "week" (number 1-4), "challengeName" (string), "description" (string), "expectedSavingKg" (number, estimation of CO2 saved).',
+      '',
+      'Return ONLY a valid JSON object matching this structure:',
+      '{',
+      '  "grade": "B+",',
+      '  "score": 82,',
+      '  "analysis": "Your carbon footprint is primarily driven by your daily commute. However, you did great by consuming mostly vegetable-based meals.",',
+      '  "actionPlan": [',
+      '    {',
+      '      "week": 1,',
+      '      "challengeName": "Carpool to Work",',
+      '      "description": "Share rides with colleagues twice this week.",',
+      '      "expectedSavingKg": 12.5',
+      '    },',
+      '    ...',
+      '  ]',
+      '}'
+    ].join('\n');
+
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      throw new Error('No valid JSON found in Gemini sustainability report response');
+    }
+    return JSON.parse(jsonMatch[0]);
+  } catch (error) {
+    logger.error('Error generating AI sustainability report:', error);
+    return {
+      grade: 'B',
+      score: 75,
+      analysis: 'Could not generate custom report due to API limitations. Try adding more activities to improve the accuracy of your carbon analysis. Generally, minimizing personal car use and switching to energy-efficient products will help you stay within your target emissions.',
+      actionPlan: [
+        {
+          week: 1,
+          challengeName: 'Low-Carbon Commuting',
+          description: 'Try walking, biking, or taking public transit for short trips instead of driving.',
+          expectedSavingKg: 8.5
+        },
+        {
+          week: 2,
+          challengeName: 'Plant-Based Eating',
+          description: 'Introduce two fully vegetarian or vegan days this week.',
+          expectedSavingKg: 5.0
+        },
+        {
+          week: 3,
+          challengeName: 'Energy Efficiency Audit',
+          description: 'Unplug devices when fully charged and turn off unused lights.',
+          expectedSavingKg: 6.0
+        },
+        {
+          week: 4,
+          challengeName: 'Conscious Shopping',
+          description: 'Avoid buying new clothes or electronics this week unless absolutely necessary.',
+          expectedSavingKg: 10.0
+        }
+      ]
+    };
+  }
+}
+
+export interface RecipeAnalysis {
+  recipeName: string;
+  totalFootprintKg: number;
+  ingredientsAnalysis: Array<{
+    name: string;
+    footprintKg: number;
+    impact: 'high' | 'medium' | 'low';
+  }>;
+  plantBasedAlternative: string;
+  alternativeFootprintKg: number;
+  explanation: string;
+}
+
+export async function analyzeRecipe(recipeText: string): Promise<RecipeAnalysis> {
+  try {
+    const client = getClient();
+    const model = client.getGenerativeModel({ model: 'gemini-2.5-flash' });
+
+    const prompt = [
+      'You are an expert chef and carbon footprint analyst. Analyze the carbon footprint of the following recipe or list of ingredients:',
+      recipeText,
+      '',
+      'Generate a JSON response containing:',
+      '1. "recipeName": A friendly name for the recipe.',
+      '2. "totalFootprintKg": The total estimated carbon footprint in kg CO2 for this recipe.',
+      '3. "ingredientsAnalysis": An array of each key ingredient with: "name" (string), "footprintKg" (number), and "impact" (either "high", "medium", or "low").',
+      '4. "plantBasedAlternative": A vegan or plant-based recipe alternative name that reduces carbon footprint.',
+      '5. "alternativeFootprintKg": The estimated footprint in kg CO2 for the plant-based alternative.',
+      '6. "explanation": A detailed explanation of why some ingredients have high footprints (e.g. beef, cheese) and the benefits of swapping them for lentils, beans, or vegetables.',
+      '',
+      'Return ONLY a valid JSON object matching this structure:',
+      '{',
+      '  "recipeName": "Classic Beef Lasagna",',
+      '  "totalFootprintKg": 12.5,',
+      '  "ingredientsAnalysis": [',
+      '    { "name": "Ground Beef", "footprintKg": 9.2, "impact": "high" },',
+      '    { "name": "Cheese", "footprintKg": 1.8, "impact": "high" },',
+      '    { "name": "Pasta Sheets", "footprintKg": 0.5, "impact": "low" }',
+      '  ],',
+      '  "plantBasedAlternative": "Lentil & Vegetable Lasagna",',
+      '  "alternativeFootprintKg": 2.1,',
+      '  "explanation": "Replacing ground beef and heavy cheese with lentils, zucchini, and a light cashew sauce drastically reduces the carbon footprint by over 80% because beef and dairy are highly resource-intensive compared to plant legumes." ',
+      '}'
+    ].join('\n');
+
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      throw new Error('No valid JSON found in Gemini recipe analysis response');
+    }
+    return JSON.parse(jsonMatch[0]);
+  } catch (error) {
+    logger.error('Error analyzing recipe carbon footprint:', error);
+    return {
+      recipeName: 'Analyzed Recipe',
+      totalFootprintKg: 6.5,
+      ingredientsAnalysis: [
+        { name: 'Meat/Animal Protein', footprintKg: 5.0, impact: 'high' },
+        { name: 'Dairy & Fats', footprintKg: 1.0, impact: 'medium' },
+        { name: 'Grains & Vegetables', footprintKg: 0.5, impact: 'low' }
+      ],
+      plantBasedAlternative: 'Green Garden Harvest Medley',
+      alternativeFootprintKg: 1.5,
+      explanation: 'Could not contact Gemini AI for detailed analysis. Generally, replacing red meat and dairy with local grains, pulses, and vegetables will decrease your meal\'s carbon footprint by 60% to 90%.'
+    };
+  }
+}
+

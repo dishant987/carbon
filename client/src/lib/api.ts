@@ -2,7 +2,6 @@ import type {
   ApiResponse,
   Activity,
   ActivityInput,
-  DashboardSummary,
   CategoryBreakdown,
   DailyProgress,
   PaginatedResult,
@@ -11,7 +10,10 @@ import type {
   LoginInput,
   AuthTokens,
   Message,
+  DashboardSummary,
 } from '../types';
+
+export type { DashboardSummary } from '../types';
 
 const rawApiUrl = import.meta.env.VITE_API_URL || '/api';
 export const BASE_URL = rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl}/api`;
@@ -212,4 +214,139 @@ export async function downloadExport(): Promise<void> {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+}
+
+export interface GoalBadge {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  unlocked: boolean;
+  progress: number;
+  target: number;
+}
+
+export interface GoalsResponse {
+  weeklyGoal: number;
+  weeklyTotal: number;
+  badges: GoalBadge[];
+}
+
+export interface AiReportResponse {
+  grade: string;
+  score: number;
+  analysis: string;
+  actionPlan: Array<{
+    week: number;
+    challengeName: string;
+    description: string;
+    expectedSavingKg: number;
+  }>;
+}
+
+export interface OffsetPledge {
+  id: string;
+  project: string;
+  amount: number;
+  createdAt: string;
+}
+
+export interface OffsetProject {
+  id: string;
+  name: string;
+  description: string;
+  location: string;
+  costPerTonUSD: number;
+  category: string;
+  image: string;
+}
+
+export interface OffsetsResponse {
+  projects: OffsetProject[];
+  pledges: OffsetPledge[];
+  totalOffset: number;
+}
+
+/** Fetches user weekly carbon goals, current week emissions, and dynamic badges */
+export async function fetchGoals(): Promise<GoalsResponse> {
+  return request<GoalsResponse>('/dashboard/goals');
+}
+
+/** Updates user's weekly carbon limit/goal */
+export async function updateWeeklyGoal(weeklyGoal: number): Promise<{ weeklyGoal: number }> {
+  return request<{ weeklyGoal: number }>('/dashboard/goals', {
+    method: 'PUT',
+    body: JSON.stringify({ weeklyGoal }),
+  });
+}
+
+/** Triggers Gemini model to generate a monthly sustainability report card */
+export async function generateAiReport(): Promise<AiReportResponse> {
+  return request<AiReportResponse>('/dashboard/report', {
+    method: 'POST',
+  });
+}
+
+/** Fetches carbon offsetting projects, pledges history, and aggregates */
+export async function fetchOffsets(): Promise<OffsetsResponse> {
+  return request<OffsetsResponse>('/offsets');
+}
+
+/** Records a new carbon offset project pledge */
+export async function createOffsetPledge(project: string, amount: number): Promise<OffsetPledge> {
+  return request<OffsetPledge>('/offsets', {
+    method: 'POST',
+    body: JSON.stringify({ project, amount }),
+  });
+}
+
+export interface IngredientAnalysis {
+  name: string;
+  footprintKg: number;
+  impact: 'high' | 'medium' | 'low';
+}
+
+export interface RecipeAnalysisResponse {
+  recipeName: string;
+  totalFootprintKg: number;
+  ingredientsAnalysis: IngredientAnalysis[];
+  plantBasedAlternative: string;
+  alternativeFootprintKg: number;
+  explanation: string;
+}
+
+export interface LeaderboardUser {
+  userId: string;
+  name: string;
+  totalFootprint: number;
+  weeklyFootprint: number;
+  activityCount: number;
+  rank: number;
+}
+
+export interface EcoChallenge {
+  id: string;
+  title: string;
+  description: string;
+  target: number;
+  category: string;
+  points: number;
+}
+
+export interface LeaderboardResponse {
+  rankings: LeaderboardUser[];
+  challenges: EcoChallenge[];
+}
+
+/** Sends a recipe text to Gemini for carbon analysis and substitution suggestions */
+export async function analyzeRecipeCarbon(recipe: string): Promise<RecipeAnalysisResponse> {
+  return request<RecipeAnalysisResponse>('/recipes/analyze', {
+    method: 'POST',
+    body: JSON.stringify({ recipe }),
+  });
+}
+
+/** Fetches real-time community user rankings and active eco-challenges */
+export async function fetchLeaderboard(): Promise<LeaderboardResponse> {
+  return request<LeaderboardResponse>('/leaderboard');
 }

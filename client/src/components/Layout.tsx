@@ -14,6 +14,10 @@ import {
   ChevronLeft,
   ChevronRight,
   MessageSquare,
+  Award,
+  Globe,
+  Wrench,
+  Users,
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useAuth } from '../context/AuthContext';
@@ -24,6 +28,10 @@ const navItems = [
   { to: '/activities', label: 'Activities', icon: ListTodo },
   { to: '/tips', label: 'Tips', icon: Lightbulb },
   { to: '/chat', label: 'EcoBot Chat', icon: MessageSquare },
+  { to: '/goals', label: 'Goals & Badges', icon: Award },
+  { to: '/offsets', label: 'AI Report & Offsets', icon: Globe },
+  { to: '/tools', label: 'Eco Tools', icon: Wrench },
+  { to: '/challenges', label: 'Rankings & Group', icon: Users },
 ] as const;
 
 interface LayoutProps {

@@ -4,6 +4,7 @@ import { Layout } from './components/Layout';
 import { Leaf } from 'lucide-react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { UnprotectedRoute } from './components/UnprotectedRoute';
 
 // Lazy-loaded page components — split into separate chunks by Vite
 const Landing = React.lazy(() => import('./pages/Landing').then((module) => ({ default: module.Landing })));
@@ -15,6 +16,10 @@ const Activities = React.lazy(() =>
 );
 const Tips = React.lazy(() => import('./pages/Tips').then((module) => ({ default: module.Tips })));
 const Chat = React.lazy(() => import('./pages/Chat').then((module) => ({ default: module.Chat })));
+const Goals = React.lazy(() => import('./pages/Goals').then((module) => ({ default: module.Goals })));
+const Offsets = React.lazy(() => import('./pages/Offsets').then((module) => ({ default: module.Offsets })));
+const EcoTools = React.lazy(() => import('./pages/EcoTools').then((module) => ({ default: module.EcoTools })));
+const Challenges = React.lazy(() => import('./pages/Challenges').then((module) => ({ default: module.Challenges })));
 const Login = React.lazy(() => import('./pages/Login').then((module) => ({ default: module.Login })));
 const Register = React.lazy(() =>
   import('./pages/Register').then((module) => ({ default: module.Register }))
@@ -49,8 +54,22 @@ export default function App() {
               <Route path="/" element={<Home />} />
 
               {/* Public auth routes */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+              <Route
+                path="/login"
+                element={
+                  <UnprotectedRoute>
+                    <Login />
+                  </UnprotectedRoute>
+                }
+              />
+              <Route
+                path="/register"
+                element={
+                  <UnprotectedRoute>
+                    <Register />
+                  </UnprotectedRoute>
+                }
+              />
 
               {/* Secure dashboard/tracker routes */}
               <Route
@@ -82,6 +101,38 @@ export default function App() {
                 element={
                   <ProtectedRoute>
                     <Chat />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/goals"
+                element={
+                  <ProtectedRoute>
+                    <Goals />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/offsets"
+                element={
+                  <ProtectedRoute>
+                    <Offsets />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/tools"
+                element={
+                  <ProtectedRoute>
+                    <EcoTools />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/challenges"
+                element={
+                  <ProtectedRoute>
+                    <Challenges />
                   </ProtectedRoute>
                 }
               />

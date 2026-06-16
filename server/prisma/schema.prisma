@@ -8,17 +8,30 @@ datasource db {
 }
 
 model User {
-  id           String        @id @default(cuid())
-  email        String        @unique
-  passwordHash String
-  name         String?
-  refreshToken String?
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  activities   Activity[]
-  chatMessages ChatMessage[]
+  id            String         @id @default(cuid())
+  email         String         @unique
+  passwordHash  String
+  name          String?
+  refreshToken  String?
+  weeklyGoal    Float          @default(100.0)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  activities    Activity[]
+  chatMessages  ChatMessage[]
+  offsetPledges OffsetPledge[]
 
   @@index([email])
+}
+
+model OffsetPledge {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project   String
+  amount    Float
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 model ChatMessage {
