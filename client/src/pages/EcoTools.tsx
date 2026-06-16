@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Sparkles, Sliders, Map, Leaf, Utensils, Home, ArrowRight, Loader2, Info, Compass, HelpCircle } from 'lucide-react';
+import { Sparkles, Sliders, Map, Leaf, Utensils, Home, Loader2, Info, Compass } from 'lucide-react';
 import * as api from '../lib/api';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';

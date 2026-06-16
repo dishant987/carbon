@@ -51,7 +51,7 @@ export const chatMessageSchema = z.object({
   history: z
     .array(
       z.object({
-        role: z.enum(['user', 'model']),
+        role: z.enum(['user', 'model', 'bot']),
         content: z.string().max(5000),
       })
     )

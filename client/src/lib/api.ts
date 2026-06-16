@@ -192,6 +192,11 @@ export async function fetchChatHistory(): Promise<Message[]> {
   return request<Message[]>('/chat/history');
 }
 
+/** Clears the chat message history */
+export async function clearChatHistory(): Promise<void> {
+  return request<void>('/chat/history', { method: 'DELETE' });
+}
+
 /** Downloads carbon footprint data as CSV */
 export async function downloadExport(): Promise<void> {
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };

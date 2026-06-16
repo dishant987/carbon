@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { sendMessage, getChatHistory } from '../controllers/chatController';
+import { sendMessage, getChatHistory, clearChatHistory } from '../controllers/chatController';
 import { authenticate } from '../middleware/auth';
 import { aiLimiter } from '../middleware/rateLimiter';
 
@@ -10,5 +10,6 @@ router.use(authenticate);
 
 router.post('/message', aiLimiter, sendMessage);
 router.get('/history', getChatHistory);
+router.delete('/history', clearChatHistory);
 
 export default router;

@@ -197,3 +197,19 @@ Be conversational, encouraging, use line breaks. No markdown headers.`;
     next(error);
   }
 };
+
+export const clearChatHistory = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const userId = req.user!.userId;
+    await prisma.chatMessage.deleteMany({
+      where: { userId },
+    });
+    const response: ApiResponse<null> = {
+      success: true,
+      data: null,
+    };
+    res.json(response);
+  } catch (error) {
+    next(error);
+  }
+};

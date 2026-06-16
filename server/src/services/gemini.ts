@@ -250,7 +250,7 @@ export async function generateSustainabilityReport(
     }
     return JSON.parse(jsonMatch[0]);
   } catch (error) {
-    logger.error('Error generating AI sustainability report:', error);
+    logger.error(error as Error, 'Error generating AI sustainability report:');
     return {
       grade: 'B',
       score: 75,
@@ -338,7 +338,7 @@ export async function analyzeRecipe(recipeText: string): Promise<RecipeAnalysis>
     }
     return JSON.parse(jsonMatch[0]);
   } catch (error) {
-    logger.error('Error analyzing recipe carbon footprint:', error);
+    logger.error(error as Error, 'Error analyzing recipe carbon footprint:');
     return {
       recipeName: 'Analyzed Recipe',
       totalFootprintKg: 6.5,

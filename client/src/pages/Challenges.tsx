@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Users, Award, ShieldAlert, Sparkles, Loader2, Medal, TrendingUp, Trophy } from 'lucide-react';
+import { Users,Sparkles, Loader2, Medal, TrendingUp, Trophy } from 'lucide-react';
 import * as api from '../lib/api';
 import { useAuth } from '../context/AuthContext';
 
@@ -35,6 +35,23 @@ export function Challenges() {
     );
   }
 
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 min-h-[60vh] text-center space-y-4">
+        <div className="p-4 rounded-xl border border-destructive/20 bg-destructive/5 max-w-md mx-auto">
+          <p className="text-destructive font-semibold">Error loading leaderboard</p>
+          <p className="text-xs text-muted-foreground mt-1">{error}</p>
+        </div>
+        <button
+          onClick={loadLeaderboardData}
+          className="px-4 py-2 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 font-bold transition-all text-sm"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
+
   const rankings = data?.rankings ?? [];
   const challenges = data?.challenges ?? [];
 
@@ -42,9 +59,6 @@ export function Challenges() {
   const top1 = rankings.find((r) => r.rank === 1);
   const top2 = rankings.find((r) => r.rank === 2);
   const top3 = rankings.find((r) => r.rank === 3);
-
-  // Remaining runners-up
-  const runnersUp = rankings.filter((r) => r.rank > 3);
 
   // User status in rankings
   const myRank = rankings.find((r) => r.userId === currentUser?.id);

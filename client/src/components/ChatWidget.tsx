@@ -306,7 +306,6 @@ export function ChatWidget() {
       while (true) {
         const { done, value } = await reader.read();
         if (done) {
-          setStreaming(false);
           break;
         }
 
@@ -328,20 +327,15 @@ export function ChatWidget() {
               }
 
               if (parsed.cancelled) {
-                setStreaming(false);
-                setIsWaitingForFirstChunk(false);
                 return;
               }
 
               const chunk = parsed.chunk;
               if (chunk) {
-                if (isWaitingForFirstChunk) {
-                  setIsWaitingForFirstChunk(false);
-                }
-
                 if (!hasAddedBotMessage) {
                   addMessage({ role: 'bot', content: '' });
                   hasAddedBotMessage = true;
+                  setIsWaitingForFirstChunk(false);
                 }
 
                 botResponseText += chunk;
@@ -358,13 +352,9 @@ export function ChatWidget() {
       }
     } catch (err) {
       if (err instanceof DOMException && err.name === 'AbortError') {
-        setIsWaitingForFirstChunk(false);
-        setStreaming(false);
         return;
       }
       console.error('Streaming error:', err);
-      setIsWaitingForFirstChunk(false);
-      setStreaming(false);
 
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
       addMessage({
@@ -372,6 +362,8 @@ export function ChatWidget() {
         content: formatChatError(errorMessage),
       });
     } finally {
+      setIsWaitingForFirstChunk(false);
+      setStreaming(false);
       abortControllerRef.current = null;
       textareaRef.current?.focus();
     }
