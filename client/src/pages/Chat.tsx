@@ -10,10 +10,8 @@ import {
   Zap,
   ShoppingBag,
   Activity,
-  CornerDownLeft,
   Sparkles,
   Bot,
-  User,
   Trash2,
 } from 'lucide-react';
 import { cn } from '../lib/utils';
