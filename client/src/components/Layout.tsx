@@ -203,22 +203,24 @@ export function Layout({ children }: LayoutProps) {
           </div>
 
           {/* User profile widget */}
-          <div
+          <Link
+            to="/profile"
+            onClick={closeMobile}
             className={cn(
-              'flex items-center gap-3 p-2.5 rounded-xl border border-border/40 bg-secondary/40 overflow-hidden',
+              'flex items-center gap-3 p-2.5 rounded-xl border border-border/40 bg-secondary/40 overflow-hidden hover:bg-secondary/75 hover:border-border transition-all cursor-pointer group/user',
               isCollapsed && 'md:justify-center md:px-0 md:w-11 md:mx-auto'
             )}
           >
-            <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm shrink-0">
+            <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm shrink-0 group-hover/user:bg-primary/20 transition-colors">
               {user?.name ? user.name.charAt(0).toUpperCase() : <User className="h-4 w-4" />}
             </div>
             {(!isCollapsed || isMobileOpen) && (
               <div className="min-w-0 flex-1 animate-in fade-in duration-300">
-                <p className="text-xs font-semibold text-foreground truncate">{user?.name || 'User'}</p>
+                <p className="text-xs font-semibold text-foreground truncate group-hover/user:text-primary transition-colors">{user?.name || 'User'}</p>
                 <p className="text-[10px] text-muted-foreground truncate">{user?.email}</p>
               </div>
             )}
-          </div>
+          </Link>
 
           {/* Navigation Links */}
           <nav className="flex flex-col gap-1.5 mt-2" aria-label="Sidebar navigation">

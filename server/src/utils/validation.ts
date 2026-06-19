@@ -45,6 +45,24 @@ export const loginSchema = z.object({
   password: z.string().min(1, 'Password is required').max(128, 'Password must be under 128 characters'),
 });
 
+/** Validates user profile update input */
+export const updateProfileSchema = z.object({
+  email: z.string().email('Invalid email address').max(255).optional(),
+  name: z.string().max(100, 'Name must be under 100 characters').optional().nullable(),
+});
+
+/** Validates password update input */
+export const updatePasswordSchema = z.object({
+  currentPassword: z.string().min(1, 'Current password is required'),
+  newPassword: z
+    .string()
+    .min(8, 'Password must be at least 8 characters')
+    .max(128, 'Password must be under 128 characters')
+    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+    .regex(/[0-9]/, 'Password must contain at least one number'),
+});
+
 /** Validates chat message input */
 export const chatMessageSchema = z.object({
   message: z.string().min(1, 'Message is required').max(2000, 'Message must be under 2000 characters'),
@@ -64,4 +82,6 @@ export type ActivitySchemaType = z.infer<typeof activitySchema>;
 export type DateRangeSchemaType = z.infer<typeof dateRangeSchema>;
 export type RegisterSchemaType = z.infer<typeof registerSchema>;
 export type LoginSchemaType = z.infer<typeof loginSchema>;
+export type UpdateProfileSchemaType = z.infer<typeof updateProfileSchema>;
+export type UpdatePasswordSchemaType = z.infer<typeof updatePasswordSchema>;
 export type ChatMessageSchemaType = z.infer<typeof chatMessageSchema>;

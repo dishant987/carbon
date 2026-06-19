@@ -11,6 +11,8 @@ import type {
   AuthTokens,
   Message,
   DashboardSummary,
+  UpdateProfileInput,
+  UpdatePasswordInput,
 } from '../types';
 
 export type { DashboardSummary, Activity } from '../types';
@@ -354,4 +356,20 @@ export async function analyzeRecipeCarbon(recipe: string): Promise<RecipeAnalysi
 /** Fetches real-time community user rankings and active eco-challenges */
 export async function fetchLeaderboard(): Promise<LeaderboardResponse> {
   return request<LeaderboardResponse>('/leaderboard');
+}
+
+/** Updates the user's name and/or email profile */
+export async function updateProfile(input: UpdateProfileInput): Promise<{ user: SafeUser; tokens: AuthTokens }> {
+  return request<{ user: SafeUser; tokens: AuthTokens }>('/auth/profile', {
+    method: 'PUT',
+    body: JSON.stringify(input),
+  });
+}
+
+/** Updates the user's password */
+export async function updatePassword(input: UpdatePasswordInput): Promise<{ message: string }> {
+  return request<{ message: string }>('/auth/password', {
+    method: 'PUT',
+    body: JSON.stringify(input),
+  });
 }

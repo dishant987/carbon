@@ -107,3 +107,13 @@ export interface Message {
   content: string;
   createdAt?: string;
 }
+
+export interface UpdateProfileInput {
+  email?: string;
+  name?: string;
+}
+
+export interface UpdatePasswordInput {
+  currentPassword?: string;
+  newPassword?: string;
+}

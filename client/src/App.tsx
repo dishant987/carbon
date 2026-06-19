@@ -24,6 +24,9 @@ const Login = React.lazy(() => import('./pages/Login').then((module) => ({ defau
 const Register = React.lazy(() =>
   import('./pages/Register').then((module) => ({ default: module.Register }))
 );
+const Profile = React.lazy(() =>
+  import('./pages/Profile').then((module) => ({ default: module.Profile }))
+);
 
 /** Fallback shown while route chunks load */
 function PageLoader() {
@@ -133,6 +136,14 @@ export default function App() {
                 element={
                   <ProtectedRoute>
                     <Challenges />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
                   </ProtectedRoute>
                 }
               />

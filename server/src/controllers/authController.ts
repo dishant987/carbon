@@ -2,7 +2,7 @@ import { Request, Response, NextFunction, CookieOptions } from 'express';
 import { prisma } from '../services/footprint';
 import { hashPassword, comparePassword } from '../utils/password';
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../utils/jwt';
-import { registerSchema, loginSchema } from '../utils/validation';
+import { registerSchema, loginSchema, updateProfileSchema, updatePasswordSchema } from '../utils/validation';
 import { ValidationError, UnauthorizedError, ConflictError } from '../utils/errors';
 import type { ApiResponse, AuthTokens, SafeUser, JwtPayload } from '../types';
 import { createHash } from 'crypto';
@@ -224,6 +224,111 @@ export const getMe = async (req: Request, res: Response, next: NextFunction): Pr
     const response: ApiResponse<SafeUser> = {
       success: true,
       data: toSafeUser(user),
+    };
+
+    res.json(response);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * PUT /api/auth/profile
+ * Updates user profile (name and/or email).
+ */
+export const updateProfile = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const parsed = updateProfileSchema.safeParse(req.body);
+    if (!parsed.success) {
+      throw new ValidationError(parsed.error.errors.map((e) => e.message).join(', '));
+    }
+
+    const { email, name } = parsed.data;
+    const userId = req.user!.userId;
+
+    if (email) {
+      const existing = await prisma.user.findFirst({
+        where: {
+          email,
+          NOT: { id: userId },
+        },
+      });
+      if (existing) {
+        throw new ConflictError('An account with this email already exists');
+      }
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        ...(email !== undefined ? { email } : {}),
+        ...(name !== undefined ? { name } : {}),
+      },
+    });
+
+    // Generate new tokens with updated email
+    const jwtPayload: JwtPayload = { userId: updatedUser.id, email: updatedUser.email };
+    const accessToken = generateAccessToken(jwtPayload);
+    const refreshToken = generateRefreshToken(jwtPayload);
+
+    await prisma.user.update({
+      where: { id: updatedUser.id },
+      data: { refreshToken: hashRefreshToken(refreshToken) },
+    });
+
+    res.cookie('refreshToken', refreshToken, REFRESH_COOKIE_OPTIONS);
+
+    const response: ApiResponse<{ user: SafeUser; tokens: AuthTokens }> = {
+      success: true,
+      data: {
+        user: toSafeUser(updatedUser),
+        tokens: { accessToken },
+      },
+    };
+
+    res.json(response);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * PUT /api/auth/password
+ * Updates the user's password.
+ */
+export const updatePassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const parsed = updatePasswordSchema.safeParse(req.body);
+    if (!parsed.success) {
+      throw new ValidationError(parsed.error.errors.map((e) => e.message).join(', '));
+    }
+
+    const { currentPassword, newPassword } = parsed.data;
+    const userId = req.user!.userId;
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new UnauthorizedError('User not found');
+    }
+
+    const isPasswordValid = await comparePassword(currentPassword, user.passwordHash);
+    if (!isPasswordValid) {
+      throw new ValidationError('Current password is incorrect');
+    }
+
+    const passwordHash = await hashPassword(newPassword);
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { passwordHash },
+    });
+
+    const response: ApiResponse<{ message: string }> = {
+      success: true,
+      data: { message: 'Password updated successfully' },
     };
 
     res.json(response);

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import * as api from '../lib/api';
-import type { SafeUser, LoginInput, RegisterInput } from '../types';
+import type { SafeUser, LoginInput, RegisterInput, UpdateProfileInput, UpdatePasswordInput } from '../types';
 
 interface AuthContextType {
   user: SafeUser | null;
@@ -10,6 +10,8 @@ interface AuthContextType {
   register: (input: RegisterInput) => Promise<void>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
+  updateProfile: (input: UpdateProfileInput) => Promise<void>;
+  updatePassword: (input: UpdatePasswordInput) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -90,6 +92,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const updateProfile = async (input: UpdateProfileInput) => {
+    try {
+      const response = await api.updateProfile(input);
+      api.setAccessToken(response.tokens.accessToken);
+      setUser(response.user);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const updatePassword = async (input: UpdatePasswordInput) => {
+    try {
+      await api.updatePassword(input);
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const value = {
     user,
     isAuthenticated: !!user,
@@ -98,6 +118,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     register,
     logout,
     checkAuth,
+    updateProfile,
+    updatePassword,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
