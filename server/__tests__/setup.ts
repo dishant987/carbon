@@ -28,6 +28,11 @@ const mockChatMessage = {
   create: jest.fn(),
 };
 
+const mockOffsetPledge = {
+  findMany: jest.fn(),
+  create: jest.fn(),
+};
+
 const mockQueryRaw = jest.fn();
 
 // Shared Redis mock for cache service testing
@@ -42,6 +47,7 @@ jest.mock('@prisma/client', () => {
       activity: mockActivity,
       user: mockUser,
       chatMessage: mockChatMessage,
+      offsetPledge: mockOffsetPledge,
       $queryRaw: mockQueryRaw,
       $disconnect: jest.fn(),
       $on: jest.fn(),

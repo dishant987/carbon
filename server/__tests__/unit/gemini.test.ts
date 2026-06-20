@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { calculateFootprint, generateTips, checkGeminiStatus, getClient } from '../../src/services/gemini';
+import { calculateFootprint, generateTips, checkGeminiStatus, getClient, generateSustainabilityReport, analyzeRecipe } from '../../src/services/gemini';
 import { ExternalServiceError } from '../../src/utils/errors';
 import * as cache from '../../src/services/cache';
 
@@ -168,6 +168,75 @@ describe('Gemini Service', () => {
       expect(result.success).toBe(false);
       expect(result.status).toBe('Connection Error');
       expect(result.error).toBe('Connection timed out');
+    });
+  });
+
+  describe('generateSustainabilityReport', () => {
+    it('returns report parsed from Gemini response on success', async () => {
+      const mockReportData = {
+        grade: 'A-',
+        score: 90,
+        analysis: 'Great work minimizing travel footprint.',
+        actionPlan: [
+          { week: 1, challengeName: 'Carpooling', description: 'Carpool once', expectedSavingKg: 5 }
+        ]
+      };
+
+      mockGenerateContent.mockResolvedValue({
+        response: {
+          text: () => JSON.stringify(mockReportData)
+        }
+      });
+
+      const result = await generateSustainabilityReport(
+        [{ type: 'transport', category: 'car', amount: 10, unit: 'km', footprint: 2.5 }],
+        100
+      );
+
+      expect(result).toEqual(mockReportData);
+    });
+
+    it('returns default fallback report when Gemini fails', async () => {
+      mockGenerateContent.mockRejectedValue(new Error('API Error'));
+
+      const result = await generateSustainabilityReport([], 100);
+
+      expect(result.grade).toBe('B');
+      expect(result.score).toBe(75);
+      expect(result.actionPlan).toHaveLength(4);
+    });
+  });
+
+  describe('analyzeRecipe', () => {
+    it('returns recipe analysis on success', async () => {
+      const mockRecipeAnalysis = {
+        recipeName: 'Vegan Salad',
+        totalFootprintKg: 1.0,
+        ingredientsAnalysis: [{ name: 'Lettuce', footprintKg: 0.2, impact: 'low' }],
+        plantBasedAlternative: 'Vegan Salad',
+        alternativeFootprintKg: 1.0,
+        explanation: 'Low footprint recipe.'
+      };
+
+      mockGenerateContent.mockResolvedValue({
+        response: {
+          text: () => JSON.stringify(mockRecipeAnalysis)
+        }
+      });
+
+      const result = await analyzeRecipe('Lettuce salad recipe');
+
+      expect(result).toEqual(mockRecipeAnalysis);
+    });
+
+    it('returns default fallback recipe analysis when Gemini fails', async () => {
+      mockGenerateContent.mockRejectedValue(new Error('API Error'));
+
+      const result = await analyzeRecipe('Chicken and beef');
+
+      expect(result.recipeName).toBe('Analyzed Recipe');
+      expect(result.ingredientsAnalysis).toHaveLength(3);
+      expect(result.alternativeFootprintKg).toBe(1.5);
     });
   });
 });
