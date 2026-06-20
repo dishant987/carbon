@@ -30,7 +30,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // 2. Fetch user profile
       const userProfile = await api.getMe();
       setUser(userProfile);
-    } catch (error) {
+    } catch {
       // No active session or expired
       api.setAccessToken(null);
       setUser(null);
@@ -41,6 +41,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Check authentication status on startup
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     checkAuth();
 
     // Hook into api's unauthorized handler to sign out if session expires
@@ -83,8 +84,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(true);
     try {
       await api.logout();
-    } catch (error) {
-      console.error('Logout failed:', error);
+    } catch {
+      // Silent catch for API logout failure
     } finally {
       api.setAccessToken(null);
       setUser(null);
@@ -125,6 +126,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {

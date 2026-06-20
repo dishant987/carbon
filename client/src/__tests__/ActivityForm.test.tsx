@@ -31,7 +31,7 @@ describe('ActivityForm', () => {
     expect(mockOnSubmit).not.toHaveBeenCalled();
   });
 
-  it('clears error when user corrects input', async () => {
+  it('clears error when user corrects input and resubmits', async () => {
     const user = userEvent.setup();
     render(<ActivityForm onSubmit={mockOnSubmit} />);
 
@@ -41,10 +41,27 @@ describe('ActivityForm', () => {
       expect(screen.getByRole('alert')).toBeInTheDocument();
     });
 
-    // Type something to clear the error path — clicking type select won't clear
-    // but the alert should remain until resubmit
+    // Select type
+    await user.click(screen.getByRole('combobox', { name: 'Activity Type' }));
+    await user.click(await screen.findByRole('option', { name: 'Transport' }));
+
+    // Select category
+    await user.click(await screen.findByRole('combobox', { name: 'Category' }));
+    await user.click(await screen.findByRole('option', { name: 'Car' }));
+
+    // Enter amount
     await user.type(screen.getByLabelText('Amount'), '10');
-    expect(screen.getByRole('alert')).toBeInTheDocument();
+
+    // Select unit
+    await user.click(await screen.findByRole('combobox', { name: 'Unit' }));
+    await user.click(await screen.findByRole('option', { name: 'km' }));
+
+    // Resubmit
+    await user.click(screen.getByRole('button', { name: /calculate & save/i }));
+
+    await waitFor(() => {
+      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    });
   });
 
   it('shows category and unit selects after selecting type', async () => {

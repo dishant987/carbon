@@ -32,8 +32,8 @@ export function Register() {
     try {
       await register({ name: name || undefined, email, password });
       navigate('/dashboard');
-    } catch (err: any) {
-      setError(err.message || 'Registration failed. Please check your details.');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Registration failed. Please check your details.');
     } finally {
       setLoading(false);
     }

@@ -45,20 +45,21 @@ const ActivityRow = ({
   };
 }) => {
   const activity = data.items[index];
+  const { onDelete, onSelect } = data;
 
   const handleDelete = useCallback(
     (e: React.MouseEvent) => {
       if (!activity) return;
       e.stopPropagation();
-      data.onDelete(activity.id);
+      onDelete(activity.id);
     },
-    [activity, data.onDelete]
+    [activity, onDelete]
   );
 
   const handleSelect = useCallback(() => {
     if (!activity) return;
-    data.onSelect(activity);
-  }, [activity, data.onSelect]);
+    onSelect(activity);
+  }, [activity, onSelect]);
 
   if (!activity) return null;
 

@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import { prisma } from '../services/footprint';
-import type { ApiResponse } from '../types';
 
 export interface OffsetProject {
   id: string;

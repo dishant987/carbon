@@ -35,8 +35,8 @@ export function Profile() {
     try {
       await updateProfile({ name, email });
       setProfileSuccess('Profile updated successfully!');
-    } catch (err: any) {
-      setProfileError(err.message || 'Failed to update profile. Please try again.');
+    } catch (err) {
+      setProfileError(err instanceof Error ? err.message : 'Failed to update profile. Please try again.');
     } finally {
       setProfileLoading(false);
     }
@@ -66,8 +66,8 @@ export function Profile() {
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
-    } catch (err: any) {
-      setPasswordError(err.message || 'Failed to update password. Please check your credentials.');
+    } catch (err) {
+      setPasswordError(err instanceof Error ? err.message : 'Failed to update password. Please check your credentials.');
     } finally {
       setPasswordLoading(false);
     }

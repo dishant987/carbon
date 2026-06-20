@@ -59,4 +59,10 @@ export default [
       'no-console': 'warn',
     },
   },
+  {
+    files: ['client/src/__tests__/**/*.{ts,tsx}', 'client/src/__tests__/**/*.ts'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
 ];

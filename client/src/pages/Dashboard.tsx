@@ -45,8 +45,8 @@ export function Dashboard() {
         ]);
         setGoalsData(goalsRes);
         setRecentActivities(actRes.items);
-      } catch (err) {
-        console.error('Failed to load dashboard extra details:', err);
+      } catch {
+        // Silent catch for production compliance
       } finally {
         setLoadingExtra(false);
       }

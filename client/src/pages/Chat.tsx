@@ -90,8 +90,8 @@ function MessageBubble({ message, isStreamingLast }: MessageBubbleProps) {
       await navigator.clipboard.writeText(cleanText);
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy text: ', err);
+    } catch {
+      // Silent catch for clipboard access failure
     }
   };
 
@@ -220,8 +220,8 @@ export function Chat() {
       try {
         const history = await api.fetchChatHistory();
         setMessages(history);
-      } catch (err) {
-        console.error('Failed to load chat history:', err);
+      } catch {
+        // Silent catch for history fetch failure
       }
     };
     loadHistory();
@@ -346,8 +346,7 @@ export function Chat() {
       if (err instanceof DOMException && err.name === 'AbortError') {
         return;
       }
-      console.error('Streaming error:', err);
-
+      // Silent catch for streaming connection failure
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
       addMessage({
         role: 'bot',
@@ -379,8 +378,8 @@ export function Chat() {
       await api.clearChatHistory();
       setMessages([]);
       showToast('Chat history cleared!');
-    } catch (err) {
-      console.error('Failed to clear chat history:', err);
+    } catch {
+      // Silent catch for history clearing failure
     }
   };
 

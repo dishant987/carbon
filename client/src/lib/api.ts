@@ -59,7 +59,7 @@ async function request<T>(url: string, options?: RequestInit, isRetry = false): 
       headers,
       credentials: 'include', // Ensure HttpOnly refresh cookies are transmitted
     });
-  } catch (err) {
+  } catch {
     throw new Error('Network error. Please check your connection.');
   }
 
@@ -92,7 +92,7 @@ async function request<T>(url: string, options?: RequestInit, isRetry = false): 
   let json: ApiResponse<T>;
   try {
     json = await response.json();
-  } catch (err) {
+  } catch {
     throw new Error(`HTTP error! Status: ${response.status}`);
   }
 

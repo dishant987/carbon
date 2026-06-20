@@ -1,5 +1,5 @@
 import Redis from 'ioredis';
-import type { FootprintResult, DashboardSummary, CategoryBreakdown, DailyProgress } from '../types';
+import type { FootprintResult } from '../types';
 import logger from '../utils/logger';
 
 const FOOTPRINT_CACHE_TTL = 60 * 60;
@@ -26,7 +26,6 @@ function getClient(): Redis | null {
         logger.warn({ err }, 'Redis connection error — caching disabled');
       });
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Unknown error';
       logger.warn({ err }, 'Failed to initialize Redis client');
       redisClient = null;
     }

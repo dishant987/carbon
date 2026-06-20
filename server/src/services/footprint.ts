@@ -24,12 +24,8 @@ export async function getDashboardSummary(userId: string): Promise<DashboardSumm
 
   const baseWhere = { userId };
 
-  const [allAgg, todayAgg, weekAgg, monthAgg] = await Promise.all([
+  const [allAgg, weekAgg, monthAgg] = await Promise.all([
     prisma.activity.aggregate({ where: baseWhere, _sum: { footprint: true }, _count: true }),
-    prisma.activity.aggregate({
-      where: { ...baseWhere, date: { gte: startOfDay } },
-      _sum: { footprint: true },
-    }),
     prisma.activity.aggregate({
       where: { ...baseWhere, date: { gte: startOfWeek } },
       _sum: { footprint: true },
