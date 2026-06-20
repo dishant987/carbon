@@ -26,6 +26,7 @@ describe('Register Component', () => {
       login: vi.fn(),
       register: registerMock,
       logout: vi.fn(),
+      checkAuth: vi.fn(),
       updateProfile: vi.fn(),
       updatePassword: vi.fn(),
     };

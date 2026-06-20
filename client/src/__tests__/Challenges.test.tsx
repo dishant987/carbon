@@ -18,6 +18,7 @@ describe('Challenges', () => {
       id: userId,
       name: 'Test User',
       email: 'test@example.com',
+      createdAt: '2026-06-20T00:00:00.000Z',
     };
     return mockUser;
   };
@@ -44,7 +45,7 @@ describe('Challenges', () => {
     const mockUser = setupMockUser();
 
     render(
-      <AuthContext.Provider value={{ user: mockUser, isAuthenticated: true, login: vi.fn(), register: vi.fn(), logout: vi.fn(), updateProfile: vi.fn(), updatePassword: vi.fn(), loading: false }}>
+      <AuthContext.Provider value={{ user: mockUser, isAuthenticated: true, login: vi.fn(), register: vi.fn(), logout: vi.fn(), checkAuth: vi.fn(), updateProfile: vi.fn(), updatePassword: vi.fn(), loading: false }}>
         <Challenges />
       </AuthContext.Provider>
     );
@@ -57,7 +58,7 @@ describe('Challenges', () => {
     const mockUser = setupMockUser();
 
     render(
-      <AuthContext.Provider value={{ user: mockUser, isAuthenticated: true, login: vi.fn(), register: vi.fn(), logout: vi.fn(), updateProfile: vi.fn(), updatePassword: vi.fn(), loading: false }}>
+      <AuthContext.Provider value={{ user: mockUser, isAuthenticated: true, login: vi.fn(), register: vi.fn(), logout: vi.fn(), checkAuth: vi.fn(), updateProfile: vi.fn(), updatePassword: vi.fn(), loading: false }}>
         <Challenges />
       </AuthContext.Provider>
     );
@@ -89,7 +90,7 @@ describe('Challenges', () => {
     const mockUser = setupMockUser();
 
     render(
-      <AuthContext.Provider value={{ user: mockUser, isAuthenticated: true, login: vi.fn(), register: vi.fn(), logout: vi.fn(), updateProfile: vi.fn(), updatePassword: vi.fn(), loading: false }}>
+      <AuthContext.Provider value={{ user: mockUser, isAuthenticated: true, login: vi.fn(), register: vi.fn(), logout: vi.fn(), checkAuth: vi.fn(), updateProfile: vi.fn(), updatePassword: vi.fn(), loading: false }}>
         <Challenges />
       </AuthContext.Provider>
     );

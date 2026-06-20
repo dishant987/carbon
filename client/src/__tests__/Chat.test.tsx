@@ -118,7 +118,7 @@ describe('Chat Component', () => {
         }),
     };
 
-    const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue({
       ok: true,
       body: {
         getReader: () => mockReader,

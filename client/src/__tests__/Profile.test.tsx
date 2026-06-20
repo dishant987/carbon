@@ -8,7 +8,7 @@ describe('Profile Component', () => {
     vi.clearAllMocks();
   });
 
-  const setupAuth = (user = { id: '1', name: 'John Doe', email: 'john@example.com' }, updateProfileMock = vi.fn(), updatePasswordMock = vi.fn()) => {
+  const setupAuth = (user = { id: '1', name: 'John Doe', email: 'john@example.com', createdAt: '2026-06-20T00:00:00.000Z' }, updateProfileMock = vi.fn(), updatePasswordMock = vi.fn()) => {
     return {
       user,
       isAuthenticated: true,
@@ -16,6 +16,7 @@ describe('Profile Component', () => {
       login: vi.fn(),
       register: vi.fn(),
       logout: vi.fn(),
+      checkAuth: vi.fn(),
       updateProfile: updateProfileMock,
       updatePassword: updatePasswordMock,
     };
