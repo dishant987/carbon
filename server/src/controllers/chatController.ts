@@ -192,7 +192,7 @@ Be conversational, encouraging, use line breaks. No markdown headers.`;
       } catch (dbErr) {
         logger.error({ err: dbErr }, 'Error saving chat message or activities to DB');
       }
-    })();
+    })().catch((err) => logger.error({ err }, 'Unhandled error in chat background task'));
   } catch (error) {
     next(error);
   }

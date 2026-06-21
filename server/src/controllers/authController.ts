@@ -46,7 +46,8 @@ export const register = async (req: Request, res: Response, next: NextFunction):
       throw new ValidationError(parsed.error.errors.map((e) => e.message).join(', '));
     }
 
-    const { email, password, name } = parsed.data;
+    const email = parsed.data.email.toLowerCase();
+    const { password, name } = parsed.data;
 
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) {
@@ -71,7 +72,7 @@ export const register = async (req: Request, res: Response, next: NextFunction):
 
     res.cookie('refreshToken', refreshToken, REFRESH_COOKIE_OPTIONS);
 
-    const tokens: AuthTokens = { accessToken };
+    const tokens: AuthTokens = { accessToken, refreshToken };
 
     const response: ApiResponse<{ user: SafeUser; tokens: AuthTokens }> = {
       success: true,
@@ -95,7 +96,8 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
       throw new ValidationError(parsed.error.errors.map((e) => e.message).join(', '));
     }
 
-    const { email, password } = parsed.data;
+    const email = parsed.data.email.toLowerCase();
+    const { password } = parsed.data;
 
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
@@ -119,7 +121,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
 
     res.cookie('refreshToken', refreshToken, REFRESH_COOKIE_OPTIONS);
 
-    const tokens: AuthTokens = { accessToken };
+    const tokens: AuthTokens = { accessToken, refreshToken };
 
     const response: ApiResponse<{ user: SafeUser; tokens: AuthTokens }> = {
       success: true,
@@ -243,7 +245,8 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
       throw new ValidationError(parsed.error.errors.map((e) => e.message).join(', '));
     }
 
-    const { email, name } = parsed.data;
+    const email = parsed.data.email?.toLowerCase();
+    const { name } = parsed.data;
     const userId = req.user!.userId;
 
     if (email) {

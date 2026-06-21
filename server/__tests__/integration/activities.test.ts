@@ -65,6 +65,7 @@ describe('Activity Endpoints', () => {
 
   describe('GET /api/activities', () => {
     it('returns paginated activities', async () => {
+      (prisma.activity.count as jest.Mock).mockResolvedValue(2);
       (prisma.activity.findMany as jest.Mock).mockResolvedValue([
         { id: 'a1', userId, type: 'transport', category: 'car', amount: 10, unit: 'km', footprint: 2.5, date: new Date(), createdAt: new Date() },
         { id: 'a2', userId, type: 'food', category: 'beef', amount: 0.5, unit: 'kg', footprint: 7.5, date: new Date(), createdAt: new Date() },
@@ -77,7 +78,7 @@ describe('Activity Endpoints', () => {
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
       expect(res.body.data.items).toHaveLength(2);
-      expect(typeof res.body.data.pagination.hasMore).toBe('boolean');
+      expect(typeof res.body.data.pagination.totalPages).toBe('number');
     });
 
     it('returns 401 without authentication', async () => {
@@ -96,21 +97,21 @@ describe('Activity Endpoints', () => {
       expect(res.body.data.pagination.limit).toBe(10);
     });
 
-    it('respects cursor parameter', async () => {
+    it('respects page parameter', async () => {
       (prisma.activity.findMany as jest.Mock).mockResolvedValue([
         { id: 'a3', userId, type: 'energy', category: 'electricity', amount: 100, unit: 'kWh', footprint: 3.0, date: new Date(), createdAt: new Date() },
       ]);
+      (prisma.activity.count as jest.Mock).mockResolvedValue(1);
 
       const res = await request(app)
-        .get('/api/activities?cursor=a2&limit=5')
+        .get('/api/activities?page=2&limit=5')
         .set('Authorization', `Bearer ${getAuthToken()}`);
 
       expect(res.status).toBe(200);
       expect(prisma.activity.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
-          cursor: { id: 'a2' },
-          skip: 1,
-          take: 6,
+          skip: 5,
+          take: 5,
         })
       );
     });

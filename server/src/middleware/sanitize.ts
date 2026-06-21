@@ -1,15 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import type { ParsedQs } from 'qs';
 
-const BLOCKED_PATTERNS = [/\$/g];
-
 function sanitizeValue(value: unknown): unknown {
   if (typeof value === 'string') {
-    let cleaned = value.trim();
-    for (const pattern of BLOCKED_PATTERNS) {
-      cleaned = cleaned.replace(pattern, '');
-    }
-    return cleaned;
+    return value.trim().replace(/\$/g, '');
   }
 
   if (Array.isArray(value)) {

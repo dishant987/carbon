@@ -12,8 +12,7 @@ describe('Footprint Service', () => {
       (prisma.activity.aggregate as jest.Mock)
         .mockResolvedValueOnce({ _sum: { footprint: 18 }, _count: 3 })
         .mockResolvedValueOnce({ _sum: { footprint: 5 } })
-        .mockResolvedValueOnce({ _sum: { footprint: 12 } })
-        .mockResolvedValueOnce({ _sum: { footprint: 15 } });
+        .mockResolvedValueOnce({ _sum: { footprint: 12 } });
 
       const { getDashboardSummary } = await import('../../src/services/footprint');
       const result = await getDashboardSummary('user-1');
@@ -26,7 +25,6 @@ describe('Footprint Service', () => {
     it('returns zero values when no activities exist', async () => {
       (prisma.activity.aggregate as jest.Mock)
         .mockResolvedValueOnce({ _sum: { footprint: null }, _count: 0 })
-        .mockResolvedValueOnce({ _sum: { footprint: null } })
         .mockResolvedValueOnce({ _sum: { footprint: null } })
         .mockResolvedValueOnce({ _sum: { footprint: null } });
 
@@ -97,20 +95,25 @@ describe('Footprint Service', () => {
     });
 
     it('accumulates footprint per day', async () => {
-      const today = new Date();
+      // Create a date matching getDailyProgress logic to avoid timezone mismatches
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - 1);
+      startDate.setHours(0, 0, 0, 0);
+      const testDate = new Date(startDate);
+      testDate.setDate(testDate.getDate() + 1);
+      const testDateIso = testDate.toISOString().split('T')[0];
 
       (prisma.$queryRaw as jest.Mock).mockResolvedValue([
-        { date: today, total: 8, activities: 2 },
+        { date: testDate, total: 8, activities: 2 },
       ]);
 
       const { getDailyProgress } = await import('../../src/services/footprint');
       const result = await getDailyProgress('user-1', 1);
 
-      const todayStr = today.toISOString().split('T')[0];
-      const todayEntry = result.find((r) => r.date === todayStr);
+      const entry = result.find((r) => r.date === testDateIso);
 
-      expect(todayEntry?.total).toBe(8);
-      expect(todayEntry?.activities).toBe(2);
+      expect(entry?.total).toBe(8);
+      expect(entry?.activities).toBe(2);
     });
   });
 });

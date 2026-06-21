@@ -16,6 +16,10 @@ export const analyzeRecipeController = async (
       res.status(400).json({ success: false, error: 'Recipe text is required' });
       return;
     }
+    if (recipe.length > 5000) {
+      res.status(400).json({ success: false, error: 'Recipe text must be under 5000 characters' });
+      return;
+    }
 
     const analysis = await analyzeRecipe(recipe);
 

@@ -80,9 +80,9 @@ export function Layout({ children }: LayoutProps) {
                 aria-label="Toggle dark/light mode"
               >
                 {theme === 'dark' ? (
-                  <Sun className="h-4.5 w-4.5 text-yellow-500" />
+                  <Sun className="h-5 w-5 text-yellow-500" />
                 ) : (
-                  <Moon className="h-4.5 w-4.5 text-blue-600" />
+                  <Moon className="h-5 w-5 text-blue-600" />
                 )}
               </button>
 
@@ -163,6 +163,7 @@ export function Layout({ children }: LayoutProps) {
 
       {/* Sidebar (Drawer on mobile, stationary on desktop) */}
       <aside
+        aria-hidden={!isMobileOpen}
         className={cn(
           'fixed inset-y-0 left-0 bg-card border-r z-50 flex flex-col justify-between transition-all duration-300 ease-in-out',
           // Desktop behavior

@@ -16,8 +16,7 @@ describe('Dashboard Endpoints', () => {
       (prisma.activity.aggregate as jest.Mock)
         .mockResolvedValueOnce({ _sum: { footprint: 15 }, _count: 2 })
         .mockResolvedValueOnce({ _sum: { footprint: 5 } })
-        .mockResolvedValueOnce({ _sum: { footprint: 12 } })
-        .mockResolvedValueOnce({ _sum: { footprint: 15 } });
+        .mockResolvedValueOnce({ _sum: { footprint: 12 } });
 
       const res = await request(app)
         .get('/api/dashboard/summary')
@@ -37,7 +36,6 @@ describe('Dashboard Endpoints', () => {
     it('returns zero values when no activities', async () => {
       (prisma.activity.aggregate as jest.Mock)
         .mockResolvedValueOnce({ _sum: { footprint: null }, _count: 0 })
-        .mockResolvedValueOnce({ _sum: { footprint: null } })
         .mockResolvedValueOnce({ _sum: { footprint: null } })
         .mockResolvedValueOnce({ _sum: { footprint: null } });
 
@@ -69,7 +67,14 @@ describe('Dashboard Endpoints', () => {
 
   describe('GET /api/dashboard/progress', () => {
     it('returns daily progress data', async () => {
-      const today = new Date();
+      // Use startDate matching getDailyProgress logic to avoid timezone mismatches
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - 30);
+      startDate.setHours(0, 0, 0, 0);
+      const today = new Date(startDate);
+      today.setDate(today.getDate() + 30);
+      const todayIso = today.toISOString().split('T')[0];
+
       (prisma.$queryRaw as jest.Mock).mockResolvedValue([
         { date: today, total: 5, activities: 1 },
       ]);
@@ -80,9 +85,9 @@ describe('Dashboard Endpoints', () => {
 
       expect(res.status).toBe(200);
       expect(Array.isArray(res.body.data)).toBe(true);
-      const todayStr = today.toISOString().split('T')[0];
-      const todayEntry = res.body.data.find((d: { date: string }) => d.date === todayStr);
+      const todayEntry = res.body.data.find((d: { date: string }) => d.date === todayIso);
       expect(todayEntry).toBeDefined();
+      expect(todayEntry.total).toBe(5);
     });
   });
 });

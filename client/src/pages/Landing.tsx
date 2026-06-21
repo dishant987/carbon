@@ -521,7 +521,7 @@ export function Landing() {
                     <span className="text-xs uppercase tracking-widest text-muted-foreground font-extrabold block">
                       Estimated Carbon Footprint
                     </span>
-                    <h2 className="text-4xl font-extrabold text-foreground mt-1 bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">
+                    <h2 className="text-4xl font-extrabold mt-1 bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">
                       {(calculatedResult / 1000).toFixed(2)} Tonnes CO₂e
                     </h2>
                     <p className="text-xs text-muted-foreground mt-1.5 flex items-center justify-center gap-1">
@@ -859,7 +859,7 @@ export function Landing() {
                 <div className="text-[10px] font-extrabold text-muted-foreground uppercase tracking-widest">
                   Total Annual Reduction
                 </div>
-                <div className="text-4xl font-extrabold text-foreground mt-1 bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">
+                <div className="text-4xl font-extrabold mt-1 bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">
                   {totalSaved.toLocaleString()} kg CO₂
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">

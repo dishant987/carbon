@@ -8,6 +8,7 @@ import {
   generateAiReport,
 } from '../controllers/dashboardController';
 import { authenticate } from '../middleware/auth';
+import { aiLimiter } from '../middleware/rateLimiter';
 
 const router: Router = Router();
 
@@ -19,6 +20,6 @@ router.get('/breakdown', breakdown);
 router.get('/progress', progress);
 router.get('/goals', getGoals);
 router.put('/goals', updateGoal);
-router.post('/report', generateAiReport);
+router.post('/report', aiLimiter, generateAiReport);
 
 export default router;

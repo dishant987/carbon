@@ -49,6 +49,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     api.setOnUnauthorized(() => {
       setUser(null);
     });
+
+    return () => {
+      api.clearOnUnauthorized();
+    };
   }, []);
 
   const login = async (input: LoginInput) => {

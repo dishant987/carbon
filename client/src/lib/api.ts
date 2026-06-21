@@ -22,6 +22,7 @@ export const BASE_URL = rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl}/a
 
 let accessToken: string | null = null;
 let onUnauthorizedCallback: (() => void) | null = null;
+let refreshPromise: Promise<boolean> | null = null;
 
 export function setAccessToken(token: string | null) {
   accessToken = token;
@@ -33,6 +34,10 @@ export function getAccessToken(): string | null {
 
 export function setOnUnauthorized(callback: () => void) {
   onUnauthorizedCallback = callback;
+}
+
+export function clearOnUnauthorized(): void {
+  onUnauthorizedCallback = null;
 }
 
 /**
@@ -72,19 +77,38 @@ async function request<T>(url: string, options?: RequestInit, isRetry = false): 
     !url.includes('/auth/register')
   ) {
     try {
-      // Attempt to refresh the access token
-      const refreshResult = await request<{ tokens: AuthTokens }>('/auth/refresh', { method: 'POST' }, true);
-      const newAccessToken = refreshResult.tokens.accessToken;
-      setAccessToken(newAccessToken);
+      // Use a mutex to prevent concurrent token refresh attempts
+      if (!refreshPromise) {
+        refreshPromise = (async () => {
+          try {
+            const refreshResult = await request<{ tokens: AuthTokens }>(
+              '/auth/refresh',
+              { method: 'POST' },
+              true
+            );
+            setAccessToken(refreshResult.tokens.accessToken);
+            return true;
+          } catch {
+            setAccessToken(null);
+            if (onUnauthorizedCallback) {
+              onUnauthorizedCallback();
+            }
+            return false;
+          } finally {
+            refreshPromise = null;
+          }
+        })();
+      }
+
+      const refreshed = await refreshPromise;
+      if (!refreshed) {
+        throw new Error('Token refresh failed');
+      }
 
       // Retry the original request with the new access token
       return request<T>(url, options, true);
     } catch (refreshError) {
-      // Refresh failed or is invalid, clean up and notify
       setAccessToken(null);
-      if (onUnauthorizedCallback) {
-        onUnauthorizedCallback();
-      }
       throw refreshError;
     }
   }
