@@ -64,7 +64,9 @@ export function Goals() {
     return (
       <div className="flex flex-col items-center justify-center py-20 min-h-[60vh]">
         <Loader2 className="h-10 w-10 text-primary animate-spin" />
-        <p className="mt-4 text-muted-foreground text-sm font-medium animate-pulse">Loading goals & badges...</p>
+        <p className="mt-4 text-muted-foreground text-sm font-medium animate-pulse">
+          Loading goals & badges...
+        </p>
       </div>
     );
   }
@@ -103,14 +105,17 @@ export function Goals() {
             Goals & Eco-Badges
           </h1>
           <p className="text-muted-foreground">
-            Set your weekly carbon budget, track your real-time usage, and earn achievements for sustainable living.
+            Set your weekly carbon budget, track your real-time usage, and earn achievements for sustainable
+            living.
           </p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Weekly Goal Management Card */}
-        <div className={`lg:col-span-2 rounded-2xl border ${borderHighlight} bg-card text-card-foreground shadow-lg shadow-black/5 overflow-hidden transition-all duration-300`}>
+        <div
+          className={`lg:col-span-2 rounded-2xl border ${borderHighlight} bg-card text-card-foreground shadow-lg shadow-black/5 overflow-hidden transition-all duration-300`}
+        >
           <div className="p-6 md:p-8 space-y-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -143,11 +148,18 @@ export function Goals() {
               {percentUsed >= 100 ? (
                 <div className="flex items-start gap-2 text-xs text-rose-600 dark:text-rose-400 bg-rose-500/10 p-3 rounded-lg border border-rose-500/10">
                   <Info className="h-4 w-4 shrink-0 mt-0.5" />
-                  <p>You have exceeded your weekly carbon budget. Try using public transport or reducing home energy to trim down your footprint next week.</p>
+                  <p>
+                    You have exceeded your weekly carbon budget. Try using public transport or reducing home
+                    energy to trim down your footprint next week.
+                  </p>
                 </div>
               ) : (
                 <p className="text-xs text-muted-foreground pl-1">
-                  You have <span className="font-bold text-foreground">{(weeklyGoal - weeklyTotal).toFixed(1)} kg CO2</span> left in your budget to stay green this week.
+                  You have{' '}
+                  <span className="font-bold text-foreground">
+                    {(weeklyGoal - weeklyTotal).toFixed(1)} kg CO2
+                  </span>{' '}
+                  left in your budget to stay green this week.
                 </p>
               )}
             </div>
@@ -171,7 +183,9 @@ export function Goals() {
                       onChange={(e) => setGoalInput(e.target.value)}
                       className="bg-background/50 pl-4 border-border transition-colors hover:border-accent-foreground/20"
                     />
-                    <span className="absolute right-3 top-2.5 text-xs text-muted-foreground font-bold">kg CO2</span>
+                    <span className="absolute right-3 top-2.5 text-xs text-muted-foreground font-bold">
+                      kg CO2
+                    </span>
                   </div>
                   <Button type="submit" disabled={submitting} className="font-semibold transition-all">
                     {submitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -196,7 +210,9 @@ export function Goals() {
             <div className="space-y-4 pt-2">
               <div className="flex justify-between items-center p-3 rounded-xl bg-secondary/35 border border-border/30">
                 <span className="text-sm text-muted-foreground font-medium">Badges Earned</span>
-                <span className="text-2xl font-black text-primary">{unlockedCount} <span className="text-xs text-muted-foreground">/ {badges.length}</span></span>
+                <span className="text-2xl font-black text-primary">
+                  {unlockedCount} <span className="text-xs text-muted-foreground">/ {badges.length}</span>
+                </span>
               </div>
               <div className="flex justify-between items-center p-3 rounded-xl bg-secondary/35 border border-border/30">
                 <span className="text-sm text-muted-foreground font-medium">User Status</span>
@@ -206,7 +222,9 @@ export function Goals() {
               </div>
               <div className="flex justify-between items-center p-3 rounded-xl bg-secondary/35 border border-border/30">
                 <span className="text-sm text-muted-foreground font-medium">Weekly Goal Status</span>
-                <span className={`text-xs font-semibold px-2 py-1 rounded-full ${percentUsed >= 100 ? 'bg-rose-500/10 text-rose-500' : 'bg-emerald-500/10 text-emerald-500'}`}>
+                <span
+                  className={`text-xs font-semibold px-2 py-1 rounded-full ${percentUsed >= 100 ? 'bg-rose-500/10 text-rose-500' : 'bg-emerald-500/10 text-emerald-500'}`}
+                >
                   {percentUsed >= 100 ? 'Budget Blown' : 'On Track'}
                 </span>
               </div>
@@ -214,7 +232,8 @@ export function Goals() {
           </div>
 
           <div className="text-xs text-muted-foreground bg-accent/40 p-3 rounded-xl border mt-4">
-            💡 <strong>Did you know?</strong> Sticking to a weekly limit of 70kg CO2 per person aligns closely with international environmental carbon reduction targets.
+            💡 <strong>Did you know?</strong> Sticking to a weekly limit of 70kg CO2 per person aligns closely
+            with international environmental carbon reduction targets.
           </div>
         </div>
       </div>
@@ -226,7 +245,8 @@ export function Goals() {
           <h2 className="text-2xl font-bold tracking-tight">Eco-Achievements</h2>
         </div>
         <p className="text-muted-foreground text-sm">
-          Complete green tasks to unlock achievements. As your log grows, more badges will be unlocked automatically.
+          Complete green tasks to unlock achievements. As your log grows, more badges will be unlocked
+          automatically.
         </p>
 
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
@@ -248,9 +268,7 @@ export function Goals() {
                 <div className="flex gap-4 items-center">
                   <div
                     className={`h-14 w-14 rounded-2xl flex items-center justify-center text-3xl shadow-sm border transition-transform duration-300 group-hover:scale-110 ${
-                      badge.unlocked
-                        ? 'bg-green-500/10 border-green-500/20'
-                        : 'bg-secondary border-border'
+                      badge.unlocked ? 'bg-green-500/10 border-green-500/20' : 'bg-secondary border-border'
                     }`}
                   >
                     {badge.icon}
@@ -261,7 +279,9 @@ export function Goals() {
                     </h3>
                     <span
                       className={`inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full mt-1.5 ${
-                        badge.unlocked ? 'bg-green-500/15 text-green-600 dark:text-green-400' : 'bg-secondary text-muted-foreground'
+                        badge.unlocked
+                          ? 'bg-green-500/15 text-green-600 dark:text-green-400'
+                          : 'bg-secondary text-muted-foreground'
                       }`}
                     >
                       {badge.unlocked ? 'Unlocked' : 'Locked'}
@@ -269,9 +289,7 @@ export function Goals() {
                   </div>
                 </div>
 
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {badge.description}
-                </p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{badge.description}</p>
 
                 {/* Progress bar inside card */}
                 <div className="space-y-1.5 pt-2">

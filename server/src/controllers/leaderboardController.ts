@@ -12,21 +12,21 @@ export const getLeaderboard = async (req: Request, res: Response, next: NextFunc
         activities: {
           select: {
             footprint: true,
-            createdAt: true
-          }
-        }
-      }
+            createdAt: true,
+          },
+        },
+      },
     });
 
     // Map users to compute stats
-    const rankings = users.map(user => {
+    const rankings = users.map((user) => {
       const totalFootprint = user.activities.reduce((sum, act) => sum + act.footprint, 0);
-      
+
       // Weekly footprint (past 7 days)
       const oneWeekAgo = new Date();
       oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
       const weeklyFootprint = user.activities
-        .filter(act => new Date(act.createdAt) >= oneWeekAgo)
+        .filter((act) => new Date(act.createdAt) >= oneWeekAgo)
         .reduce((sum, act) => sum + act.footprint, 0);
 
       return {
@@ -48,7 +48,7 @@ export const getLeaderboard = async (req: Request, res: Response, next: NextFunc
       })
       .map((user, index) => ({
         ...user,
-        rank: index + 1
+        rank: index + 1,
       }));
 
     // Interactive Community challenges
@@ -59,7 +59,7 @@ export const getLeaderboard = async (req: Request, res: Response, next: NextFunc
         description: 'Log 3 carpooling or public transport activities this week.',
         target: 3,
         category: 'transport',
-        points: 150
+        points: 150,
       },
       {
         id: 'challenge-meatless',
@@ -67,7 +67,7 @@ export const getLeaderboard = async (req: Request, res: Response, next: NextFunc
         description: 'Log 5 plant-based meals in the past 7 days.',
         target: 5,
         category: 'food',
-        points: 200
+        points: 200,
       },
       {
         id: 'challenge-unplugged',
@@ -75,16 +75,16 @@ export const getLeaderboard = async (req: Request, res: Response, next: NextFunc
         description: 'Reduce weekly home energy emissions below 15 kg CO2.',
         target: 15,
         category: 'energy',
-        points: 250
-      }
+        points: 250,
+      },
     ];
 
     res.json({
       success: true,
       data: {
         rankings: sortedRankings,
-        challenges
-      }
+        challenges,
+      },
     });
   } catch (error) {
     next(error);

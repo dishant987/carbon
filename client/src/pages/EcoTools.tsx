@@ -53,8 +53,8 @@ export function EcoTools() {
   // LED: 1 bulb replacement saves ~35 kg CO2 and $10/year
   // Thermostat: 1 degree adjustment saves ~150 kg CO2 and $40/year
   // Smart power strips: 1 strip saves ~40 kg CO2 and $12/year
-  const homeSavingsCo2 = (ledBulbs * 35) + (thermostatOffset * 150) + (smartStrips * 40);
-  const homeSavingsMoneyUSD = (ledBulbs * 10) + (thermostatOffset * 40) + (smartStrips * 12);
+  const homeSavingsCo2 = ledBulbs * 35 + thermostatOffset * 150 + smartStrips * 40;
+  const homeSavingsMoneyUSD = ledBulbs * 10 + thermostatOffset * 40 + smartStrips * 12;
   const homeSavingsMoneyINR = homeSavingsMoneyUSD * 83;
 
   // ================= RECIPE AUDITOR HANDLER =================
@@ -82,7 +82,8 @@ export function EcoTools() {
           Interactive Eco Tools
         </h1>
         <p className="text-muted-foreground">
-          Simulate carbon-conscious routes, analyze food recipes with Gemini AI, and estimate household energy efficiency upgrades.
+          Simulate carbon-conscious routes, analyze food recipes with Gemini AI, and estimate household energy
+          efficiency upgrades.
         </p>
       </div>
 
@@ -136,7 +137,9 @@ export function EcoTools() {
             </h3>
             <div className="space-y-4">
               <div className="space-y-2">
-                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">One-Way Distance</label>
+                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                  One-Way Distance
+                </label>
                 <div className="relative">
                   <Input
                     type="number"
@@ -149,7 +152,9 @@ export function EcoTools() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Trips Per Week</label>
+                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                  Trips Per Week
+                </label>
                 <div className="relative">
                   <Input
                     type="number"
@@ -157,13 +162,16 @@ export function EcoTools() {
                     onChange={(e) => setTripCount(e.target.value)}
                     className="pl-4 pr-12 bg-background/50"
                   />
-                  <span className="absolute right-4 top-2.5 text-xs text-muted-foreground font-bold">trips</span>
+                  <span className="absolute right-4 top-2.5 text-xs text-muted-foreground font-bold">
+                    trips
+                  </span>
                 </div>
               </div>
             </div>
 
             <div className="p-4 rounded-xl bg-secondary/35 border border-border/30 text-xs text-muted-foreground leading-relaxed">
-              💡 <strong>Formula:</strong> Footprint calculates round trips (One-way $\times$ trips $\times$ 2) multiplied by international transit carbon factors.
+              💡 <strong>Formula:</strong> Footprint calculates round trips (One-way $\times$ trips $\times$
+              2) multiplied by international transit carbon factors.
             </div>
           </div>
 
@@ -171,16 +179,28 @@ export function EcoTools() {
           <div className="lg:col-span-2 rounded-2xl border bg-card p-6 md:p-8 space-y-6 shadow-sm">
             <div>
               <h3 className="font-extrabold text-lg">Transit Footprint Comparison</h3>
-              <p className="text-xs text-muted-foreground">Estimated weekly carbon emissions based on your route ({weeklyDist} km total)</p>
+              <p className="text-xs text-muted-foreground">
+                Estimated weekly carbon emissions based on your route ({weeklyDist} km total)
+              </p>
             </div>
 
             <ul className="space-y-4">
               {[
                 { label: 'Petrol Car', val: routeFootprints.petrolCar, color: 'bg-rose-500', icon: '🚗' },
-                { label: 'Electric Vehicle (EV)', val: routeFootprints.electricCar, color: 'bg-amber-500', icon: '🔌' },
+                {
+                  label: 'Electric Vehicle (EV)',
+                  val: routeFootprints.electricCar,
+                  color: 'bg-amber-500',
+                  icon: '🔌',
+                },
                 { label: 'Public Bus', val: routeFootprints.bus, color: 'bg-teal-500', icon: '🚌' },
                 { label: 'Commuter Train', val: routeFootprints.train, color: 'bg-cyan-500', icon: '🚆' },
-                { label: 'Electric Bicycle', val: routeFootprints.electricBike, color: 'bg-emerald-500', icon: '🚲' },
+                {
+                  label: 'Electric Bicycle',
+                  val: routeFootprints.electricBike,
+                  color: 'bg-emerald-500',
+                  icon: '🚲',
+                },
                 { label: 'Walking / Bike', val: routeFootprints.walking, color: 'bg-green-500', icon: '🚶' },
               ].map((item) => {
                 const maxVal = Math.max(...Object.values(routeFootprints)) || 1;
@@ -220,7 +240,8 @@ export function EcoTools() {
                   weekly! Over a year, this offsets approximately{' '}
                   <span className="font-extrabold text-foreground">
                     {Math.round((routeFootprints.petrolCar - routeFootprints.train) * 52)} kg CO2
-                  </span>.
+                  </span>
+                  .
                 </p>
               </div>
             </div>
@@ -238,13 +259,18 @@ export function EcoTools() {
               </div>
               <div>
                 <h3 className="font-extrabold text-lg">AI Meal Footprint Auditor</h3>
-                <p className="text-xs text-muted-foreground">Scan your food recipes and get low-carbon substitutions from Gemini AI.</p>
+                <p className="text-xs text-muted-foreground">
+                  Scan your food recipes and get low-carbon substitutions from Gemini AI.
+                </p>
               </div>
             </div>
 
             <form onSubmit={handleRecipeAudit} className="space-y-4">
               <div className="space-y-2">
-                <label htmlFor="recipe" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                <label
+                  htmlFor="recipe"
+                  className="text-xs font-bold text-muted-foreground uppercase tracking-wider"
+                >
                   Paste Recipe or Ingredients List
                 </label>
                 <Textarea
@@ -287,7 +313,10 @@ export function EcoTools() {
                 </div>
                 <ul className="space-y-3">
                   {recipeResult.ingredientsAnalysis.map((item) => (
-                    <li key={item.name} className="flex justify-between items-center p-3 rounded-xl border bg-secondary/20">
+                    <li
+                      key={item.name}
+                      className="flex justify-between items-center p-3 rounded-xl border bg-secondary/20"
+                    >
                       <div className="min-w-0">
                         <p className="font-bold text-xs truncate">{item.name}</p>
                         <span
@@ -295,8 +324,8 @@ export function EcoTools() {
                             item.impact === 'high'
                               ? 'bg-rose-500/10 text-rose-600'
                               : item.impact === 'medium'
-                              ? 'bg-amber-500/10 text-amber-600'
-                              : 'bg-emerald-500/10 text-emerald-600'
+                                ? 'bg-amber-500/10 text-amber-600'
+                                : 'bg-emerald-500/10 text-emerald-600'
                           }`}
                         >
                           {item.impact} Impact
@@ -320,7 +349,9 @@ export function EcoTools() {
                       <p className="text-xs text-muted-foreground">Original Recipe Footprint</p>
                     </div>
                     <div className="text-left sm:text-right">
-                      <span className="text-3xl font-black text-rose-500">{recipeResult.totalFootprintKg}</span>
+                      <span className="text-3xl font-black text-rose-500">
+                        {recipeResult.totalFootprintKg}
+                      </span>
                       <span className="text-muted-foreground text-xs font-bold"> kg CO2</span>
                     </div>
                   </div>
@@ -331,7 +362,9 @@ export function EcoTools() {
                       <h5 className="font-extrabold text-sm flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
                         <Leaf className="h-4.5 w-4.5" /> Eco-Alternative: {recipeResult.plantBasedAlternative}
                       </h5>
-                      <p className="text-[11px] text-muted-foreground mt-0.5">Vegetable/Plant-based recipe equivalent</p>
+                      <p className="text-[11px] text-muted-foreground mt-0.5">
+                        Vegetable/Plant-based recipe equivalent
+                      </p>
                     </div>
                     <div className="text-left sm:text-right">
                       <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400">
@@ -339,15 +372,25 @@ export function EcoTools() {
                       </span>
                       <span className="text-muted-foreground text-xs font-semibold"> kg CO2</span>
                       <span className="block text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-                        -{Math.round(((recipeResult.totalFootprintKg - recipeResult.alternativeFootprintKg) / recipeResult.totalFootprintKg) * 100)}% savings!
+                        -
+                        {Math.round(
+                          ((recipeResult.totalFootprintKg - recipeResult.alternativeFootprintKg) /
+                            recipeResult.totalFootprintKg) *
+                            100
+                        )}
+                        % savings!
                       </span>
                     </div>
                   </div>
 
                   {/* Explanation text */}
                   <div className="space-y-2">
-                    <h5 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">AI Recommendation</h5>
-                    <p className="text-sm leading-relaxed text-muted-foreground">{recipeResult.explanation}</p>
+                    <h5 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                      AI Recommendation
+                    </h5>
+                    <p className="text-sm leading-relaxed text-muted-foreground">
+                      {recipeResult.explanation}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -380,7 +423,9 @@ export function EcoTools() {
                 onChange={(e) => setLedBulbs(parseInt(e.target.value))}
                 className="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
               />
-              <p className="text-[10px] text-muted-foreground">Swapping incandescent bulbs to modern low-energy LEDs.</p>
+              <p className="text-[10px] text-muted-foreground">
+                Swapping incandescent bulbs to modern low-energy LEDs.
+              </p>
             </div>
 
             {/* Slider 2 */}
@@ -398,7 +443,9 @@ export function EcoTools() {
                 onChange={(e) => setThermostatOffset(parseInt(e.target.value))}
                 className="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
               />
-              <p className="text-[10px] text-muted-foreground">Adjusting summer AC up (or winter heating down) to save grid draw.</p>
+              <p className="text-[10px] text-muted-foreground">
+                Adjusting summer AC up (or winter heating down) to save grid draw.
+              </p>
             </div>
 
             {/* Slider 3 */}
@@ -416,7 +463,9 @@ export function EcoTools() {
                 onChange={(e) => setSmartStrips(parseInt(e.target.value))}
                 className="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
               />
-              <p className="text-[10px] text-muted-foreground">Cuts phantom power draw when electronics are off.</p>
+              <p className="text-[10px] text-muted-foreground">
+                Cuts phantom power draw when electronics are off.
+              </p>
             </div>
           </div>
 
@@ -424,24 +473,32 @@ export function EcoTools() {
           <div className="lg:col-span-2 rounded-2xl border bg-card p-6 md:p-8 space-y-6 shadow-sm flex flex-col justify-between">
             <div className="space-y-4">
               <h3 className="font-extrabold text-lg">Your Home Savings Potential</h3>
-              <p className="text-xs text-muted-foreground">Estimated yearly reductions in carbon and utility bills based on your slider updates.</p>
+              <p className="text-xs text-muted-foreground">
+                Estimated yearly reductions in carbon and utility bills based on your slider updates.
+              </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
                 {/* Carbon Savings box */}
                 <div className="p-5 rounded-xl border border-emerald-500/20 bg-emerald-500/5 space-y-2">
                   <div className="text-emerald-500 text-2xl">🌲</div>
-                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Annual Carbon Prevented</h4>
+                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                    Annual Carbon Prevented
+                  </h4>
                   <p className="text-3xl font-black text-emerald-600 dark:text-emerald-400">
-                    {homeSavingsCo2} <span className="text-xs text-muted-foreground font-semibold">kg CO2</span>
+                    {homeSavingsCo2}{' '}
+                    <span className="text-xs text-muted-foreground font-semibold">kg CO2</span>
                   </p>
                 </div>
 
                 {/* Financial Savings box */}
                 <div className="p-5 rounded-xl border border-teal-500/20 bg-teal-500/5 space-y-2">
                   <div className="text-teal-500 text-2xl">💵</div>
-                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Annual Utility Bill Savings</h4>
+                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                    Annual Utility Bill Savings
+                  </h4>
                   <p className="text-3xl font-black text-teal-600 dark:text-teal-400">
-                    ₹{homeSavingsMoneyINR.toLocaleString('en-IN')} <span className="text-xs text-muted-foreground font-semibold">INR</span>
+                    ₹{homeSavingsMoneyINR.toLocaleString('en-IN')}{' '}
+                    <span className="text-xs text-muted-foreground font-semibold">INR</span>
                   </p>
                 </div>
               </div>
@@ -450,7 +507,8 @@ export function EcoTools() {
             <div className="p-4 rounded-xl bg-secondary/35 border border-border/30 text-xs text-muted-foreground flex gap-2 items-center">
               <Info className="h-4 w-4 shrink-0 text-primary" />
               <span>
-                These estimations are based on EPA average household draws. Upgrading to ENERGY STAR appliances increases savings further.
+                These estimations are based on EPA average household draws. Upgrading to ENERGY STAR
+                appliances increases savings further.
               </span>
             </div>
           </div>

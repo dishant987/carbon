@@ -6,7 +6,18 @@ import { Label } from '../components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/tabs';
-import { User, Mail, Lock, Shield, CheckCircle, AlertCircle, Save, Key, Loader2, Sparkles } from 'lucide-react';
+import {
+  User,
+  Mail,
+  Lock,
+  Shield,
+  CheckCircle,
+  AlertCircle,
+  Save,
+  Key,
+  Loader2,
+  Sparkles,
+} from 'lucide-react';
 
 export function Profile() {
   const { user, updateProfile, updatePassword } = useAuth();
@@ -67,7 +78,9 @@ export function Profile() {
       setNewPassword('');
       setConfirmPassword('');
     } catch (err) {
-      setPasswordError(err instanceof Error ? err.message : 'Failed to update password. Please check your credentials.');
+      setPasswordError(
+        err instanceof Error ? err.message : 'Failed to update password. Please check your credentials.'
+      );
     } finally {
       setPasswordLoading(false);
     }
@@ -89,7 +102,7 @@ export function Profile() {
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-800 to-green-600 p-6 md:p-8 text-white shadow-lg">
         <div className="absolute right-0 top-0 translate-x-12 -translate-y-12 w-64 h-64 bg-emerald-500/20 rounded-full blur-2xl pointer-events-none" />
         <div className="absolute left-1/3 bottom-0 w-48 h-48 bg-green-400/10 rounded-full blur-xl pointer-events-none" />
-        
+
         <div className="relative flex flex-col md:flex-row items-center gap-6">
           <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-3xl font-extrabold shadow-inner shrink-0">
             {getInitials(user?.name || '')}
@@ -103,7 +116,14 @@ export function Profile() {
               Manage your personal information, email preferences, and account security.
             </p>
             <p className="text-[11px] text-green-200/80 pt-1">
-              Member since: {user?.createdAt ? new Date(user.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A'}
+              Member since:{' '}
+              {user?.createdAt
+                ? new Date(user.createdAt).toLocaleDateString(undefined, {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })
+                : 'N/A'}
             </p>
           </div>
         </div>
@@ -111,11 +131,17 @@ export function Profile() {
 
       <Tabs defaultValue="profile" className="w-full">
         <TabsList className="grid w-full grid-cols-2 max-w-md bg-secondary/50 p-1 rounded-xl">
-          <TabsTrigger value="profile" className="rounded-lg data-[state=active]:bg-card py-2 text-sm font-semibold transition-all">
+          <TabsTrigger
+            value="profile"
+            className="rounded-lg data-[state=active]:bg-card py-2 text-sm font-semibold transition-all"
+          >
             <User className="h-4 w-4 mr-2" />
             Personal Info
           </TabsTrigger>
-          <TabsTrigger value="security" className="rounded-lg data-[state=active]:bg-card py-2 text-sm font-semibold transition-all">
+          <TabsTrigger
+            value="security"
+            className="rounded-lg data-[state=active]:bg-card py-2 text-sm font-semibold transition-all"
+          >
             <Shield className="h-4 w-4 mr-2" />
             Security & Password
           </TabsTrigger>
@@ -129,9 +155,7 @@ export function Profile() {
                 <User className="h-5 w-5 text-green-600 dark:text-green-400" />
                 Personal Information
               </CardTitle>
-              <CardDescription>
-                Update your account's display name and primary email address.
-              </CardDescription>
+              <CardDescription>Update your account's display name and primary email address.</CardDescription>
             </CardHeader>
             <form onSubmit={handleProfileSubmit}>
               <CardContent className="p-6 space-y-6">
@@ -153,7 +177,9 @@ export function Profile() {
 
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="profile-name" className="text-sm font-semibold">Full Name</Label>
+                    <Label htmlFor="profile-name" className="text-sm font-semibold">
+                      Full Name
+                    </Label>
                     <div className="relative">
                       <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
@@ -169,7 +195,9 @@ export function Profile() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="profile-email" className="text-sm font-semibold">Email Address</Label>
+                    <Label htmlFor="profile-email" className="text-sm font-semibold">
+                      Email Address
+                    </Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
@@ -240,7 +268,9 @@ export function Profile() {
 
                 <div className="space-y-4 max-w-md">
                   <div className="space-y-2">
-                    <Label htmlFor="current-password" className="text-sm font-semibold">Current Password</Label>
+                    <Label htmlFor="current-password" className="text-sm font-semibold">
+                      Current Password
+                    </Label>
                     <div className="relative">
                       <Key className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
@@ -256,7 +286,9 @@ export function Profile() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="new-password" className="text-sm font-semibold">New Password</Label>
+                    <Label htmlFor="new-password" className="text-sm font-semibold">
+                      New Password
+                    </Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
@@ -270,12 +302,15 @@ export function Profile() {
                       />
                     </div>
                     <p className="text-[10px] text-muted-foreground">
-                      Must be at least 8 characters, contain one uppercase, one lowercase letter, and one number.
+                      Must be at least 8 characters, contain one uppercase, one lowercase letter, and one
+                      number.
                     </p>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="confirm-password" className="text-sm font-semibold">Confirm New Password</Label>
+                    <Label htmlFor="confirm-password" className="text-sm font-semibold">
+                      Confirm New Password
+                    </Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input

@@ -18,8 +18,24 @@ describe('Goals', () => {
       weeklyGoal,
       weeklyTotal,
       badges: [
-        { id: '1', name: 'Eco Starter', description: 'Log first activity', icon: '🌱', unlocked: true, progress: 1, target: 1 },
-        { id: '2', name: 'Green Warrior', description: 'Log 5 activities', icon: '🛡️', unlocked: false, progress: 2, target: 5 },
+        {
+          id: '1',
+          name: 'Eco Starter',
+          description: 'Log first activity',
+          icon: '🌱',
+          unlocked: true,
+          progress: 1,
+          target: 1,
+        },
+        {
+          id: '2',
+          name: 'Green Warrior',
+          description: 'Log 5 activities',
+          icon: '🛡️',
+          unlocked: false,
+          progress: 2,
+          target: 5,
+        },
       ],
     };
     vi.mocked(api.fetchGoals).mockResolvedValue(goalsRes);
@@ -64,7 +80,9 @@ describe('Goals', () => {
     fireEvent.click(submitBtn);
 
     await waitFor(() => {
-      expect(screen.getByText(/Weekly carbon target updated to 150 kg CO2 successfully!/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Weekly carbon target updated to 150 kg CO2 successfully!/i)
+      ).toBeInTheDocument();
     });
     expect(api.updateWeeklyGoal).toHaveBeenCalledWith(150);
   });

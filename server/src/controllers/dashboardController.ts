@@ -57,7 +57,7 @@ export const getGoals = async (req: Request, res: Response, next: NextFunction):
     // Fetch user weeklyGoal
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { weeklyGoal: true }
+      select: { weeklyGoal: true },
     });
 
     const weeklyGoal = user?.weeklyGoal ?? 100.0;
@@ -70,14 +70,14 @@ export const getGoals = async (req: Request, res: Response, next: NextFunction):
 
     const weekAgg = await prisma.activity.aggregate({
       where: { userId, date: { gte: startOfWeek } },
-      _sum: { footprint: true }
+      _sum: { footprint: true },
     });
     const weeklyTotal = Math.round((weekAgg._sum.footprint ?? 0) * 100) / 100;
 
     // Calculate dynamic badges
     const activities = await prisma.activity.findMany({
       where: { userId },
-      select: { type: true, category: true, footprint: true, date: true }
+      select: { type: true, category: true, footprint: true, date: true },
     });
 
     const badges = calculateBadges(activities);
@@ -87,8 +87,8 @@ export const getGoals = async (req: Request, res: Response, next: NextFunction):
       data: {
         weeklyGoal,
         weeklyTotal,
-        badges
-      }
+        badges,
+      },
     });
   } catch (error) {
     next(error);
@@ -112,14 +112,14 @@ export const updateGoal = async (req: Request, res: Response, next: NextFunction
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: { weeklyGoal },
-      select: { weeklyGoal: true }
+      select: { weeklyGoal: true },
     });
 
     res.json({
       success: true,
       data: {
-        weeklyGoal: updatedUser.weeklyGoal
-      }
+        weeklyGoal: updatedUser.weeklyGoal,
+      },
     });
   } catch (error) {
     next(error);
@@ -136,7 +136,7 @@ export const generateAiReport = async (req: Request, res: Response, next: NextFu
 
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { weeklyGoal: true }
+      select: { weeklyGoal: true },
     });
     const weeklyGoal = user?.weeklyGoal ?? 100.0;
 
@@ -146,14 +146,14 @@ export const generateAiReport = async (req: Request, res: Response, next: NextFu
 
     const activities = await prisma.activity.findMany({
       where: { userId, date: { gte: thirtyDaysAgo } },
-      select: { type: true, category: true, footprint: true, amount: true, unit: true }
+      select: { type: true, category: true, footprint: true, amount: true, unit: true },
     });
 
     const report = await generateSustainabilityReport(activities, weeklyGoal);
 
     res.json({
       success: true,
-      data: report
+      data: report,
     });
   } catch (error) {
     next(error);

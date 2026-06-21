@@ -5,7 +5,11 @@ import { analyzeRecipe } from '../services/gemini';
  * POST /api/recipes/analyze
  * Body: { recipe: string }
  */
-export const analyzeRecipeController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const analyzeRecipeController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const { recipe } = req.body;
     if (!recipe || typeof recipe !== 'string' || recipe.trim() === '') {
@@ -17,7 +21,7 @@ export const analyzeRecipeController = async (req: Request, res: Response, next:
 
     res.json({
       success: true,
-      data: analysis
+      data: analysis,
     });
   } catch (error) {
     next(error);

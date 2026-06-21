@@ -39,10 +39,7 @@ export function Dashboard() {
   useEffect(() => {
     async function loadExtraDetails() {
       try {
-        const [goalsRes, actRes] = await Promise.all([
-          api.fetchGoals(),
-          api.fetchActivities(1, 4),
-        ]);
+        const [goalsRes, actRes] = await Promise.all([api.fetchGoals(), api.fetchActivities(1, 4)]);
         setGoalsData(goalsRes);
         setRecentActivities(actRes.items);
       } catch {
@@ -87,8 +84,10 @@ export function Dashboard() {
         title: 'Weekly Budget',
         value: `${weeklyTotal.toFixed(1)} / ${weeklyGoal.toFixed(0)} kg`,
         icon: Target,
-        color: percentUsed >= 100 ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400',
-        bg: percentUsed >= 100 ? 'bg-rose-500/5 border-rose-500/10' : 'bg-emerald-500/5 border-emerald-500/10',
+        color:
+          percentUsed >= 100 ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400',
+        bg:
+          percentUsed >= 100 ? 'bg-rose-500/5 border-rose-500/10' : 'bg-emerald-500/5 border-emerald-500/10',
         desc: `${percentUsed}% target budget used`,
         showProgress: true,
       },
@@ -98,7 +97,12 @@ export function Dashboard() {
         icon: Award,
         color: 'text-amber-500',
         bg: 'bg-amber-500/5 border-amber-500/10',
-        desc: unlockedBadges.length >= 4 ? 'Eco Master level' : unlockedBadges.length >= 2 ? 'Green Guardian' : 'Eco Trainee',
+        desc:
+          unlockedBadges.length >= 4
+            ? 'Eco Master level'
+            : unlockedBadges.length >= 2
+              ? 'Green Guardian'
+              : 'Eco Trainee',
       },
     ],
     [summary, goalsData, weeklyGoal, weeklyTotal, percentUsed, unlockedBadges]
@@ -113,7 +117,7 @@ export function Dashboard() {
   const getActivityEmoji = (type: string, category: string) => {
     const typeLower = type.toLowerCase();
     const catLower = category.toLowerCase();
-    
+
     if (typeLower === 'transport') {
       if (catLower.includes('car')) return '🚗';
       if (catLower.includes('bus')) return '🚌';
@@ -188,7 +192,9 @@ export function Dashboard() {
               className={`relative hover:shadow-md hover:border-primary/20 transition-all duration-300 overflow-hidden border ${card.bg}`}
             >
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider">{card.title}</CardTitle>
+                <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                  {card.title}
+                </CardTitle>
                 <card.icon className={`h-5 w-5 ${card.color}`} />
               </CardHeader>
               <CardContent className="space-y-1">
@@ -198,7 +204,11 @@ export function Dashboard() {
                   <div className="h-1.5 w-full bg-secondary rounded-full overflow-hidden mt-2 border border-border/30">
                     <div
                       className={`h-full rounded-full transition-all duration-1000 ${
-                        percentUsed >= 100 ? 'bg-rose-500' : percentUsed >= 75 ? 'bg-amber-500' : 'bg-emerald-500'
+                        percentUsed >= 100
+                          ? 'bg-rose-500'
+                          : percentUsed >= 75
+                            ? 'bg-amber-500'
+                            : 'bg-emerald-500'
                       }`}
                       style={{ width: `${Math.min(percentUsed, 100)}%` }}
                     />
@@ -212,27 +222,17 @@ export function Dashboard() {
 
       {/* Dashboard Content Split Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
         {/* Left Side: Charts (2 cols on large screen) */}
         <div className="lg:col-span-2 space-y-8">
           {/* Breakdown Charts Section */}
-          {loadingBreakdown ? (
-            <ChartsSkeleton />
-          ) : (
-            <DashboardCharts breakdown={breakdown} />
-          )}
+          {loadingBreakdown ? <ChartsSkeleton /> : <DashboardCharts breakdown={breakdown} />}
 
           {/* Line Chart Section */}
-          {loadingProgress ? (
-            <LineChartSkeleton />
-          ) : (
-            <ProgressChart data={progress} />
-          )}
+          {loadingProgress ? <LineChartSkeleton /> : <ProgressChart data={progress} />}
         </div>
 
         {/* Right Side: Sidebar Panels (1 col on large screen) */}
         <div className="lg:col-span-1 space-y-8">
-          
           {/* Weekly Carbon Goal Tracker Panel */}
           <Card className="shadow-sm border">
             <CardHeader className="pb-3 flex flex-row items-center justify-between">
@@ -247,14 +247,20 @@ export function Dashboard() {
             <CardContent className="space-y-4">
               <div className="flex justify-between items-center text-xs font-semibold">
                 <span className="text-muted-foreground">Emissions Target</span>
-                <span className="font-mono text-foreground">{weeklyTotal.toFixed(1)} / {weeklyGoal.toFixed(0)} kg CO2</span>
+                <span className="font-mono text-foreground">
+                  {weeklyTotal.toFixed(1)} / {weeklyGoal.toFixed(0)} kg CO2
+                </span>
               </div>
-              
+
               <div className="space-y-1">
                 <div className="h-3.5 w-full bg-secondary rounded-full overflow-hidden p-0.5 border border-border/30">
                   <div
                     className={`h-full rounded-full transition-all duration-1000 ${
-                      percentUsed >= 100 ? 'bg-rose-500' : percentUsed >= 75 ? 'bg-amber-500' : 'bg-emerald-500'
+                      percentUsed >= 100
+                        ? 'bg-rose-500'
+                        : percentUsed >= 75
+                          ? 'bg-amber-500'
+                          : 'bg-emerald-500'
                     }`}
                     style={{ width: `${Math.min(percentUsed, 100)}%` }}
                   />
@@ -272,7 +278,8 @@ export function Dashboard() {
                 </div>
               ) : (
                 <div className="p-3.5 rounded-xl border border-emerald-500/20 bg-emerald-500/5 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
-                  🎉 On Track! You have {(weeklyGoal - weeklyTotal).toFixed(1)} kg CO2 left to spare this week.
+                  🎉 On Track! You have {(weeklyGoal - weeklyTotal).toFixed(1)} kg CO2 left to spare this
+                  week.
                 </div>
               )}
             </CardContent>
@@ -285,7 +292,10 @@ export function Dashboard() {
                 <Clock className="h-5 w-5 text-purple-500" />
                 Recent Logs
               </CardTitle>
-              <Link to="/activities" className="text-xs text-primary font-bold hover:underline flex items-center gap-0.5">
+              <Link
+                to="/activities"
+                className="text-xs text-primary font-bold hover:underline flex items-center gap-0.5"
+              >
                 View All <ArrowRight className="h-3 w-3" />
               </Link>
             </CardHeader>
@@ -300,7 +310,10 @@ export function Dashboard() {
               ) : (
                 <ul className="space-y-3">
                   {recentActivities.map((act) => (
-                    <li key={act.id} className="flex items-center justify-between p-3 rounded-xl border bg-secondary/20 hover:bg-secondary/40 transition-colors">
+                    <li
+                      key={act.id}
+                      className="flex items-center justify-between p-3 rounded-xl border bg-secondary/20 hover:bg-secondary/40 transition-colors"
+                    >
                       <div className="flex items-center gap-3 min-w-0">
                         <span className="text-xl" role="img" aria-hidden="true">
                           {getActivityEmoji(act.type, act.category)}
@@ -308,7 +321,11 @@ export function Dashboard() {
                         <div className="min-w-0">
                           <p className="text-xs font-bold truncate text-foreground">{act.category}</p>
                           <p className="text-[10px] text-muted-foreground mt-0.5">
-                            {act.amount} {act.unit} • {new Date(act.date).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })}
+                            {act.amount} {act.unit} •{' '}
+                            {new Date(act.date).toLocaleDateString('en-IN', {
+                              month: 'short',
+                              day: 'numeric',
+                            })}
                           </p>
                         </div>
                       </div>
@@ -339,7 +356,9 @@ export function Dashboard() {
               ) : unlockedBadges.length === 0 ? (
                 <div className="p-4 rounded-xl border border-dashed text-center">
                   <p className="text-xs text-muted-foreground">No badges unlocked yet.</p>
-                  <p className="text-[10px] text-muted-foreground mt-1">Log activities to unlock badges automatically!</p>
+                  <p className="text-[10px] text-muted-foreground mt-1">
+                    Log activities to unlock badges automatically!
+                  </p>
                 </div>
               ) : (
                 <ul className="grid grid-cols-4 gap-3">
@@ -356,16 +375,11 @@ export function Dashboard() {
               )}
             </CardContent>
           </Card>
-
         </div>
       </div>
 
       {/* Tips Section */}
-      {loadingTips ? (
-        <TipsSkeleton />
-      ) : (
-        <CarbonTips tips={tips} onRefresh={handleRefreshTips} />
-      )}
+      {loadingTips ? <TipsSkeleton /> : <CarbonTips tips={tips} onRefresh={handleRefreshTips} />}
     </div>
   );
 }

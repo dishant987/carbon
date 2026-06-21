@@ -3,6 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { Chat } from '../pages/Chat';
 import { useChatStore } from '../hooks/useChatStore';
 import * as api from '../lib/api';
+import type { Message } from '../types';
 
 vi.mock('../lib/api', () => ({
   fetchChatHistory: vi.fn(),
@@ -36,9 +37,12 @@ describe('Chat Component', () => {
   });
 
   it('renders message bubbles for user and bot', async () => {
-    const mockHistory = [
+    const mockHistory: Message[] = [
       { role: 'user', content: 'Hello bot' },
-      { role: 'bot', content: 'Hello human. <activities>[{"type":"food","desc":"salad","co2_kg":1.2}]</activities>' },
+      {
+        role: 'bot',
+        content: 'Hello human. <activities>[{"type":"food","desc":"salad","co2_kg":1.2}]</activities>',
+      },
     ];
     vi.mocked(api.fetchChatHistory).mockResolvedValue(mockHistory);
 
@@ -72,9 +76,9 @@ describe('Chat Component', () => {
   });
 
   it('calls clearChatHistory when clicking clear button', async () => {
-    const mockHistory = [{ role: 'user', content: 'message' }];
+    const mockHistory: Message[] = [{ role: 'user', content: 'message' }];
     vi.mocked(api.fetchChatHistory).mockResolvedValue(mockHistory);
-    vi.mocked(api.clearChatHistory).mockResolvedValue({});
+    vi.mocked(api.clearChatHistory).mockResolvedValue(undefined);
 
     // Mock window.confirm to return true
     const confirmSpy = vi.spyOn(window, 'confirm').mockImplementation(() => true);

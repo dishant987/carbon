@@ -221,7 +221,9 @@ export function Layout({ children }: LayoutProps) {
             </div>
             {(!isCollapsed || isMobileOpen) && (
               <div className="min-w-0 flex-1 animate-in fade-in duration-300">
-                <p className="text-xs font-semibold text-foreground truncate group-hover/user:text-primary transition-colors">{user?.name || 'User'}</p>
+                <p className="text-xs font-semibold text-foreground truncate group-hover/user:text-primary transition-colors">
+                  {user?.name || 'User'}
+                </p>
                 <p className="text-[10px] text-muted-foreground truncate">{user?.email}</p>
               </div>
             )}

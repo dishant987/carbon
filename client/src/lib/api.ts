@@ -359,7 +359,9 @@ export async function fetchLeaderboard(): Promise<LeaderboardResponse> {
 }
 
 /** Updates the user's name and/or email profile */
-export async function updateProfile(input: UpdateProfileInput): Promise<{ user: SafeUser; tokens: AuthTokens }> {
+export async function updateProfile(
+  input: UpdateProfileInput
+): Promise<{ user: SafeUser; tokens: AuthTokens }> {
   return request<{ user: SafeUser; tokens: AuthTokens }>('/auth/profile', {
     method: 'PUT',
     body: JSON.stringify(input),

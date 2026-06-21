@@ -28,12 +28,40 @@ describe('Challenges', () => {
       rankings: rankings.length
         ? rankings
         : [
-            { userId: 'user-2', name: 'Leader User', weeklyFootprint: 10, totalFootprint: 50, activityCount: 5, rank: 1 },
-            { userId: 'user-1', name: 'Test User', weeklyFootprint: 20, totalFootprint: 80, activityCount: 10, rank: 2 },
-            { userId: 'user-3', name: 'Third User', weeklyFootprint: 30, totalFootprint: 90, activityCount: 4, rank: 3 },
+            {
+              userId: 'user-2',
+              name: 'Leader User',
+              weeklyFootprint: 10,
+              totalFootprint: 50,
+              activityCount: 5,
+              rank: 1,
+            },
+            {
+              userId: 'user-1',
+              name: 'Test User',
+              weeklyFootprint: 20,
+              totalFootprint: 80,
+              activityCount: 10,
+              rank: 2,
+            },
+            {
+              userId: 'user-3',
+              name: 'Third User',
+              weeklyFootprint: 30,
+              totalFootprint: 90,
+              activityCount: 4,
+              rank: 3,
+            },
           ],
       challenges: [
-        { id: '1', title: 'Carpool Challenge', description: 'Take transit', target: 5, category: 'transport', points: 100 },
+        {
+          id: '1',
+          title: 'Carpool Challenge',
+          description: 'Take transit',
+          target: 5,
+          category: 'transport',
+          points: 100,
+        },
       ],
     };
     vi.mocked(api.fetchLeaderboard).mockResolvedValue(mockData);
@@ -45,7 +73,19 @@ describe('Challenges', () => {
     const mockUser = setupMockUser();
 
     render(
-      <AuthContext.Provider value={{ user: mockUser, isAuthenticated: true, login: vi.fn(), register: vi.fn(), logout: vi.fn(), checkAuth: vi.fn(), updateProfile: vi.fn(), updatePassword: vi.fn(), loading: false }}>
+      <AuthContext.Provider
+        value={{
+          user: mockUser,
+          isAuthenticated: true,
+          login: vi.fn(),
+          register: vi.fn(),
+          logout: vi.fn(),
+          checkAuth: vi.fn(),
+          updateProfile: vi.fn(),
+          updatePassword: vi.fn(),
+          loading: false,
+        }}
+      >
         <Challenges />
       </AuthContext.Provider>
     );
@@ -58,7 +98,19 @@ describe('Challenges', () => {
     const mockUser = setupMockUser();
 
     render(
-      <AuthContext.Provider value={{ user: mockUser, isAuthenticated: true, login: vi.fn(), register: vi.fn(), logout: vi.fn(), checkAuth: vi.fn(), updateProfile: vi.fn(), updatePassword: vi.fn(), loading: false }}>
+      <AuthContext.Provider
+        value={{
+          user: mockUser,
+          isAuthenticated: true,
+          login: vi.fn(),
+          register: vi.fn(),
+          logout: vi.fn(),
+          checkAuth: vi.fn(),
+          updateProfile: vi.fn(),
+          updatePassword: vi.fn(),
+          loading: false,
+        }}
+      >
         <Challenges />
       </AuthContext.Provider>
     );
@@ -90,7 +142,19 @@ describe('Challenges', () => {
     const mockUser = setupMockUser();
 
     render(
-      <AuthContext.Provider value={{ user: mockUser, isAuthenticated: true, login: vi.fn(), register: vi.fn(), logout: vi.fn(), checkAuth: vi.fn(), updateProfile: vi.fn(), updatePassword: vi.fn(), loading: false }}>
+      <AuthContext.Provider
+        value={{
+          user: mockUser,
+          isAuthenticated: true,
+          login: vi.fn(),
+          register: vi.fn(),
+          logout: vi.fn(),
+          checkAuth: vi.fn(),
+          updateProfile: vi.fn(),
+          updatePassword: vi.fn(),
+          loading: false,
+        }}
+      >
         <Challenges />
       </AuthContext.Provider>
     );

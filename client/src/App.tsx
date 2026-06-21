@@ -18,15 +18,17 @@ const Tips = React.lazy(() => import('./pages/Tips').then((module) => ({ default
 const Chat = React.lazy(() => import('./pages/Chat').then((module) => ({ default: module.Chat })));
 const Goals = React.lazy(() => import('./pages/Goals').then((module) => ({ default: module.Goals })));
 const Offsets = React.lazy(() => import('./pages/Offsets').then((module) => ({ default: module.Offsets })));
-const EcoTools = React.lazy(() => import('./pages/EcoTools').then((module) => ({ default: module.EcoTools })));
-const Challenges = React.lazy(() => import('./pages/Challenges').then((module) => ({ default: module.Challenges })));
+const EcoTools = React.lazy(() =>
+  import('./pages/EcoTools').then((module) => ({ default: module.EcoTools }))
+);
+const Challenges = React.lazy(() =>
+  import('./pages/Challenges').then((module) => ({ default: module.Challenges }))
+);
 const Login = React.lazy(() => import('./pages/Login').then((module) => ({ default: module.Login })));
 const Register = React.lazy(() =>
   import('./pages/Register').then((module) => ({ default: module.Register }))
 );
-const Profile = React.lazy(() =>
-  import('./pages/Profile').then((module) => ({ default: module.Profile }))
-);
+const Profile = React.lazy(() => import('./pages/Profile').then((module) => ({ default: module.Profile })));
 
 /** Fallback shown while route chunks load */
 function PageLoader() {

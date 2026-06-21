@@ -1,5 +1,13 @@
 import { Router } from 'express';
-import { register, login, refresh, logout, getMe, updateProfile, updatePassword } from '../controllers/authController';
+import {
+  register,
+  login,
+  refresh,
+  logout,
+  getMe,
+  updateProfile,
+  updatePassword,
+} from '../controllers/authController';
 import { authenticate, requireTrustedOrigin } from '../middleware/auth';
 import { authLimiter } from '../middleware/rateLimiter';
 

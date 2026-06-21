@@ -212,7 +212,7 @@ export async function generateSustainabilityReport(
       .join('\n');
 
     const prompt = [
-      'You are a carbon emissions auditor. Create a Sustainability Report Card based on the user\'s activity log over the past 30 days.',
+      "You are a carbon emissions auditor. Create a Sustainability Report Card based on the user's activity log over the past 30 days.",
       `User's weekly target limit: ${weeklyGoal} kg CO2.`,
       '',
       'Activities log:',
@@ -239,7 +239,7 @@ export async function generateSustainabilityReport(
       '    },',
       '    ...',
       '  ]',
-      '}'
+      '}',
     ].join('\n');
 
     const result = await model.generateContent(prompt);
@@ -254,33 +254,34 @@ export async function generateSustainabilityReport(
     return {
       grade: 'B',
       score: 75,
-      analysis: 'Could not generate custom report due to API limitations. Try adding more activities to improve the accuracy of your carbon analysis. Generally, minimizing personal car use and switching to energy-efficient products will help you stay within your target emissions.',
+      analysis:
+        'Could not generate custom report due to API limitations. Try adding more activities to improve the accuracy of your carbon analysis. Generally, minimizing personal car use and switching to energy-efficient products will help you stay within your target emissions.',
       actionPlan: [
         {
           week: 1,
           challengeName: 'Low-Carbon Commuting',
           description: 'Try walking, biking, or taking public transit for short trips instead of driving.',
-          expectedSavingKg: 8.5
+          expectedSavingKg: 8.5,
         },
         {
           week: 2,
           challengeName: 'Plant-Based Eating',
           description: 'Introduce two fully vegetarian or vegan days this week.',
-          expectedSavingKg: 5.0
+          expectedSavingKg: 5.0,
         },
         {
           week: 3,
           challengeName: 'Energy Efficiency Audit',
           description: 'Unplug devices when fully charged and turn off unused lights.',
-          expectedSavingKg: 6.0
+          expectedSavingKg: 6.0,
         },
         {
           week: 4,
           challengeName: 'Conscious Shopping',
           description: 'Avoid buying new clothes or electronics this week unless absolutely necessary.',
-          expectedSavingKg: 10.0
-        }
-      ]
+          expectedSavingKg: 10.0,
+        },
+      ],
     };
   }
 }
@@ -327,7 +328,7 @@ export async function analyzeRecipe(recipeText: string): Promise<RecipeAnalysis>
       '  "plantBasedAlternative": "Lentil & Vegetable Lasagna",',
       '  "alternativeFootprintKg": 2.1,',
       '  "explanation": "Replacing ground beef and heavy cheese with lentils, zucchini, and a light cashew sauce drastically reduces the carbon footprint by over 80% because beef and dairy are highly resource-intensive compared to plant legumes." ',
-      '}'
+      '}',
     ].join('\n');
 
     const result = await model.generateContent(prompt);
@@ -345,12 +346,12 @@ export async function analyzeRecipe(recipeText: string): Promise<RecipeAnalysis>
       ingredientsAnalysis: [
         { name: 'Meat/Animal Protein', footprintKg: 5.0, impact: 'high' },
         { name: 'Dairy & Fats', footprintKg: 1.0, impact: 'medium' },
-        { name: 'Grains & Vegetables', footprintKg: 0.5, impact: 'low' }
+        { name: 'Grains & Vegetables', footprintKg: 0.5, impact: 'low' },
       ],
       plantBasedAlternative: 'Green Garden Harvest Medley',
       alternativeFootprintKg: 1.5,
-      explanation: 'Could not contact Gemini AI for detailed analysis. Generally, replacing red meat and dairy with local grains, pulses, and vegetables will decrease your meal\'s carbon footprint by 60% to 90%.'
+      explanation:
+        "Could not contact Gemini AI for detailed analysis. Generally, replacing red meat and dairy with local grains, pulses, and vegetables will decrease your meal's carbon footprint by 60% to 90%.",
     };
   }
 }
-

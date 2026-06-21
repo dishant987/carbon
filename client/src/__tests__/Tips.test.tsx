@@ -67,7 +67,9 @@ describe('Tips', () => {
 
     // The first tip should be expanded by default (expandedIndex = 0)
     expect(screen.getByText('Sustainable Transportation')).toBeInTheDocument();
-    expect(screen.getByText('Choose public transit or carpooling for your daily commute.')).toBeInTheDocument();
+    expect(
+      screen.getByText('Choose public transit or carpooling for your daily commute.')
+    ).toBeInTheDocument();
 
     // Toggle accordion collapse
     const transportHeaderButton = screen.getAllByRole('button')[1]; // Button to toggle first tip

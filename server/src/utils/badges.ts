@@ -24,27 +24,21 @@ export function calculateBadges(activities: ActivityItem[]): Badge[] {
 
   // 1. Eco-Commuter: Log 5 transport activities using bus, train, bicycle, or walking
   const ecoCommuterActivities = activities.filter(
-    (a) =>
-      a.type === 'transport' &&
-      ['bus', 'train', 'bicycle', 'walking'].includes(a.category.toLowerCase())
+    (a) => a.type === 'transport' && ['bus', 'train', 'bicycle', 'walking'].includes(a.category.toLowerCase())
   );
   const ecoCommuterProgress = ecoCommuterActivities.length;
   const ecoCommuterUnlocked = ecoCommuterProgress >= 5;
 
   // 2. Plant-Based Hero: Log 5 food items using vegetables, fruits, or grains
   const plantBasedActivities = activities.filter(
-    (a) =>
-      a.type === 'food' &&
-      ['vegetables', 'fruits', 'grains'].includes(a.category.toLowerCase())
+    (a) => a.type === 'food' && ['vegetables', 'fruits', 'grains'].includes(a.category.toLowerCase())
   );
   const plantBasedProgress = plantBasedActivities.length;
   const plantBasedUnlocked = plantBasedProgress >= 5;
 
   // 3. Energy Saver: Log 3 energy activities that are clean (solar) or low footprint (< 15kg CO2)
   const energySaverActivities = activities.filter(
-    (a) =>
-      a.type === 'energy' &&
-      (a.category.toLowerCase() === 'solar' || a.footprint < 15.0)
+    (a) => a.type === 'energy' && (a.category.toLowerCase() === 'solar' || a.footprint < 15.0)
   );
   const energySaverProgress = energySaverActivities.length;
   const energySaverUnlocked = energySaverProgress >= 3;
@@ -53,7 +47,7 @@ export function calculateBadges(activities: ActivityItem[]): Badge[] {
   const now = new Date();
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(now.getDate() - 7);
-  
+
   const recentActivities = activities.filter((a) => new Date(a.date) >= sevenDaysAgo);
   const distinctDays = new Set(
     recentActivities.map((a) => {

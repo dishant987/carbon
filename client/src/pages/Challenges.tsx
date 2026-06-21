@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Users,Sparkles, Loader2, Medal, TrendingUp, Trophy } from 'lucide-react';
+import { Users, Sparkles, Loader2, Medal, TrendingUp, Trophy } from 'lucide-react';
 import * as api from '../lib/api';
 import { useAuth } from '../context/AuthContext';
 
@@ -31,7 +31,9 @@ export function Challenges() {
     return (
       <div className="flex flex-col items-center justify-center py-20 min-h-[60vh]">
         <Loader2 className="h-10 w-10 text-primary animate-spin" />
-        <p className="mt-4 text-muted-foreground text-sm font-medium animate-pulse">Loading community stats...</p>
+        <p className="mt-4 text-muted-foreground text-sm font-medium animate-pulse">
+          Loading community stats...
+        </p>
       </div>
     );
   }
@@ -74,30 +76,33 @@ export function Challenges() {
             Eco-Challenges & Rankings
           </h1>
           <p className="text-muted-foreground">
-            Log activities to reduce your footprint, climb the community rankings, and conquer active group challenges.
+            Log activities to reduce your footprint, climb the community rankings, and conquer active group
+            challenges.
           </p>
         </div>
       </div>
 
       {/* Podium and challenges layout */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-        
         {/* COL 1 & 2: COMMUNITY PODIUM */}
         <div className="xl:col-span-2 space-y-6">
           <div className="rounded-2xl border bg-card p-6 md:p-8 space-y-6 shadow-sm">
             <h3 className="font-extrabold text-lg flex items-center gap-2">
               <Trophy className="h-5 w-5 text-amber-500" /> Community Podium
             </h3>
-            <p className="text-xs text-muted-foreground -mt-4">Based on weekly carbon footprints (lower weekly emissions = higher rank)</p>
+            <p className="text-xs text-muted-foreground -mt-4">
+              Based on weekly carbon footprints (lower weekly emissions = higher rank)
+            </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-end pt-4 max-w-2xl mx-auto">
-              
               {/* SECOND PLACE */}
               <div className="flex flex-col items-center space-y-3 bg-secondary/15 p-5 border rounded-2xl sm:h-44 justify-end">
                 <Medal className="h-8 w-8 text-slate-400" />
                 <div className="text-center min-w-0 w-full">
                   <h4 className="font-bold text-sm truncate">{top2 ? top2.name : 'Eco Guard'}</h4>
-                  <p className="text-xs text-emerald-600 font-bold">{top2 ? `${top2.weeklyFootprint} kg` : '0 kg'}</p>
+                  <p className="text-xs text-emerald-600 font-bold">
+                    {top2 ? `${top2.weeklyFootprint} kg` : '0 kg'}
+                  </p>
                 </div>
                 <div className="w-full bg-slate-400/20 text-[10px] font-extrabold uppercase py-1 text-slate-500 dark:text-slate-400 rounded-lg text-center mt-2 border">
                   2nd Place
@@ -109,7 +114,9 @@ export function Challenges() {
                 <Trophy className="h-10 w-10 text-amber-500 fill-amber-500/10 animate-bounce" />
                 <div className="text-center min-w-0 w-full">
                   <h4 className="font-extrabold text-base truncate">{top1 ? top1.name : 'Eco Leader'}</h4>
-                  <p className="text-xs text-emerald-600 font-extrabold">{top1 ? `${top1.weeklyFootprint} kg` : '0 kg'}</p>
+                  <p className="text-xs text-emerald-600 font-extrabold">
+                    {top1 ? `${top1.weeklyFootprint} kg` : '0 kg'}
+                  </p>
                 </div>
                 <div className="w-full bg-amber-500 text-white text-[10px] font-extrabold uppercase py-1.5 rounded-lg text-center mt-2 shadow-sm">
                   1st Place
@@ -121,13 +128,14 @@ export function Challenges() {
                 <Medal className="h-8 w-8 text-amber-700" />
                 <div className="text-center min-w-0 w-full">
                   <h4 className="font-bold text-sm truncate">{top3 ? top3.name : 'Green Trail'}</h4>
-                  <p className="text-xs text-emerald-600 font-bold">{top3 ? `${top3.weeklyFootprint} kg` : '0 kg'}</p>
+                  <p className="text-xs text-emerald-600 font-bold">
+                    {top3 ? `${top3.weeklyFootprint} kg` : '0 kg'}
+                  </p>
                 </div>
                 <div className="w-full bg-amber-700/20 text-[10px] font-extrabold uppercase py-1 text-amber-800 dark:text-amber-600 rounded-lg text-center mt-2 border">
                   3rd Place
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -138,13 +146,17 @@ export function Challenges() {
             <h3 className="font-extrabold text-lg flex items-center gap-2">
               <TrendingUp className="h-5 w-5 text-primary" /> Your Status
             </h3>
-            
+
             {myRank ? (
               <div className="space-y-4">
                 <div className="p-4 rounded-xl border border-primary/20 bg-primary/5 text-center space-y-1">
-                  <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Your Position</span>
+                  <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">
+                    Your Position
+                  </span>
                   <p className="text-4xl font-black text-primary">Rank #{myRank.rank}</p>
-                  <p className="text-xs text-muted-foreground font-semibold">out of {rankings.length} community members</p>
+                  <p className="text-xs text-muted-foreground font-semibold">
+                    out of {rankings.length} community members
+                  </p>
                 </div>
 
                 <div className="space-y-2 text-xs font-semibold">
@@ -166,14 +178,14 @@ export function Challenges() {
           </div>
 
           <div className="text-xs text-muted-foreground bg-accent/40 p-3 rounded-xl border mt-4">
-            🏆 <strong>Weekly Resets:</strong> Rankings refresh every Sunday. Keep logging to stay at the top of the board!
+            🏆 <strong>Weekly Resets:</strong> Rankings refresh every Sunday. Keep logging to stay at the top
+            of the board!
           </div>
         </div>
       </div>
 
       {/* Challenges & Leaderboard Table Grid */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-        
         {/* ACTIVE CHALLENGES */}
         <div className="xl:col-span-1 space-y-4">
           <div className="flex items-center gap-2">
@@ -194,9 +206,7 @@ export function Challenges() {
                     +{challenge.points} pts
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  {challenge.description}
-                </p>
+                <p className="text-xs text-muted-foreground leading-relaxed">{challenge.description}</p>
                 <div className="space-y-1.5 pt-1">
                   <div className="flex justify-between text-[10px] font-bold text-muted-foreground">
                     <span>Community Goal</span>
@@ -246,8 +256,8 @@ export function Challenges() {
                               user.rank === 1
                                 ? 'bg-amber-500 text-white'
                                 : user.rank === 2
-                                ? 'bg-slate-400 text-white'
-                                : 'bg-amber-700 text-white'
+                                  ? 'bg-slate-400 text-white'
+                                  : 'bg-amber-700 text-white'
                             }`}
                           >
                             {user.rank}
@@ -282,9 +292,7 @@ export function Challenges() {
             </table>
           </div>
         </div>
-
       </div>
-
     </div>
   );
 }

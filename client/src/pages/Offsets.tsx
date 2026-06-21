@@ -8,24 +8,21 @@ export function Offsets() {
   const [loading, setLoading] = useState(true);
   const [reportLoading, setReportLoading] = useState(false);
   const [pledging, setPledging] = useState(false);
-  
+
   const [data, setData] = useState<api.OffsetsResponse | null>(null);
   const [report, setReport] = useState<api.AiReportResponse | null>(null);
-  
+
   const [offsetAmount, setOffsetAmount] = useState('');
   const [selectedProject, setSelectedProject] = useState<string>('');
   const [dashboardSummary, setDashboardSummary] = useState<api.DashboardSummary | null>(null);
-  
+
   const [error, setError] = useState<string | null>(null);
   const [pledgeSuccess, setPledgeSuccess] = useState<string | null>(null);
 
   const loadOffsetsData = async () => {
     try {
       setLoading(true);
-      const [offsetRes, summaryRes] = await Promise.all([
-        api.fetchOffsets(),
-        api.fetchDashboardSummary(),
-      ]);
+      const [offsetRes, summaryRes] = await Promise.all([api.fetchOffsets(), api.fetchDashboardSummary()]);
       setData(offsetRes);
       setDashboardSummary(summaryRes);
       if (offsetRes.projects.length > 0) {
@@ -78,7 +75,7 @@ export function Offsets() {
       const res = await api.createOffsetPledge(selectedProject, amountVal);
       setPledgeSuccess(`Successfully pledged to offset ${res.amount} kg CO2!`);
       setOffsetAmount('');
-      
+
       // Reload offset stats and history
       const offsetRes = await api.fetchOffsets();
       setData(offsetRes);
@@ -94,7 +91,9 @@ export function Offsets() {
     return (
       <div className="flex flex-col items-center justify-center py-20 min-h-[60vh]">
         <Loader2 className="h-10 w-10 text-primary animate-spin" />
-        <p className="mt-4 text-muted-foreground text-sm font-medium animate-pulse">Loading simulator & projects...</p>
+        <p className="mt-4 text-muted-foreground text-sm font-medium animate-pulse">
+          Loading simulator & projects...
+        </p>
       </div>
     );
   }
@@ -132,13 +131,13 @@ export function Offsets() {
           AI Reports & Carbon Offsets
         </h1>
         <p className="text-muted-foreground">
-          Audit your lifestyle using Gemini AI and neutralize your footprint by investing virtual credits in environmental projects.
+          Audit your lifestyle using Gemini AI and neutralize your footprint by investing virtual credits in
+          environmental projects.
         </p>
       </div>
 
       {/* Grid of Simulator and Report */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-        
         {/* LEFT COLUMN: AI SUSTAINABILITY PLAN */}
         <div className="rounded-2xl border bg-card text-card-foreground shadow-lg shadow-black/5 overflow-hidden flex flex-col justify-between">
           <div className="p-6 md:p-8 space-y-6">
@@ -162,13 +161,14 @@ export function Offsets() {
                 <div className="space-y-1 max-w-sm">
                   <h3 className="font-bold text-sm">No Active Audit Plan</h3>
                   <p className="text-xs text-muted-foreground">
-                    Analyze your activity log from the past 30 days to receive an environmental grade and a personalized 4-week reduction challenge.
+                    Analyze your activity log from the past 30 days to receive an environmental grade and a
+                    personalized 4-week reduction challenge.
                   </p>
                 </div>
-                <Button 
+                <Button
                   type="button"
-                  onClick={handleGenerateReport} 
-                  disabled={reportLoading} 
+                  onClick={handleGenerateReport}
+                  disabled={reportLoading}
                   className="font-bold transition-all relative overflow-hidden"
                 >
                   {reportLoading ? (
@@ -193,7 +193,9 @@ export function Offsets() {
                       {report.grade}
                     </div>
                     <div>
-                      <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Eco-Grade</p>
+                      <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider">
+                        Eco-Grade
+                      </p>
                       <h4 className="text-lg font-bold">Carbon Rating</h4>
                     </div>
                   </div>
@@ -203,7 +205,9 @@ export function Offsets() {
                       {report.score}
                     </div>
                     <div>
-                      <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Eco-Score</p>
+                      <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider">
+                        Eco-Score
+                      </p>
                       <h4 className="text-base font-bold">Out of 100 points</h4>
                     </div>
                   </div>
@@ -211,16 +215,23 @@ export function Offsets() {
 
                 {/* Analysis Box */}
                 <div className="p-4 rounded-xl bg-secondary/40 border border-border/60">
-                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Auditor Analysis</h4>
+                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
+                    Auditor Analysis
+                  </h4>
                   <p className="text-sm text-foreground leading-relaxed">{report.analysis}</p>
                 </div>
 
                 {/* 4-Week Challenge Checklist */}
                 <div className="space-y-3">
-                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Your Personalized 30-Day reduction plan</h4>
+                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                    Your Personalized 30-Day reduction plan
+                  </h4>
                   <div className="space-y-3">
                     {report.actionPlan.map((challenge) => (
-                      <div key={challenge.week} className="flex gap-3 items-start p-3 rounded-xl border bg-card hover:bg-secondary/20 transition-colors">
+                      <div
+                        key={challenge.week}
+                        className="flex gap-3 items-start p-3 rounded-xl border bg-card hover:bg-secondary/20 transition-colors"
+                      >
                         <div className="h-7 w-7 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
                           W{challenge.week}
                         </div>
@@ -239,8 +250,19 @@ export function Offsets() {
                 </div>
 
                 <div className="flex justify-end">
-                  <Button type="button" variant="outline" size="sm" onClick={handleGenerateReport} disabled={reportLoading} className="text-xs font-semibold">
-                    {reportLoading ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : 'Re-run AI Analysis'}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleGenerateReport}
+                    disabled={reportLoading}
+                    className="text-xs font-semibold"
+                  >
+                    {reportLoading ? (
+                      <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      'Re-run AI Analysis'
+                    )}
                   </Button>
                 </div>
               </div>
@@ -257,7 +279,9 @@ export function Offsets() {
               </div>
               <div>
                 <h2 className="text-xl font-bold">Offset Simulator</h2>
-                <p className="text-xs text-muted-foreground">Neutralize emissions by pledging carbon credits</p>
+                <p className="text-xs text-muted-foreground">
+                  Neutralize emissions by pledging carbon credits
+                </p>
               </div>
             </div>
 
@@ -265,7 +289,9 @@ export function Offsets() {
             <div className="grid grid-cols-2 gap-4">
               <div className="p-4 rounded-xl bg-secondary/30 border border-border/30">
                 <p className="text-xs text-muted-foreground font-semibold">Lifetime Pledged Offsets</p>
-                <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1">{totalOffset} kg</p>
+                <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1">
+                  {totalOffset} kg
+                </p>
               </div>
               <div className="p-4 rounded-xl bg-secondary/30 border border-border/30">
                 <p className="text-xs text-muted-foreground font-semibold">Net Carbon Status</p>
@@ -284,7 +310,11 @@ export function Offsets() {
                 <div>
                   <h4 className="text-sm font-bold text-foreground">Nature Equivalence</h4>
                   <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">
-                    Your pledged offsets are equivalent to growing <span className="font-bold text-emerald-600 dark:text-emerald-400">{treesEquivalent} mature trees</span> for an entire year!
+                    Your pledged offsets are equivalent to growing{' '}
+                    <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                      {treesEquivalent} mature trees
+                    </span>{' '}
+                    for an entire year!
                   </p>
                 </div>
               </div>
@@ -308,14 +338,18 @@ export function Offsets() {
                       <div>
                         <div className="flex items-center justify-between">
                           <span className="text-xl">{getProjectIcon(proj.category)}</span>
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{proj.category}</span>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                            {proj.category}
+                          </span>
                         </div>
                         <h4 className="font-bold text-sm mt-2 leading-tight">{proj.name}</h4>
                         <p className="text-[10px] text-muted-foreground mt-0.5">{proj.location}</p>
                       </div>
                       <div className="mt-3 flex justify-between items-center text-xs font-semibold pt-2 border-t border-border/40">
                         <span className="text-muted-foreground">Simulated cost</span>
-                        <span className="text-emerald-600 dark:text-emerald-400">₹{Math.round(proj.costPerTonUSD * 83).toLocaleString('en-IN')}/ton CO2</span>
+                        <span className="text-emerald-600 dark:text-emerald-400">
+                          ₹{Math.round(proj.costPerTonUSD * 83).toLocaleString('en-IN')}/ton CO2
+                        </span>
                       </div>
                     </div>
                   ))}
@@ -339,9 +373,17 @@ export function Offsets() {
                       onChange={(e) => setOffsetAmount(e.target.value)}
                       className="bg-background/50 pl-4 transition-all"
                     />
-                    <span className="absolute right-3 top-2.5 text-xs text-muted-foreground font-bold">kg CO2</span>
+                    <span className="absolute right-3 top-2.5 text-xs text-muted-foreground font-bold">
+                      kg CO2
+                    </span>
                   </div>
-                  <Button type="button" variant="outline" size="sm" onClick={() => setOffsetAmount(String(Math.ceil(pendingOffset || 25)))} className="text-xs shrink-0">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setOffsetAmount(String(Math.ceil(pendingOffset || 25)))}
+                    className="text-xs shrink-0"
+                  >
                     Max ({Math.ceil(pendingOffset || 25)} kg)
                   </Button>
                 </div>
@@ -350,14 +392,17 @@ export function Offsets() {
               {error && <p className="text-xs text-rose-500 font-medium">{error}</p>}
               {pledgeSuccess && <p className="text-xs text-emerald-500 font-semibold">{pledgeSuccess}</p>}
 
-              <Button type="submit" disabled={pledging} className="w-full font-bold shadow-md shadow-emerald-500/10 transition-all">
+              <Button
+                type="submit"
+                disabled={pledging}
+                className="w-full font-bold shadow-md shadow-emerald-500/10 transition-all"
+              >
                 {pledging && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Pledge Virtual Offset
               </Button>
             </form>
           </div>
         </div>
-
       </div>
 
       {/* Offset History */}
@@ -386,7 +431,8 @@ export function Offsets() {
                 {pledges.map((pledge) => (
                   <tr key={pledge.id} className="hover:bg-secondary/15 transition-colors">
                     <td className="p-4 font-semibold text-foreground">
-                      {projects.find((p) => p.id === pledge.project || p.name === pledge.project)?.name || pledge.project}
+                      {projects.find((p) => p.id === pledge.project || p.name === pledge.project)?.name ||
+                        pledge.project}
                     </td>
                     <td className="p-4 font-mono font-bold text-emerald-600 dark:text-emerald-400">
                       {pledge.amount} kg CO2
@@ -412,7 +458,6 @@ export function Offsets() {
           </div>
         )}
       </div>
-
     </div>
   );
 }

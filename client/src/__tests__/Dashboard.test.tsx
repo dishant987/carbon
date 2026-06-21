@@ -34,12 +34,14 @@ describe('Dashboard', () => {
     vi.clearAllMocks();
   });
 
-  const setupMocks = (overrides: {
-    summary?: any;
-    breakdown?: any;
-    progress?: any;
-    tips?: any;
-  } = {}) => {
+  const setupMocks = (
+    overrides: {
+      summary?: any;
+      breakdown?: any;
+      progress?: any;
+      tips?: any;
+    } = {}
+  ) => {
     const summary = { totalFootprint: 150.5, dailyAverage: 21.5 };
     const breakdown = [
       { type: 'transport', total: 100, percentage: 66.4, count: 5 },
@@ -54,8 +56,24 @@ describe('Dashboard', () => {
       weeklyGoal: 100.0,
       weeklyTotal: 45.0,
       badges: [
-        { id: '1', name: 'Eco Starter', description: 'Log first activity', icon: '🌱', unlocked: true, progress: 1, target: 1 },
-        { id: '2', name: 'Green Warrior', description: 'Log 5 activities', icon: '🛡️', unlocked: false, progress: 2, target: 5 },
+        {
+          id: '1',
+          name: 'Eco Starter',
+          description: 'Log first activity',
+          icon: '🌱',
+          unlocked: true,
+          progress: 1,
+          target: 1,
+        },
+        {
+          id: '2',
+          name: 'Green Warrior',
+          description: 'Log 5 activities',
+          icon: '🛡️',
+          unlocked: false,
+          progress: 2,
+          target: 5,
+        },
       ],
     };
     const actRes: PaginatedResult<Activity> = {

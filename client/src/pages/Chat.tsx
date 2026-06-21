@@ -163,9 +163,18 @@ function TypingIndicator() {
           <Bot className="h-4.5 w-4.5" />
         </div>
         <div className="flex items-center gap-1.5 py-3">
-          <span className="h-2 w-2 bg-muted-foreground/60 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-          <span className="h-2 w-2 bg-muted-foreground/60 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-          <span className="h-2 w-2 bg-muted-foreground/60 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+          <span
+            className="h-2 w-2 bg-muted-foreground/60 rounded-full animate-bounce"
+            style={{ animationDelay: '0ms' }}
+          />
+          <span
+            className="h-2 w-2 bg-muted-foreground/60 rounded-full animate-bounce"
+            style={{ animationDelay: '150ms' }}
+          />
+          <span
+            className="h-2 w-2 bg-muted-foreground/60 rounded-full animate-bounce"
+            style={{ animationDelay: '300ms' }}
+          />
         </div>
       </div>
     </div>
@@ -404,7 +413,9 @@ export function Chat() {
             <h1 className="text-base font-extrabold tracking-tight bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">
               EcoBot Chat
             </h1>
-            <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mt-0.5">Your AI Carbon Guide</p>
+            <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mt-0.5">
+              Your AI Carbon Guide
+            </p>
           </div>
         </div>
         {messages.length > 0 && (
@@ -431,7 +442,8 @@ export function Chat() {
               How can I help you today?
             </h2>
             <p className="text-sm text-muted-foreground max-w-md mt-2 mb-10 leading-relaxed font-semibold">
-              Ask me to calculate CO₂ for your commute, food choices, or utilities. You can also get tailored tips to live more sustainably!
+              Ask me to calculate CO₂ for your commute, food choices, or utilities. You can also get tailored
+              tips to live more sustainably!
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full text-left">
@@ -450,7 +462,9 @@ export function Chat() {
                   </div>
                   <div className="space-y-1 min-w-0">
                     <h4 className="text-xs font-black text-foreground truncate">{s.title}</h4>
-                    <p className="text-[11px] text-muted-foreground leading-relaxed font-semibold">{s.desc}</p>
+                    <p className="text-[11px] text-muted-foreground leading-relaxed font-semibold">
+                      {s.desc}
+                    </p>
                   </div>
                 </button>
               ))}

@@ -86,7 +86,11 @@ describe('Register Component', () => {
     fireEvent.click(screen.getByRole('button', { name: /sign up/i }));
 
     await waitFor(() => {
-      expect(registerMock).toHaveBeenCalledWith({ name: 'John Doe', email: 'john@example.com', password: 'securepass' });
+      expect(registerMock).toHaveBeenCalledWith({
+        name: 'John Doe',
+        email: 'john@example.com',
+        password: 'securepass',
+      });
       expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
     });
   });

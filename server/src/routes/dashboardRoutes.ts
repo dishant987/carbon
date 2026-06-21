@@ -1,5 +1,12 @@
 import { Router } from 'express';
-import { summary, breakdown, progress, getGoals, updateGoal, generateAiReport } from '../controllers/dashboardController';
+import {
+  summary,
+  breakdown,
+  progress,
+  getGoals,
+  updateGoal,
+  generateAiReport,
+} from '../controllers/dashboardController';
 import { authenticate } from '../middleware/auth';
 
 const router: Router = Router();

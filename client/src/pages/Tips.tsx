@@ -302,9 +302,7 @@ export function Tips() {
               const isExpanded = expandedIndex === index;
 
               return (
-                <li
-                  key={index}
-                >
+                <li key={index}>
                   <Card
                     className={`transition-all duration-300 border overflow-hidden ${
                       isExpanded
@@ -359,7 +357,9 @@ export function Tips() {
                             <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                               Why this matters
                             </h4>
-                            <p className="text-sm text-foreground/80 leading-relaxed">{details.description}</p>
+                            <p className="text-sm text-foreground/80 leading-relaxed">
+                              {details.description}
+                            </p>
                           </div>
 
                           {/* Action Items list */}

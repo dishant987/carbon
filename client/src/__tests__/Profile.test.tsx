@@ -8,7 +8,11 @@ describe('Profile Component', () => {
     vi.clearAllMocks();
   });
 
-  const setupAuth = (user = { id: '1', name: 'John Doe', email: 'john@example.com', createdAt: '2026-06-20T00:00:00.000Z' }, updateProfileMock = vi.fn(), updatePasswordMock = vi.fn()) => {
+  const setupAuth = (
+    user = { id: '1', name: 'John Doe', email: 'john@example.com', createdAt: '2026-06-20T00:00:00.000Z' },
+    updateProfileMock = vi.fn(),
+    updatePasswordMock = vi.fn()
+  ) => {
     return {
       user,
       isAuthenticated: true,
@@ -109,7 +113,10 @@ describe('Profile Component', () => {
     fireEvent.click(submitBtn);
 
     await waitFor(() => {
-      expect(updatePasswordMock).toHaveBeenCalledWith({ currentPassword: 'oldpassword', newPassword: 'newpassword123' });
+      expect(updatePasswordMock).toHaveBeenCalledWith({
+        currentPassword: 'oldpassword',
+        newPassword: 'newpassword123',
+      });
       expect(screen.getByText('Password updated successfully!')).toBeInTheDocument();
     });
   });

@@ -14,11 +14,13 @@ describe('Activities', () => {
     vi.clearAllMocks();
   });
 
-  const setupMocks = (overrides: {
-    query?: any;
-    create?: any;
-    delete?: any;
-  } = {}) => {
+  const setupMocks = (
+    overrides: {
+      query?: any;
+      create?: any;
+      delete?: any;
+    } = {}
+  ) => {
     const data = {
       items: [
         {
@@ -108,7 +110,7 @@ describe('Activities', () => {
     expect(screen.getByText('Page 1 of 2')).toBeInTheDocument();
 
     const buttons = screen.getAllByRole('button');
-    
+
     // Clicking next page should update query/state page parameter
     // Here, let's just assert that buttons exist and pagination renders
     expect(buttons.length).toBeGreaterThanOrEqual(1);
