@@ -37,8 +37,8 @@ describe('Offsets Page', () => {
   });
 
   it('renders loading state initially', async () => {
-    (api.fetchOffsets as any).mockReturnValue(new Promise(() => {}));
-    (api.fetchDashboardSummary as any).mockReturnValue(new Promise(() => {}));
+    vi.mocked(api.fetchOffsets).mockReturnValue(new Promise(() => {}));
+    vi.mocked(api.fetchDashboardSummary).mockReturnValue(new Promise(() => {}));
 
     render(<Offsets />);
 
@@ -46,17 +46,17 @@ describe('Offsets Page', () => {
   });
 
   it('renders projects and pledges after loading successfully', async () => {
-    (api.fetchOffsets as any).mockResolvedValue({
+    vi.mocked(api.fetchOffsets).mockResolvedValue({
       projects: mockProjects,
       pledges: mockPledges,
       totalOffset: 25.0,
     });
-    (api.fetchDashboardSummary as any).mockResolvedValue({
+    vi.mocked(api.fetchDashboardSummary).mockResolvedValue({
       totalFootprint: 100.0,
-      weeklyFootprint: 20.0,
-      weeklyGoal: 100.0,
-      byCategory: [],
-      recentActivities: [],
+      dailyAverage: 14.2,
+      weeklyTotal: 100.0,
+      monthlyTotal: 400.0,
+      activityCount: 10,
     });
 
     render(<Offsets />);
@@ -72,17 +72,17 @@ describe('Offsets Page', () => {
   });
 
   it('creates carbon offset pledge successfully', async () => {
-    (api.fetchOffsets as any).mockResolvedValue({
+    vi.mocked(api.fetchOffsets).mockResolvedValue({
       projects: mockProjects,
       pledges: mockPledges,
       totalOffset: 25.0,
     });
-    (api.fetchDashboardSummary as any).mockResolvedValue({
+    vi.mocked(api.fetchDashboardSummary).mockResolvedValue({
       totalFootprint: 100.0,
-      weeklyFootprint: 20.0,
-      weeklyGoal: 100.0,
-      byCategory: [],
-      recentActivities: [],
+      dailyAverage: 14.2,
+      weeklyTotal: 100.0,
+      monthlyTotal: 400.0,
+      activityCount: 10,
     });
 
     render(<Offsets />);
@@ -92,10 +92,11 @@ describe('Offsets Page', () => {
     });
 
     // Mock successful createOffsetPledge call
-    (api.createOffsetPledge as any).mockResolvedValue({
+    vi.mocked(api.createOffsetPledge).mockResolvedValue({
       id: 'pledge-2',
       project: 'amazon-reforestation',
       amount: 10.0,
+      createdAt: '2024-01-20T10:00:00.000Z',
     });
 
     const amountInput = screen.getByLabelText(/Pledge CO2 Amount to Offset/i);
@@ -110,17 +111,17 @@ describe('Offsets Page', () => {
   });
 
   it('generates AI report card when click button', async () => {
-    (api.fetchOffsets as any).mockResolvedValue({
+    vi.mocked(api.fetchOffsets).mockResolvedValue({
       projects: mockProjects,
       pledges: [],
       totalOffset: 0,
     });
-    (api.fetchDashboardSummary as any).mockResolvedValue({
+    vi.mocked(api.fetchDashboardSummary).mockResolvedValue({
       totalFootprint: 50.0,
-      weeklyFootprint: 10.0,
-      weeklyGoal: 100.0,
-      byCategory: [],
-      recentActivities: [],
+      dailyAverage: 7.1,
+      weeklyTotal: 50.0,
+      monthlyTotal: 200.0,
+      activityCount: 5,
     });
 
     render(<Offsets />);
@@ -142,7 +143,7 @@ describe('Offsets Page', () => {
         },
       ],
     };
-    (api.generateAiReport as any).mockResolvedValue(mockReport);
+    vi.mocked(api.generateAiReport).mockResolvedValue(mockReport);
 
     const generateBtn = screen.getByRole('button', { name: /Generate AI Report Card/i });
     fireEvent.click(generateBtn);

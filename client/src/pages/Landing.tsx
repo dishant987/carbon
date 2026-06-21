@@ -333,6 +333,7 @@ export function Landing() {
                     ))}
                   </div>
                   <button
+                    type="button"
                     disabled={!commute}
                     onClick={() => setStep(2)}
                     className="w-full mt-2 inline-flex items-center justify-center gap-1.5 bg-primary text-primary-foreground font-bold py-3 rounded-xl disabled:opacity-50 hover:bg-primary/95 transition shadow-lg shadow-primary/15"
@@ -417,12 +418,14 @@ export function Landing() {
                   </div>
                   <div className="flex gap-3 mt-2">
                     <button
+                      type="button"
                       onClick={() => setStep(1)}
                       className="flex-1 border border-border py-3 rounded-xl text-sm font-semibold hover:bg-accent transition"
                     >
                       Back
                     </button>
                     <button
+                      type="button"
                       disabled={!diet}
                       onClick={() => setStep(3)}
                       className="flex-1 bg-primary text-primary-foreground font-bold py-3 rounded-xl disabled:opacity-50 hover:bg-primary/95 transition shadow-lg shadow-primary/15"
@@ -487,12 +490,14 @@ export function Landing() {
                   </div>
                   <div className="flex gap-3 mt-2">
                     <button
+                      type="button"
                       onClick={() => setStep(2)}
                       className="flex-1 border border-border py-3 rounded-xl text-sm font-semibold hover:bg-accent transition"
                     >
                       Back
                     </button>
                     <button
+                      type="button"
                       disabled={!energy}
                       onClick={handleCalculate}
                       className="flex-1 bg-gradient-to-r from-green-600 to-emerald-500 text-white font-bold py-3 rounded-xl disabled:opacity-50 hover:opacity-95 transition shadow-lg shadow-emerald-500/20"
@@ -586,6 +591,7 @@ export function Landing() {
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                     <button
+                      type="button"
                       onClick={resetQuiz}
                       className="text-xs text-muted-foreground hover:text-foreground font-semibold underline underline-offset-4 transition"
                     >
@@ -809,6 +815,7 @@ export function Landing() {
               return (
                 <button
                   key={habit.id}
+                  type="button"
                   onClick={() => toggleHabit(habit.id)}
                   className={`w-full flex items-center justify-between p-4 rounded-xl border text-left transition-all duration-200 ${
                     isChecked
@@ -1075,6 +1082,7 @@ export function Landing() {
             return (
               <div key={index} className="transition-all duration-200">
                 <button
+                  type="button"
                   onClick={() => setOpenFaq(isOpen ? null : index)}
                   className="w-full flex items-center justify-between p-5 text-left font-bold text-foreground hover:bg-accent/40 transition-colors"
                 >

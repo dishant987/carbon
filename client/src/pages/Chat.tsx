@@ -137,6 +137,7 @@ function MessageBubble({ message, isStreamingLast }: MessageBubbleProps) {
 
           <div className="flex items-center gap-2 pt-1 opacity-0 group-hover/bubble:opacity-100 transition-opacity duration-200">
             <button
+              type="button"
               onClick={handleCopy}
               className="p-1.5 hover:bg-secondary rounded-lg text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Copy response"
@@ -408,6 +409,7 @@ export function Chat() {
         </div>
         {messages.length > 0 && (
           <button
+            type="button"
             onClick={handleClearHistory}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-border text-xs font-bold text-muted-foreground hover:text-rose-500 hover:border-rose-500/30 hover:bg-rose-500/5 transition-all"
             aria-label="Clear chat history"
@@ -436,6 +438,7 @@ export function Chat() {
               {SUGGESTIONS.map((s) => (
                 <button
                   key={s.title}
+                  type="button"
                   onClick={() => {
                     setInput(s.prompt);
                     setTimeout(() => textareaRef.current?.focus(), 50);
@@ -489,6 +492,7 @@ export function Chat() {
             <div className="flex items-center gap-2 pl-2 shrink-0">
               {isStreaming ? (
                 <button
+                  type="button"
                   onClick={handleStop}
                   className="p-2.5 rounded-full transition-all bg-rose-600 text-white hover:bg-rose-500 shadow-sm hover:scale-105 active:scale-95 flex items-center justify-center shrink-0"
                   aria-label="Stop streaming"
@@ -497,6 +501,7 @@ export function Chat() {
                 </button>
               ) : (
                 <button
+                  type="button"
                   onClick={handleSend}
                   disabled={!input.trim() || isStreaming}
                   className={cn(

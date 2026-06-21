@@ -44,6 +44,7 @@ export function Challenges() {
           <p className="text-xs text-muted-foreground mt-1">{error}</p>
         </div>
         <button
+          type="button"
           onClick={loadLeaderboardData}
           className="px-4 py-2 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 font-bold transition-all text-sm"
         >
@@ -179,9 +180,9 @@ export function Challenges() {
             <Sparkles className="h-5 w-5 text-primary" />
             <h3 className="font-extrabold text-lg">Active Challenges</h3>
           </div>
-          <div className="space-y-4">
+          <ul className="space-y-4">
             {challenges.map((challenge) => (
-              <div key={challenge.id} className="p-5 border rounded-2xl bg-card shadow-sm space-y-3">
+              <li key={challenge.id} className="p-5 border rounded-2xl bg-card shadow-sm space-y-3">
                 <div className="flex justify-between items-start">
                   <div>
                     <h4 className="font-bold text-sm text-foreground leading-snug">{challenge.title}</h4>
@@ -205,9 +206,9 @@ export function Challenges() {
                     <div className="h-full bg-primary rounded-full" style={{ width: '40%' }} />
                   </div>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
 
         {/* FULL LEADERBOARD TABLE */}

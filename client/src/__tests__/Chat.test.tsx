@@ -23,7 +23,7 @@ describe('Chat Component', () => {
   });
 
   it('renders typing area and suggestion cards when messages list is empty', async () => {
-    (api.fetchChatHistory as any).mockResolvedValue([]);
+    vi.mocked(api.fetchChatHistory).mockResolvedValue([]);
     render(<Chat />);
 
     await waitFor(() => {
@@ -40,7 +40,7 @@ describe('Chat Component', () => {
       { role: 'user', content: 'Hello bot' },
       { role: 'bot', content: 'Hello human. <activities>[{"type":"food","desc":"salad","co2_kg":1.2}]</activities>' },
     ];
-    (api.fetchChatHistory as any).mockResolvedValue(mockHistory);
+    vi.mocked(api.fetchChatHistory).mockResolvedValue(mockHistory);
 
     render(<Chat />);
 
@@ -55,7 +55,7 @@ describe('Chat Component', () => {
   });
 
   it('populates typing area when clicking suggestion card', async () => {
-    (api.fetchChatHistory as any).mockResolvedValue([]);
+    vi.mocked(api.fetchChatHistory).mockResolvedValue([]);
     render(<Chat />);
 
     await waitFor(() => {
@@ -73,8 +73,8 @@ describe('Chat Component', () => {
 
   it('calls clearChatHistory when clicking clear button', async () => {
     const mockHistory = [{ role: 'user', content: 'message' }];
-    (api.fetchChatHistory as any).mockResolvedValue(mockHistory);
-    (api.clearChatHistory as any).mockResolvedValue({});
+    vi.mocked(api.fetchChatHistory).mockResolvedValue(mockHistory);
+    vi.mocked(api.clearChatHistory).mockResolvedValue({});
 
     // Mock window.confirm to return true
     const confirmSpy = vi.spyOn(window, 'confirm').mockImplementation(() => true);
@@ -98,7 +98,7 @@ describe('Chat Component', () => {
   });
 
   it('simulates streaming response when a user sends a message', async () => {
-    (api.fetchChatHistory as any).mockResolvedValue([]);
+    vi.mocked(api.fetchChatHistory).mockResolvedValue([]);
 
     // Mock global fetch for stream endpoint
     const mockReader = {
@@ -123,7 +123,7 @@ describe('Chat Component', () => {
       body: {
         getReader: () => mockReader,
       },
-    } as any);
+    } as unknown as Response);
 
     render(<Chat />);
 

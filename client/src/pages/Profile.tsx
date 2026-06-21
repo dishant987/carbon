@@ -153,7 +153,7 @@ export function Profile() {
 
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="profile-name" className="text-sm font-semibold">Display Name</Label>
+                    <Label htmlFor="profile-name" className="text-sm font-semibold">Full Name</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input

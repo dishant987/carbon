@@ -54,7 +54,7 @@ describe('ActivityList', () => {
   it('renders a delete button for each item', () => {
     render(<ActivityList activities={mockActivities} onDelete={mockOnDelete} />);
 
-    const deleteButtons = screen.getAllByRole('button');
+    const deleteButtons = screen.getAllByRole('button', { name: /delete/i });
     expect(deleteButtons.length).toBe(mockActivities.length);
   });
 

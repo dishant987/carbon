@@ -266,7 +266,7 @@ export function Tips() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={loadTips} disabled={loading}>
+          <Button type="button" variant="outline" size="sm" onClick={loadTips} disabled={loading}>
             <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
             Refresh Tips
           </Button>
@@ -281,7 +281,7 @@ export function Tips() {
             <AlertCircle className="h-10 w-10 mx-auto mb-2 text-destructive/80" />
             <p className="font-semibold">Failed to Generate Tips</p>
             <p className="text-xs text-muted-foreground mt-1">{error}</p>
-            <Button size="sm" className="mt-4" onClick={loadTips}>
+            <Button type="button" size="sm" className="mt-4" onClick={loadTips}>
               Retry Connection
             </Button>
           </CardContent>
@@ -296,90 +296,94 @@ export function Tips() {
         </Card>
       ) : (
         <div className="space-y-4">
-          <div className="space-y-3">
+          <ul className="space-y-3">
             {tips.map((tip, index) => {
               const details = getTipDetails(tip);
               const isExpanded = expandedIndex === index;
 
               return (
-                <Card
+                <li
                   key={index}
-                  className={`transition-all duration-300 border overflow-hidden ${
-                    isExpanded
-                      ? 'border-primary/45 shadow-md shadow-primary/5 bg-accent/15'
-                      : 'border-border hover:border-border-hover bg-card hover:bg-accent/10'
-                  }`}
                 >
-                  {/* Header Clickable Row */}
-                  <button
-                    onClick={() => toggleExpand(index)}
-                    className="w-full text-left p-4 md:p-5 flex items-start justify-between gap-4"
-                    aria-expanded={isExpanded}
+                  <Card
+                    className={`transition-all duration-300 border overflow-hidden ${
+                      isExpanded
+                        ? 'border-primary/45 shadow-md shadow-primary/5 bg-accent/15'
+                        : 'border-border hover:border-border-hover bg-card hover:bg-accent/10'
+                    }`}
                   >
-                    <div className="flex items-start gap-4 min-w-0">
-                      {/* Number Badge */}
-                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-xs">
-                        {index + 1}
-                      </div>
-                      <div className="space-y-1 min-w-0">
-                        <p className="text-sm md:text-base font-semibold text-foreground leading-tight">
-                          {tip}
-                        </p>
-                        <div className="flex flex-wrap items-center gap-2 pt-1">
-                          <span
-                            className={`flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${getCategoryStyles(
-                              details.category
-                            )}`}
-                          >
-                            {getCategoryIcon(details.category)}
-                            {details.category}
-                          </span>
-                          <span className="text-[11px] text-muted-foreground">{details.title}</span>
+                    {/* Header Clickable Row */}
+                    <button
+                      type="button"
+                      onClick={() => toggleExpand(index)}
+                      className="w-full text-left p-4 md:p-5 flex items-start justify-between gap-4"
+                      aria-expanded={isExpanded}
+                    >
+                      <div className="flex items-start gap-4 min-w-0">
+                        {/* Number Badge */}
+                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-xs">
+                          {index + 1}
+                        </div>
+                        <div className="space-y-1 min-w-0">
+                          <p className="text-sm md:text-base font-semibold text-foreground leading-tight">
+                            {tip}
+                          </p>
+                          <div className="flex flex-wrap items-center gap-2 pt-1">
+                            <span
+                              className={`flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${getCategoryStyles(
+                                details.category
+                              )}`}
+                            >
+                              {getCategoryIcon(details.category)}
+                              {details.category}
+                            </span>
+                            <span className="text-[11px] text-muted-foreground">{details.title}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="p-1 rounded-md hover:bg-accent shrink-0">
-                      {isExpanded ? (
-                        <ChevronUp className="h-5 w-5 text-muted-foreground" />
-                      ) : (
-                        <ChevronDown className="h-5 w-5 text-muted-foreground" />
-                      )}
-                    </div>
-                  </button>
+                      <div className="p-1 rounded-md hover:bg-accent shrink-0">
+                        {isExpanded ? (
+                          <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                        ) : (
+                          <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                        )}
+                      </div>
+                    </button>
 
-                  {/* Collapsible Content */}
-                  {isExpanded && (
-                    <div className="px-5 pb-5 pt-1 border-t border-dashed animate-in fade-in slide-in-from-top-1 duration-300">
-                      <div className="space-y-4">
-                        {/* Explanation Paragraph */}
-                        <div className="space-y-1">
-                          <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                            Why this matters
-                          </h4>
-                          <p className="text-sm text-foreground/80 leading-relaxed">{details.description}</p>
-                        </div>
+                    {/* Collapsible Content */}
+                    {isExpanded && (
+                      <div className="px-5 pb-5 pt-1 border-t border-dashed animate-in fade-in slide-in-from-top-1 duration-300">
+                        <div className="space-y-4">
+                          {/* Explanation Paragraph */}
+                          <div className="space-y-1">
+                            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                              Why this matters
+                            </h4>
+                            <p className="text-sm text-foreground/80 leading-relaxed">{details.description}</p>
+                          </div>
 
-                        {/* Action Items list */}
-                        <div className="space-y-2">
-                          <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                            Actionable Tasks
-                          </h4>
-                          <ul className="space-y-2">
-                            {details.actions.map((action, actIndex) => (
-                              <li key={actIndex} className="flex gap-2 text-sm text-foreground/90">
-                                <CheckCircle className="h-4.5 w-4.5 text-green-500 shrink-0 mt-0.5" />
-                                <span>{action}</span>
-                              </li>
-                            ))}
-                          </ul>
+                          {/* Action Items list */}
+                          <div className="space-y-2">
+                            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                              Actionable Tasks
+                            </h4>
+                            <ul className="space-y-2">
+                              {details.actions.map((action, actIndex) => (
+                                <li key={actIndex} className="flex gap-2 text-sm text-foreground/90">
+                                  <CheckCircle className="h-4.5 w-4.5 text-green-500 shrink-0 mt-0.5" />
+                                  <span>{action}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  )}
-                </Card>
+                    )}
+                  </Card>
+                </li>
               );
             })}
-          </div>
+          </ul>
 
           {/* Quick tips explanation card */}
           <Card className="border-border/60 bg-secondary/10 mt-6">

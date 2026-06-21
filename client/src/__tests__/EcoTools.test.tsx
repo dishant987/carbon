@@ -51,7 +51,7 @@ describe('EcoTools Page', () => {
       explanation: 'Replacing beef reduces carbon.',
     };
 
-    (api.analyzeRecipeCarbon as any).mockResolvedValue(mockAnalysis);
+    vi.mocked(api.analyzeRecipeCarbon).mockResolvedValue(mockAnalysis);
 
     const recipeInput = screen.getByLabelText(/Paste Recipe or Ingredients List/i);
     fireEvent.change(recipeInput, { target: { value: '1 beef burger patty' } });

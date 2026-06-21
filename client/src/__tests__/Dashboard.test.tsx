@@ -4,6 +4,7 @@ import { Dashboard } from '../pages/Dashboard';
 import * as useDashboardHooks from '../hooks/useDashboard';
 import * as api from '../lib/api';
 import { MemoryRouter } from 'react-router-dom';
+import type { PaginatedResult, Activity } from '../types';
 
 vi.mock('../hooks/useDashboard', () => ({
   useDashboardSummary: vi.fn(),
@@ -49,45 +50,55 @@ describe('Dashboard', () => {
       { date: '2024-01-02', footprint: 12 },
     ];
     const tips = ['Eat more plants', 'Switch off lights'];
-    const goalsRes = {
+    const goalsRes: api.GoalsResponse = {
       weeklyGoal: 100.0,
       weeklyTotal: 45.0,
       badges: [
-        { id: '1', name: 'Eco Starter', description: 'Log first activity', icon: '🌱', unlocked: true },
-        { id: '2', name: 'Green Warrior', description: 'Log 5 activities', icon: '🛡️', unlocked: false },
+        { id: '1', name: 'Eco Starter', description: 'Log first activity', icon: '🌱', unlocked: true, progress: 1, target: 1 },
+        { id: '2', name: 'Green Warrior', description: 'Log 5 activities', icon: '🛡️', unlocked: false, progress: 2, target: 5 },
       ],
     };
-    const actRes = {
+    const actRes: PaginatedResult<Activity> = {
       items: [
-        { id: '1', type: 'transport', category: 'car', amount: 20, unit: 'km', footprint: 5.0, date: '2024-01-15T00:00:00.000Z' },
+        {
+          id: '1',
+          type: 'transport',
+          category: 'car',
+          amount: 20,
+          unit: 'km',
+          footprint: 5.0,
+          date: '2024-01-15T00:00:00.000Z',
+          createdAt: '2024-01-15T00:00:00.000Z',
+          updatedAt: '2024-01-15T00:00:00.000Z',
+        },
       ],
       pagination: { page: 1, limit: 4, total: 1, totalPages: 1 },
     };
 
-    (useDashboardHooks.useDashboardSummary as any).mockReturnValue({
+    vi.mocked(useDashboardHooks.useDashboardSummary).mockReturnValue({
       data: summary,
       isLoading: false,
       isError: false,
       ...overrides.summary,
     });
-    (useDashboardHooks.useCategoryBreakdown as any).mockReturnValue({
+    vi.mocked(useDashboardHooks.useCategoryBreakdown).mockReturnValue({
       data: breakdown,
       isLoading: false,
       ...overrides.breakdown,
     });
-    (useDashboardHooks.useDailyProgress as any).mockReturnValue({
+    vi.mocked(useDashboardHooks.useDailyProgress).mockReturnValue({
       data: progress,
       isLoading: false,
       ...overrides.progress,
     });
-    (useDashboardHooks.useCarbonTips as any).mockReturnValue({
+    vi.mocked(useDashboardHooks.useCarbonTips).mockReturnValue({
       data: tips,
       isLoading: false,
       ...overrides.tips,
     });
 
-    (api.fetchGoals as any).mockResolvedValue(goalsRes);
-    (api.fetchActivities as any).mockResolvedValue(actRes);
+    vi.mocked(api.fetchGoals).mockResolvedValue(goalsRes);
+    vi.mocked(api.fetchActivities).mockResolvedValue(actRes);
   };
 
   it('renders stats card skeleton loading states', () => {
@@ -149,11 +160,11 @@ describe('Dashboard', () => {
   });
 
   it('renders an error alert when summary query fails', () => {
-    (useDashboardHooks.useDashboardSummary as any).mockReturnValue({
+    vi.mocked(useDashboardHooks.useDashboardSummary).mockReturnValue({
       data: undefined,
       isLoading: false,
       isError: true,
-    });
+    } as unknown as ReturnType<typeof useDashboardHooks.useDashboardSummary>);
     render(
       <MemoryRouter>
         <Dashboard />

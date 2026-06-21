@@ -30,6 +30,7 @@ describe('Activities', () => {
           footprint: 2.5,
           date: '2024-01-15T00:00:00.000Z',
           createdAt: '2024-01-15T00:00:00.000Z',
+          updatedAt: '2024-01-15T00:00:00.000Z',
         },
       ],
       pagination: {
@@ -43,7 +44,7 @@ describe('Activities', () => {
     const mutateAsyncCreate = vi.fn().mockResolvedValue({});
     const mutateAsyncDelete = vi.fn().mockResolvedValue({});
 
-    (useActivitiesHooks.useActivities as any).mockReturnValue({
+    vi.mocked(useActivitiesHooks.useActivities).mockReturnValue({
       data,
       isLoading: false,
       isError: false,
@@ -51,12 +52,12 @@ describe('Activities', () => {
       ...overrides.query,
     });
 
-    (useActivitiesHooks.useCreateActivity as any).mockReturnValue({
+    vi.mocked(useActivitiesHooks.useCreateActivity).mockReturnValue({
       mutateAsync: mutateAsyncCreate,
       ...overrides.create,
     });
 
-    (useActivitiesHooks.useDeleteActivity as any).mockReturnValue({
+    vi.mocked(useActivitiesHooks.useDeleteActivity).mockReturnValue({
       mutateAsync: mutateAsyncDelete,
       ...overrides.delete,
     });

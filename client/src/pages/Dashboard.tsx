@@ -167,6 +167,7 @@ export function Dashboard() {
           </p>
         </div>
         <button
+          type="button"
           onClick={() => api.downloadExport()}
           className="flex items-center gap-2 px-4.5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/95 shadow-sm transition-all"
           aria-label="Download carbon footprint data as CSV"
@@ -297,9 +298,9 @@ export function Dashboard() {
               ) : recentActivities.length === 0 ? (
                 <p className="text-xs text-muted-foreground py-4 text-center">No activities logged yet.</p>
               ) : (
-                <div className="space-y-3">
+                <ul className="space-y-3">
                   {recentActivities.map((act) => (
-                    <div key={act.id} className="flex items-center justify-between p-3 rounded-xl border bg-secondary/20 hover:bg-secondary/40 transition-colors">
+                    <li key={act.id} className="flex items-center justify-between p-3 rounded-xl border bg-secondary/20 hover:bg-secondary/40 transition-colors">
                       <div className="flex items-center gap-3 min-w-0">
                         <span className="text-xl" role="img" aria-hidden="true">
                           {getActivityEmoji(act.type, act.category)}
@@ -314,9 +315,9 @@ export function Dashboard() {
                       <span className="font-mono text-xs font-extrabold text-foreground shrink-0 pl-2">
                         {act.footprint.toFixed(1)} kg
                       </span>
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               )}
             </CardContent>
           </Card>
@@ -341,17 +342,17 @@ export function Dashboard() {
                   <p className="text-[10px] text-muted-foreground mt-1">Log activities to unlock badges automatically!</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-4 gap-3">
+                <ul className="grid grid-cols-4 gap-3">
                   {unlockedBadges.slice(0, 4).map((badge) => (
-                    <div
+                    <li
                       key={badge.id}
                       title={`${badge.name}: ${badge.description}`}
                       className="group relative h-12 w-12 rounded-xl flex items-center justify-center text-2xl bg-green-500/10 border border-green-500/20 hover:scale-105 transition-all shadow-sm cursor-help"
                     >
                       {badge.icon}
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               )}
             </CardContent>
           </Card>

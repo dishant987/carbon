@@ -36,12 +36,12 @@ describe('Challenges', () => {
         { id: '1', title: 'Carpool Challenge', description: 'Take transit', target: 5, category: 'transport', points: 100 },
       ],
     };
-    (api.fetchLeaderboard as any).mockResolvedValue(mockData);
+    vi.mocked(api.fetchLeaderboard).mockResolvedValue(mockData);
     return mockData;
   };
 
   it('renders loader while fetching data', () => {
-    (api.fetchLeaderboard as any).mockReturnValue(new Promise(() => {}));
+    vi.mocked(api.fetchLeaderboard).mockReturnValue(new Promise(() => {}));
     const mockUser = setupMockUser();
 
     render(
@@ -85,8 +85,8 @@ describe('Challenges', () => {
   });
 
   it('renders error block and triggers retry fetch on click', async () => {
-    (api.fetchLeaderboard as any).mockRejectedValueOnce(new Error('Fetch failed'));
-    (api.fetchLeaderboard as any).mockResolvedValueOnce({ rankings: [], challenges: [] });
+    vi.mocked(api.fetchLeaderboard).mockRejectedValueOnce(new Error('Fetch failed'));
+    vi.mocked(api.fetchLeaderboard).mockResolvedValueOnce({ rankings: [], challenges: [] });
     const mockUser = setupMockUser();
 
     render(

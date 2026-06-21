@@ -39,7 +39,7 @@ describe('Sanitize Middleware', () => {
   });
 
   it('sanitizes query and params as well', () => {
-    mockReq.query = { search: '$where' } as any;
+    mockReq.query = { search: '$where' } as Request['query'];
     mockReq.params = { id: 'abc$def' };
 
     sanitizeInput(mockReq as Request, mockRes as Response, mockNext);

@@ -22,7 +22,7 @@ export function CarbonTips({ tips, onRefresh }: CarbonTipsProps) {
           <Lightbulb className="h-5 w-5 text-yellow-500" aria-hidden="true" />
           Tips to Reduce Footprint
         </CardTitle>
-        <Button variant="ghost" size="icon" onClick={handleRefresh} aria-label="Refresh tips">
+        <Button type="button" variant="ghost" size="icon" onClick={handleRefresh} aria-label="Refresh tips">
           <RefreshCw className="h-4 w-4" aria-hidden="true" />
         </Button>
       </CardHeader>
@@ -32,12 +32,11 @@ export function CarbonTips({ tips, onRefresh }: CarbonTipsProps) {
             Add some activities to get personalized tips.
           </p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4" role="list">
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {displayedTips.map((tip, index) => (
-              <div
+              <li
                 key={index}
                 className="flex gap-3 p-4.5 rounded-xl border border-border/60 bg-secondary/25 hover:bg-secondary/40 transition-all duration-300"
-                role="listitem"
               >
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-green-500/10 text-green-600 dark:text-green-400 font-extrabold text-xs">
                   {index + 1}
@@ -46,9 +45,9 @@ export function CarbonTips({ tips, onRefresh }: CarbonTipsProps) {
                   <span className="sr-only">Tip {index + 1}: </span>
                   <p className="text-sm text-foreground/90 font-medium leading-relaxed">{tip}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </CardContent>
     </Card>

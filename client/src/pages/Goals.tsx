@@ -229,9 +229,9 @@ export function Goals() {
           Complete green tasks to unlock achievements. As your log grows, more badges will be unlocked automatically.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
+        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
           {badges.map((badge) => (
-            <div
+            <li
               key={badge.id}
               className={`group relative rounded-2xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-md ${
                 badge.unlocked
@@ -291,9 +291,9 @@ export function Goals() {
                   </div>
                 </div>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </div>
   );

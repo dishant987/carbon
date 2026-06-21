@@ -23,7 +23,7 @@ describe('Offset Endpoints', () => {
         { id: '2', userId, project: 'amazon-reforestation', amount: 10, createdAt: new Date() },
       ];
       // In setup.ts we registered mockOffsetPledge
-      const mockOffsetPledge = (prisma as any).offsetPledge;
+      const mockOffsetPledge = jest.mocked(prisma.offsetPledge);
       mockOffsetPledge.findMany.mockResolvedValue(mockPledges);
 
       const res = await request(app)
@@ -73,7 +73,7 @@ describe('Offset Endpoints', () => {
 
     it('creates offset pledge successfully', async () => {
       const mockPledge = { id: 'pledge-123', userId, project: 'india-wind', amount: 10, createdAt: new Date() };
-      const mockOffsetPledge = (prisma as any).offsetPledge;
+      const mockOffsetPledge = jest.mocked(prisma.offsetPledge);
       mockOffsetPledge.create.mockResolvedValue(mockPledge);
 
       const res = await request(app)

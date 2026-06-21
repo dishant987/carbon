@@ -166,6 +166,7 @@ export function Offsets() {
                   </p>
                 </div>
                 <Button 
+                  type="button"
                   onClick={handleGenerateReport} 
                   disabled={reportLoading} 
                   className="font-bold transition-all relative overflow-hidden"
@@ -238,7 +239,7 @@ export function Offsets() {
                 </div>
 
                 <div className="flex justify-end">
-                  <Button variant="outline" size="sm" onClick={handleGenerateReport} disabled={reportLoading} className="text-xs font-semibold">
+                  <Button type="button" variant="outline" size="sm" onClick={handleGenerateReport} disabled={reportLoading} className="text-xs font-semibold">
                     {reportLoading ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : 'Re-run AI Analysis'}
                   </Button>
                 </div>

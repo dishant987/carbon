@@ -17,10 +17,10 @@ describe('Route Guards', () => {
 
   describe('ProtectedRoute', () => {
     it('shows loading spinner when verifying session', () => {
-      (useAuth as any).mockReturnValue({
+      vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: false,
         loading: true,
-      });
+      } as unknown as ReturnType<typeof useAuth>);
 
       render(
         <MemoryRouter initialEntries={['/protected']}>
@@ -35,10 +35,10 @@ describe('Route Guards', () => {
     });
 
     it('redirects to /login when not authenticated', () => {
-      (useAuth as any).mockReturnValue({
+      vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: false,
         loading: false,
-      });
+      } as unknown as ReturnType<typeof useAuth>);
 
       render(
         <MemoryRouter initialEntries={['/protected']}>
@@ -61,10 +61,10 @@ describe('Route Guards', () => {
     });
 
     it('renders child component when authenticated', () => {
-      (useAuth as any).mockReturnValue({
+      vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: true,
         loading: false,
-      });
+      } as unknown as ReturnType<typeof useAuth>);
 
       render(
         <MemoryRouter initialEntries={['/protected']}>
@@ -81,10 +81,10 @@ describe('Route Guards', () => {
 
   describe('UnprotectedRoute', () => {
     it('shows loading spinner when verifying session', () => {
-      (useAuth as any).mockReturnValue({
+      vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: false,
         loading: true,
-      });
+      } as unknown as ReturnType<typeof useAuth>);
 
       render(
         <MemoryRouter initialEntries={['/login']}>
@@ -98,10 +98,10 @@ describe('Route Guards', () => {
     });
 
     it('redirects to /dashboard when already authenticated', () => {
-      (useAuth as any).mockReturnValue({
+      vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: true,
         loading: false,
-      });
+      } as unknown as ReturnType<typeof useAuth>);
 
       render(
         <MemoryRouter initialEntries={['/login']}>
@@ -124,10 +124,10 @@ describe('Route Guards', () => {
     });
 
     it('renders child component when not authenticated', () => {
-      (useAuth as any).mockReturnValue({
+      vi.mocked(useAuth).mockReturnValue({
         isAuthenticated: false,
         loading: false,
-      });
+      } as unknown as ReturnType<typeof useAuth>);
 
       render(
         <MemoryRouter initialEntries={['/login']}>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Sparkles, Sliders, Map, Leaf, Utensils, Home, Loader2, Info, Compass } from 'lucide-react';
+import { Sparkles, Map, Leaf, Utensils, Home, Loader2, Compass, Sliders, Info } from 'lucide-react';
 import * as api from '../lib/api';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -89,6 +89,7 @@ export function EcoTools() {
       {/* Premium Navigation Tabs */}
       <div className="flex border-b border-border/60">
         <button
+          type="button"
           onClick={() => setActiveTab('route')}
           className={`flex items-center gap-2 px-5 py-3 border-b-2 text-sm font-bold transition-all ${
             activeTab === 'route'
@@ -100,6 +101,7 @@ export function EcoTools() {
           Green Route Planner
         </button>
         <button
+          type="button"
           onClick={() => setActiveTab('recipe')}
           className={`flex items-center gap-2 px-5 py-3 border-b-2 text-sm font-bold transition-all ${
             activeTab === 'recipe'
@@ -111,6 +113,7 @@ export function EcoTools() {
           Gemini Recipe Auditor
         </button>
         <button
+          type="button"
           onClick={() => setActiveTab('home')}
           className={`flex items-center gap-2 px-5 py-3 border-b-2 text-sm font-bold transition-all ${
             activeTab === 'home'
@@ -171,7 +174,7 @@ export function EcoTools() {
               <p className="text-xs text-muted-foreground">Estimated weekly carbon emissions based on your route ({weeklyDist} km total)</p>
             </div>
 
-            <div className="space-y-4">
+            <ul className="space-y-4">
               {[
                 { label: 'Petrol Car', val: routeFootprints.petrolCar, color: 'bg-rose-500', icon: '🚗' },
                 { label: 'Electric Vehicle (EV)', val: routeFootprints.electricCar, color: 'bg-amber-500', icon: '🔌' },
@@ -183,7 +186,7 @@ export function EcoTools() {
                 const maxVal = Math.max(...Object.values(routeFootprints)) || 1;
                 const widthPercent = (item.val / maxVal) * 100;
                 return (
-                  <div key={item.label} className="space-y-1.5">
+                  <li key={item.label} className="space-y-1.5">
                     <div className="flex justify-between items-center text-xs font-semibold">
                       <span className="flex items-center gap-1.5">
                         <span>{item.icon}</span>
@@ -197,10 +200,10 @@ export function EcoTools() {
                         style={{ width: `${Math.max(widthPercent, 1.5)}%` }}
                       />
                     </div>
-                  </div>
+                  </li>
                 );
               })}
-            </div>
+            </ul>
 
             {/* Recommendation Box */}
             <div className="p-4 rounded-xl border border-emerald-500/25 bg-emerald-500/5 flex gap-3.5 items-start">
@@ -282,9 +285,9 @@ export function EcoTools() {
                   <h4 className="font-extrabold text-base">Ingredient Impact</h4>
                   <p className="text-xs text-muted-foreground">Carbon score breakdown per ingredient</p>
                 </div>
-                <div className="space-y-3">
+                <ul className="space-y-3">
                   {recipeResult.ingredientsAnalysis.map((item) => (
-                    <div key={item.name} className="flex justify-between items-center p-3 rounded-xl border bg-secondary/20">
+                    <li key={item.name} className="flex justify-between items-center p-3 rounded-xl border bg-secondary/20">
                       <div className="min-w-0">
                         <p className="font-bold text-xs truncate">{item.name}</p>
                         <span
@@ -302,9 +305,9 @@ export function EcoTools() {
                       <span className="font-mono text-xs font-extrabold text-foreground shrink-0 pl-2">
                         {item.footprintKg} kg CO2
                       </span>
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
 
               {/* AI Comparison & Explanation */}

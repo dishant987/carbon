@@ -79,6 +79,7 @@ export function Activities() {
                   {pagination && pagination.totalPages > 1 && (
                     <div className="flex items-center justify-center gap-2 mt-4">
                       <Button
+                        type="button"
                         variant="outline"
                         size="sm"
                         disabled={page <= 1}
@@ -90,6 +91,7 @@ export function Activities() {
                         Page {pagination.page} of {pagination.totalPages}
                       </span>
                       <Button
+                        type="button"
                         variant="outline"
                         size="sm"
                         disabled={page >= pagination.totalPages}

@@ -22,12 +22,12 @@ describe('Goals', () => {
         { id: '2', name: 'Green Warrior', description: 'Log 5 activities', icon: '🛡️', unlocked: false, progress: 2, target: 5 },
       ],
     };
-    (api.fetchGoals as any).mockResolvedValue(goalsRes);
+    vi.mocked(api.fetchGoals).mockResolvedValue(goalsRes);
     return goalsRes;
   };
 
   it('renders loader while fetching data', () => {
-    (api.fetchGoals as any).mockReturnValue(new Promise(() => {}));
+    vi.mocked(api.fetchGoals).mockReturnValue(new Promise(() => {}));
     render(<Goals />);
 
     expect(screen.getByText(/loading goals & badges/i)).toBeInTheDocument();
@@ -50,7 +50,7 @@ describe('Goals', () => {
 
   it('validates goal input and updates weekly budget successfully', async () => {
     setupMockData();
-    (api.updateWeeklyGoal as any).mockResolvedValue({ weeklyGoal: 150 });
+    vi.mocked(api.updateWeeklyGoal).mockResolvedValue({ weeklyGoal: 150 });
     render(<Goals />);
 
     await waitFor(() => {

@@ -4,6 +4,7 @@ import { Trash2, Leaf, Carrot, Zap, ShoppingBag, X, Calendar, TreePine, Smartpho
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { formatCO2 } from '../lib/utils';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import type { Activity } from '../types';
 
 const ROW_HEIGHT = 72;
@@ -61,14 +62,28 @@ const ActivityRow = ({
     onSelect(activity);
   }, [activity, onSelect]);
 
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (!activity) return;
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        onSelect(activity);
+      }
+    },
+    [activity, onSelect]
+  );
+
   if (!activity) return null;
 
   return (
     <div
       style={style}
-      role="listitem"
+      role="button"
+      tabIndex={0}
       onClick={handleSelect}
-      className="flex items-center justify-between px-3 rounded-lg border bg-card hover:bg-accent/40 hover:border-primary/25 cursor-pointer transition-all duration-200 select-none shadow-sm"
+      onKeyDown={handleKeyDown}
+      aria-label={`View details for ${activity.category} activity`}
+      className="flex items-center justify-between px-3 rounded-lg border bg-card hover:bg-accent/40 hover:border-primary/25 cursor-pointer transition-all duration-200 select-none shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
     >
       <div className="flex items-center gap-3 min-w-0">
         <span className="text-muted-foreground shrink-0" aria-hidden="true">
@@ -91,6 +106,7 @@ const ActivityRow = ({
           {formatCO2(activity.footprint)}
         </span>
         <Button
+          type="button"
           variant="ghost"
           size="icon"
           onClick={handleDelete}
@@ -108,6 +124,12 @@ export function ActivityList({ activities, onDelete }: ActivityListProps) {
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
 
   const handleDelete = useCallback((id: string) => onDelete(id), [onDelete]);
+
+  const handleClose = useCallback(() => {
+    setSelectedActivity(null);
+  }, []);
+
+  const modalRef = useFocusTrap(!!selectedActivity, handleClose);
 
   const stableItemData = useMemo(
     () => ({
@@ -131,7 +153,7 @@ export function ActivityList({ activities, onDelete }: ActivityListProps) {
 
   return (
     <section aria-label="Activity history list" className="relative">
-      <div role="list" aria-label={`${activities.length} activities`} className="space-y-1.5">
+      <div className="space-y-1.5">
         <List
           height={height}
           itemCount={activities.length}
@@ -148,9 +170,10 @@ export function ActivityList({ activities, onDelete }: ActivityListProps) {
       {selectedActivity && (
         <div
           className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200"
-          onClick={() => setSelectedActivity(null)}
+          onClick={handleClose}
         >
           <div
+            ref={modalRef}
             className="bg-card border border-border shadow-2xl rounded-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200"
             role="dialog"
             aria-modal="true"
@@ -170,9 +193,10 @@ export function ActivityList({ activities, onDelete }: ActivityListProps) {
                 </div>
               </div>
               <Button
+                type="button"
                 variant="ghost"
                 size="icon"
-                onClick={() => setSelectedActivity(null)}
+                onClick={handleClose}
                 className="h-8 w-8 rounded-full text-muted-foreground hover:text-foreground"
               >
                 <X className="h-5 w-5" />
@@ -274,15 +298,16 @@ export function ActivityList({ activities, onDelete }: ActivityListProps) {
 
             {/* Footer */}
             <div className="p-4 bg-muted/10 border-t border-border/80 flex justify-end gap-2">
-              <Button variant="outline" size="sm" onClick={() => setSelectedActivity(null)}>
+              <Button type="button" variant="outline" size="sm" onClick={handleClose}>
                 Close Details
               </Button>
               <Button
+                type="button"
                 variant="destructive"
                 size="sm"
                 onClick={() => {
                   onDelete(selectedActivity.id);
-                  setSelectedActivity(null);
+                  handleClose();
                 }}
               >
                 <Trash2 className="mr-1.5 h-4 w-4" />

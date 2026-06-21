@@ -153,6 +153,7 @@ function MessageBubble({ message, isStreamingLast }: MessageBubbleProps) {
           </div>
 
           <button
+            type="button"
             onClick={handleCopy}
             className={cn(
               'absolute -top-3 right-2 opacity-0 group-hover/bubble:opacity-100 transition-opacity duration-200 bg-card border border-border shadow-md rounded-md px-1.5 py-1 text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 z-10 hover:bg-accent',
@@ -411,6 +412,7 @@ export function ChatWidget() {
             </div>
           </div>
           <button
+            type="button"
             onClick={toggleChat}
             className="p-1 rounded-full hover:bg-white/10 text-primary-foreground/80 hover:text-primary-foreground transition-all"
             aria-label="Close chat window"
@@ -468,6 +470,7 @@ export function ChatWidget() {
             />
             {isStreaming ? (
               <button
+                type="button"
                 onClick={handleStop}
                 className="p-1.5 rounded-lg transition-all shrink-0 bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm hover:scale-105 active:scale-95"
                 aria-label="Stop streaming"
@@ -476,6 +479,7 @@ export function ChatWidget() {
               </button>
             ) : (
               <button
+                type="button"
                 onClick={handleSend}
                 disabled={!input.trim() || isStreaming}
                 className={cn(
@@ -500,6 +504,7 @@ export function ChatWidget() {
       </div>
 
       <button
+        type="button"
         onClick={toggleChat}
         className={cn(
           'bg-primary text-primary-foreground p-3.5 rounded-full shadow-lg hover:shadow-primary/20 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center border border-primary z-50',

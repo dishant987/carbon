@@ -74,6 +74,7 @@ export function Layout({ children }: LayoutProps) {
             <div className="flex items-center gap-3">
               {/* Theme Toggle */}
               <button
+                type="button"
                 onClick={toggleTheme}
                 className="p-2 rounded-lg border border-border bg-card text-muted-foreground hover:text-foreground transition-all hover:bg-accent/40"
                 aria-label="Toggle dark/light mode"
@@ -123,6 +124,7 @@ export function Layout({ children }: LayoutProps) {
       {/* Mobile Top Bar */}
       <div className="md:hidden fixed top-0 left-0 right-0 h-16 border-b bg-card/90 backdrop-blur z-40 flex items-center justify-between px-4">
         <button
+          type="button"
           onClick={() => setIsMobileOpen(true)}
           className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent/50 transition"
           aria-label="Open sidebar menu"
@@ -138,6 +140,7 @@ export function Layout({ children }: LayoutProps) {
         </Link>
 
         <button
+          type="button"
           onClick={toggleTheme}
           className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent/50 transition"
           aria-label="Toggle theme"
@@ -185,6 +188,7 @@ export function Layout({ children }: LayoutProps) {
             {/* Mobile close button / Desktop collapse button */}
             <div className="flex items-center">
               <button
+                type="button"
                 onClick={closeMobile}
                 className="md:hidden p-1.5 rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground"
                 aria-label="Close sidebar menu"
@@ -193,6 +197,7 @@ export function Layout({ children }: LayoutProps) {
               </button>
 
               <button
+                type="button"
                 onClick={() => setIsCollapsed(!isCollapsed)}
                 className="hidden md:flex p-1.5 rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground"
                 aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
@@ -265,6 +270,7 @@ export function Layout({ children }: LayoutProps) {
         <div className="flex flex-col gap-2 p-4 border-t">
           {/* Light/Dark mode switcher */}
           <button
+            type="button"
             onClick={toggleTheme}
             className={cn(
               'flex items-center gap-3 w-full px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-accent/50 transition-all',
@@ -287,6 +293,7 @@ export function Layout({ children }: LayoutProps) {
 
           {/* Logout button */}
           <button
+            type="button"
             onClick={logout}
             className={cn(
               'flex items-center gap-3 w-full px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-destructive rounded-lg hover:bg-destructive/10 transition-colors',

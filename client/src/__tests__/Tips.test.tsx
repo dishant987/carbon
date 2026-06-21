@@ -13,14 +13,14 @@ describe('Tips', () => {
   });
 
   it('shows tips skeleton when loading', () => {
-    (api.fetchTips as any).mockReturnValue(new Promise(() => {}));
+    vi.mocked(api.fetchTips).mockReturnValue(new Promise(() => {}));
     render(<Tips />);
 
     expect(screen.queryByText('Carbon Reduction Recommendations')).toBeInTheDocument();
   });
 
   it('renders error alert when API fails', async () => {
-    (api.fetchTips as any).mockRejectedValue(new Error('Network error'));
+    vi.mocked(api.fetchTips).mockRejectedValue(new Error('Network error'));
     render(<Tips />);
 
     await waitFor(() => {
@@ -30,7 +30,7 @@ describe('Tips', () => {
   });
 
   it('shows empty state when no recommendations are returned', async () => {
-    (api.fetchTips as any).mockResolvedValue([]);
+    vi.mocked(api.fetchTips).mockResolvedValue([]);
     render(<Tips />);
 
     await waitFor(() => {
@@ -48,7 +48,7 @@ describe('Tips', () => {
       'Shorten your showers to save hot water.',
       'Random fallback tip.',
     ];
-    (api.fetchTips as any).mockResolvedValue(mockTips);
+    vi.mocked(api.fetchTips).mockResolvedValue(mockTips);
 
     render(<Tips />);
 
@@ -80,8 +80,8 @@ describe('Tips', () => {
   });
 
   it('retries loading tips when retry button is clicked', async () => {
-    (api.fetchTips as any).mockRejectedValueOnce(new Error('First failure'));
-    (api.fetchTips as any).mockResolvedValueOnce(['Successful tip']);
+    vi.mocked(api.fetchTips).mockRejectedValueOnce(new Error('First failure'));
+    vi.mocked(api.fetchTips).mockResolvedValueOnce(['Successful tip']);
 
     render(<Tips />);
 
