@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Profile } from '../pages/Profile';
 import { AuthContext } from '../context/AuthContext';
 
@@ -67,17 +68,23 @@ describe('Profile Component', () => {
 
     // Switch to Security tab
     const securityTab = screen.getByRole('tab', { name: /security/i });
-    fireEvent.click(securityTab);
+    const user = userEvent.setup();
+    await user.click(securityTab);
 
-    expect(screen.getByLabelText(/current password/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByLabelText(/current password/i)).toBeInTheDocument();
+    });
 
-    const newPassInput = screen.getByLabelText(/new password/i);
-    const confirmPassInput = screen.getByLabelText(/confirm new password/i);
+    const newPassInput = screen.getByLabelText('New Password');
+    const confirmPassInput = screen.getByLabelText('Confirm New Password');
     const submitBtn = screen.getByRole('button', { name: /update password/i });
 
     // Scenario 1: Mismatch
-    fireEvent.change(newPassInput, { target: { value: 'pass12345' } });
-    fireEvent.change(confirmPassInput, { target: { value: 'pass12346' } });
+    const nativeValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set;
+    nativeValueSetter?.call(newPassInput, 'pass12345');
+    newPassInput.dispatchEvent(new Event('input', { bubbles: true }));
+    nativeValueSetter?.call(confirmPassInput, 'pass12346');
+    confirmPassInput.dispatchEvent(new Event('input', { bubbles: true }));
     fireEvent.click(submitBtn);
 
     await waitFor(() => {
@@ -85,8 +92,10 @@ describe('Profile Component', () => {
     });
 
     // Scenario 2: Too short
-    fireEvent.change(newPassInput, { target: { value: 'short' } });
-    fireEvent.change(confirmPassInput, { target: { value: 'short' } });
+    nativeValueSetter?.call(newPassInput, 'short');
+    newPassInput.dispatchEvent(new Event('input', { bubbles: true }));
+    nativeValueSetter?.call(confirmPassInput, 'short');
+    confirmPassInput.dispatchEvent(new Event('input', { bubbles: true }));
     fireEvent.click(submitBtn);
 
     await waitFor(() => {
@@ -103,11 +112,15 @@ describe('Profile Component', () => {
     );
 
     const securityTab = screen.getByRole('tab', { name: /security/i });
-    fireEvent.click(securityTab);
+    const user = userEvent.setup();
+    await user.click(securityTab);
 
+    await waitFor(() => {
+      expect(screen.getByLabelText(/current password/i)).toBeInTheDocument();
+    });
     fireEvent.change(screen.getByLabelText(/current password/i), { target: { value: 'oldpassword' } });
-    fireEvent.change(screen.getByLabelText(/new password/i), { target: { value: 'newpassword123' } });
-    fireEvent.change(screen.getByLabelText(/confirm new password/i), { target: { value: 'newpassword123' } });
+    fireEvent.change(screen.getByLabelText('New Password'), { target: { value: 'newpassword123' } });
+    fireEvent.change(screen.getByLabelText('Confirm New Password'), { target: { value: 'newpassword123' } });
 
     const submitBtn = screen.getByRole('button', { name: /update password/i });
     fireEvent.click(submitBtn);

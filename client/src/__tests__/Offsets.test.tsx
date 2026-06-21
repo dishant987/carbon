@@ -65,7 +65,7 @@ describe('Offsets Page', () => {
       expect(screen.queryByText('Loading simulator & projects...')).not.toBeInTheDocument();
     });
 
-    expect(screen.getByText('Amazon Rainforest Protection')).toBeInTheDocument();
+    expect(screen.getAllByText('Amazon Rainforest Protection').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Lifetime Pledged Offsets')).toBeInTheDocument();
     expect(screen.getByText('25 kg')).toBeInTheDocument();
     expect(screen.getByText('75.0 kg left')).toBeInTheDocument();

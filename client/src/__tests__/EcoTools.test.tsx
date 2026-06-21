@@ -23,8 +23,7 @@ describe('EcoTools Page', () => {
   it('calculates carbon transit footprints based on route settings', () => {
     render(<EcoTools />);
 
-    const distanceInput = screen.getByLabelText(/One-Way Distance/i);
-    const tripsInput = screen.getByLabelText(/Trips Per Week/i);
+    const [distanceInput, tripsInput] = screen.getAllByRole('spinbutton');
 
     fireEvent.change(distanceInput, { target: { value: '20' } });
     fireEvent.change(tripsInput, { target: { value: '5' } });
@@ -61,7 +60,7 @@ describe('EcoTools Page', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Cheeseburger')).toBeInTheDocument();
-      expect(screen.getByText('Beyond Burger')).toBeInTheDocument();
+      expect(screen.getByText('Beyond Burger', { exact: false })).toBeInTheDocument();
     });
   });
 

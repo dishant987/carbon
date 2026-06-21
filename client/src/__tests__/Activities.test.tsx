@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Activities } from '../pages/Activities';
 import * as useActivitiesHooks from '../hooks/useActivities';
 
@@ -82,22 +83,26 @@ describe('Activities', () => {
     render(<Activities />);
 
     const historyTab = screen.getByRole('tab', { name: /history/i });
-    fireEvent.click(historyTab);
+    const user = userEvent.setup();
+    await user.click(historyTab);
 
     // Skeleton loaders should be visible
     expect(screen.queryByText('car')).not.toBeInTheDocument();
   });
 
-  it('shows error state when query fails', () => {
+  it('shows error state when query fails', async () => {
     setupMocks({
       query: { isError: true, error: new Error('Failed to fetch'), data: undefined },
     });
     render(<Activities />);
 
     const historyTab = screen.getByRole('tab', { name: /history/i });
-    fireEvent.click(historyTab);
+    const user = userEvent.setup();
+    await user.click(historyTab);
 
-    expect(screen.getByText('Error: Failed to fetch')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Error: Failed to fetch')).toBeInTheDocument();
+    });
   });
 
   it('can navigate pages when pagination totalPages > 1', async () => {
@@ -105,9 +110,12 @@ describe('Activities', () => {
     render(<Activities />);
 
     const historyTab = screen.getByRole('tab', { name: /history/i });
-    fireEvent.click(historyTab);
+    const user = userEvent.setup();
+    await user.click(historyTab);
 
-    expect(screen.getByText('Page 1 of 2')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Page 1 of 2')).toBeInTheDocument();
+    });
 
     const buttons = screen.getAllByRole('button');
 
@@ -126,7 +134,8 @@ describe('Activities', () => {
 
     // Trigger delete in History tab
     const historyTab = screen.getByRole('tab', { name: /history/i });
-    fireEvent.click(historyTab);
+    const user = userEvent.setup();
+    await user.click(historyTab);
 
     await waitFor(() => {
       expect(screen.getByText('car')).toBeInTheDocument();

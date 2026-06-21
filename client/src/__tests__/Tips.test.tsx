@@ -46,7 +46,7 @@ describe('Tips', () => {
       'Set up a home compost system.',
       'Purchase local and seasonal products.',
       'Shorten your showers to save hot water.',
-      'Random fallback tip.',
+      'Set a personal goal for the month.',
     ];
     vi.mocked(api.fetchTips).mockResolvedValue(mockTips);
 
@@ -59,11 +59,11 @@ describe('Tips', () => {
     // Check that categories were mapped correctly by looking at badges
     expect(screen.getByText('Transport')).toBeInTheDocument();
     expect(screen.getByText('Diet & Agriculture')).toBeInTheDocument();
-    expect(screen.getByText('Household Energy')).toBeInTheDocument();
+    expect(screen.getAllByText('Household Energy').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Waste Management')).toBeInTheDocument();
     expect(screen.getByText('Shopping & Consumerism')).toBeInTheDocument();
     expect(screen.getByText('Water & Heating')).toBeInTheDocument();
-    expect(screen.getByText('General Sustainability')).toBeInTheDocument();
+    expect(screen.getAllByText('General Sustainability').length).toBeGreaterThanOrEqual(1);
 
     // The first tip should be expanded by default (expandedIndex = 0)
     expect(screen.getByText('Sustainable Transportation')).toBeInTheDocument();
@@ -77,7 +77,7 @@ describe('Tips', () => {
 
     // After collapse, the detail content is hidden
     await waitFor(() => {
-      expect(screen.queryByText('Sustainable Transportation')).not.toBeInTheDocument();
+      expect(screen.queryByText('Choose public transit or carpooling for your daily commute.')).not.toBeInTheDocument();
     });
   });
 

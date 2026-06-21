@@ -57,7 +57,7 @@ describe('Goals', () => {
       expect(screen.getByText('Goals & Eco-Badges')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('45 / 100 kg CO2')).toBeInTheDocument();
+    expect(screen.getByText((_, element) => element?.textContent?.trim() === '45 / 100 kg CO2')).toBeInTheDocument();
     expect(screen.getByText('Eco Starter')).toBeInTheDocument();
     expect(screen.getByText('Green Warrior')).toBeInTheDocument();
     expect(screen.getByText('Unlocked')).toBeInTheDocument();
@@ -95,8 +95,10 @@ describe('Goals', () => {
       expect(screen.getByLabelText('Update Weekly Budget Limit (kg CO2)')).toBeInTheDocument();
     });
 
-    const input = screen.getByLabelText('Update Weekly Budget Limit (kg CO2)');
-    fireEvent.change(input, { target: { value: '-5' } });
+    const input = screen.getByLabelText('Update Weekly Budget Limit (kg CO2)') as HTMLInputElement;
+    const nativeValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set;
+    nativeValueSetter?.call(input, '-5');
+    input.dispatchEvent(new Event('input', { bubbles: true }));
 
     const submitBtn = screen.getByRole('button', { name: /set target/i });
     fireEvent.click(submitBtn);

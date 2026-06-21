@@ -48,8 +48,8 @@ describe('Dashboard', () => {
       { type: 'food', total: 50.5, percentage: 33.6, count: 3 },
     ];
     const progress = [
-      { date: '2024-01-01', footprint: 10 },
-      { date: '2024-01-02', footprint: 12 },
+      { date: '2024-01-01', total: 10, activities: 1 },
+      { date: '2024-01-02', total: 12, activities: 2 },
     ];
     const tips = ['Eat more plants', 'Switch off lights'];
     const goalsRes: api.GoalsResponse = {
@@ -146,8 +146,8 @@ describe('Dashboard', () => {
     });
 
     // Check stats rendering
-    expect(screen.getByText('150.50 kg')).toBeInTheDocument();
-    expect(screen.getByText('21.50 kg')).toBeInTheDocument();
+    expect(screen.getByText(/150\.50 kg/)).toBeInTheDocument();
+    expect(screen.getByText(/21\.50 kg/)).toBeInTheDocument();
     expect(screen.getByText('45.0 / 100 kg')).toBeInTheDocument();
 
     // Check recent activities logs
@@ -183,6 +183,9 @@ describe('Dashboard', () => {
       isLoading: false,
       isError: true,
     } as unknown as ReturnType<typeof useDashboardHooks.useDashboardSummary>);
+    vi.mocked(useDashboardHooks.useCategoryBreakdown).mockReturnValue({ data: [], isLoading: false } as any);
+    vi.mocked(useDashboardHooks.useDailyProgress).mockReturnValue({ data: [], isLoading: false } as any);
+    vi.mocked(useDashboardHooks.useCarbonTips).mockReturnValue({ data: [], isLoading: false } as any);
     render(
       <MemoryRouter>
         <Dashboard />

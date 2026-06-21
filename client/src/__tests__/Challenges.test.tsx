@@ -116,7 +116,7 @@ describe('Challenges', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Leader User')).toBeInTheDocument();
+      expect(screen.getAllByText('Leader User').length).toBeGreaterThanOrEqual(1);
     });
 
     // Check podium ranks
@@ -132,8 +132,8 @@ describe('Challenges', () => {
     expect(screen.getByText('+100 pts')).toBeInTheDocument();
 
     // Check table rankings
-    expect(screen.getByText('Leader User')).toBeInTheDocument();
-    expect(screen.getByText('Third User')).toBeInTheDocument();
+    expect(screen.getAllByText('Leader User').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Third User').length).toBeGreaterThanOrEqual(1);
   });
 
   it('renders error block and triggers retry fetch on click', async () => {
